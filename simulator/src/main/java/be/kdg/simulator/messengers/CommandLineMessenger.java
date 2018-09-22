@@ -9,7 +9,7 @@ public class CommandLineMessenger implements Messenger {
     private final MessageGenerator messageGenerator;
 
     // Constructor injection (geen autowired meer nodig hier)
-    public CommandLineMessenger(MessageGenerator messageGenerator) {
+    public CommandLineMessenger(@Qualifier("randomMessageGenerator") MessageGenerator messageGenerator) {
         this.messageGenerator = messageGenerator;
     }
 
