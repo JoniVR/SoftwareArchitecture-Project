@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+/**
+ * Genereert random berichten voor load testen.
+ */
 @Component
 public class RandomMessageGenerator implements MessageGenerator {
 
