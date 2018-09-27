@@ -60,7 +60,6 @@ public class CameraMessage {
     @Override
     public String toString() {
 
-        //TODO: formatten
         return String.format("Camera id: %d, license plate: %s, timestamp: %s",this.id,this.licenseplate, this.timestamp);
     }
 }

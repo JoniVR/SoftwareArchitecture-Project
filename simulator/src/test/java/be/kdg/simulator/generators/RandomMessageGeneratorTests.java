@@ -1,4 +1,4 @@
-package be.kdg.simulator;
+package be.kdg.simulator.generators;
 
 import be.kdg.simulator.generators.MessageGenerator;
 import be.kdg.simulator.generators.RandomMessageGenerator;
@@ -13,13 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SimulatorApplicationTests {
+public class RandomMessageGeneratorTests {
 
     @Qualifier("randomMessageGenerator")
     @Autowired //Field injection!
     private MessageGenerator messageGenerator;
-
-    //TODO: possibly move these tests to own "messageGeneratortests"?
 
     /**
      * Tests is the format of the license plates is correct.
@@ -35,10 +33,15 @@ public class SimulatorApplicationTests {
         // Check if generated plate matches with regex
         Assert.assertTrue("License plate does not have the correct format.",
                 cameraMessage.getLicenseplate().matches(expectedRegex));
+
+        System.out.println("testRandomLicensePlateFormat - Tested license plate: " + cameraMessage.getLicenseplate());
     }
 
     /**
      * Tests if the camera ID is between the correct bounds.
+     * Might not always be a valid test since random ids can fit bounds randomly
+     * (so even if the code that is generating the ID is wrong, the test could still succeed because it fits the bound "by accident).
+     * But I figured it would never hurt to add an extra check.
      */
     @Test
     public void testRandomLicensePlateCameraIdBounds(){
@@ -52,5 +55,7 @@ public class SimulatorApplicationTests {
 
         Assert.assertTrue("Random cameraID does not fit correct bounds.",
                 (camId <= maxCameraId) && camId > 0);
+
+        System.out.println("testRandomLicensePlateCameraIdBounds - Tested cameraId: " + camId);
     }
 }
