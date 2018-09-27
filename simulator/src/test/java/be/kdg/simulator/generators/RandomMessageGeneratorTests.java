@@ -1,7 +1,5 @@
 package be.kdg.simulator.generators;
 
-import be.kdg.simulator.generators.MessageGenerator;
-import be.kdg.simulator.generators.RandomMessageGenerator;
 import be.kdg.simulator.model.CameraMessage;
 import org.junit.Assert;
 import org.junit.Test;

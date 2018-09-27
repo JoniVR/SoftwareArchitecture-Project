@@ -4,7 +4,13 @@ import be.kdg.simulator.model.CameraMessage;
 import org.springframework.stereotype.Component;
 
 /**
+ * Deze modus wordt gebruikt voor het simuleren van overtredingen.
+ * Door te sturen berichten worden niet gegenereerd maar uit een tekstbestand gelezen dat op een instelbare locatie staat.
+ * Hierin staat per bericht een door komma’s gescheiden lijn met (cameraID, nummerplaat, delay).
+ * De delay (in millis) bepaalt hoe lang er na het vorige bericht moet gewacht worden.
  *
+ * @Author Joni Van Roost
+ * @Version 0.0.1
  */
 @Component
 public class FileGenerator implements MessageGenerator {
