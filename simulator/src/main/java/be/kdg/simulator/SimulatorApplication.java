@@ -1,6 +1,6 @@
 package be.kdg.simulator;
 
-import be.kdg.simulator.util.MessageScheduleService;
+import be.kdg.simulator.services.MessageSchedulerService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -12,8 +12,8 @@ public class SimulatorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SimulatorApplication.class, args);
 
-		MessageScheduleService messageScheduleService;
-		messageScheduleService = new MessageScheduleService();
+		MessageSchedulerService messageScheduleService;
+		messageScheduleService = new MessageSchedulerService();
 		messageScheduleService.run();
 	}
 }
