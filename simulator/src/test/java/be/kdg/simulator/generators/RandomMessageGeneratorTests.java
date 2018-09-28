@@ -4,10 +4,11 @@ import be.kdg.simulator.models.CameraMessage;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.slf4j.Logger;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -15,6 +16,8 @@ public class RandomMessageGeneratorTests {
 
     @Autowired //Field injection!
     private MessageGenerator messageGenerator;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RandomMessageGeneratorTests.class);
 
     /**
      * Tests is the format of the license plates is correct.
@@ -31,7 +34,7 @@ public class RandomMessageGeneratorTests {
         Assert.assertTrue("License plate does not have the correct format.",
                 cameraMessage.getLicenseplate().matches(expectedRegex));
 
-        System.out.println("testRandomLicensePlateFormat - Tested license plate: " + cameraMessage.getLicenseplate());
+        LOGGER.info("testRandomLicensePlateFormat - Tested license plate: " + cameraMessage.getLicenseplate());
     }
 
     /**
@@ -53,6 +56,6 @@ public class RandomMessageGeneratorTests {
         Assert.assertTrue("Random cameraID does not fit correct bounds.",
                 (camId <= maxCameraId) && camId > 0);
 
-        System.out.println("testRandomLicensePlateCameraIdBounds - Tested cameraId: " + camId);
+        LOGGER.info("testRandomLicensePlateCameraIdBounds - Tested cameraId: " + camId);
     }
 }
