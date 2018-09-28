@@ -39,7 +39,7 @@ public class RandomMessageGenerator implements MessageGenerator {
 
         Random r = new Random();
         int lower = 1;
-        int upper = this.maxCameraId;
+        int upper = this.maxCameraId + 1;
         int result = r.nextInt(upper-lower) + lower;
 
         return result;
