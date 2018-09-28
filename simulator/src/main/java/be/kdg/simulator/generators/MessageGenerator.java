@@ -1,6 +1,6 @@
 package be.kdg.simulator.generators;
 
-import be.kdg.simulator.model.CameraMessage;
+import be.kdg.simulator.models.CameraMessage;
 
 /**
  * Defineert wat de generators moeten kunnen.

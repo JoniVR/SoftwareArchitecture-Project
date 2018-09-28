@@ -1,6 +1,6 @@
 package be.kdg.simulator.generators;
 
-import be.kdg.simulator.model.CameraMessage;
+import be.kdg.simulator.models.CameraMessage;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class RandomMessageGeneratorTests {
 
-    @Qualifier("randomMessageGenerator")
     @Autowired //Field injection!
     private MessageGenerator messageGenerator;
 

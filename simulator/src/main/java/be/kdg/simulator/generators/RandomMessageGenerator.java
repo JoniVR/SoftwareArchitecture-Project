@@ -1,8 +1,8 @@
 package be.kdg.simulator.generators;
 
-import be.kdg.simulator.model.CameraMessage;
+import be.kdg.simulator.models.CameraMessage;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -10,6 +10,7 @@ import java.util.Random;
  * Genereert random berichten voor load testen.
  */
 @Component
+@ConditionalOnProperty(name = "generator.type", havingValue = "random")
 public class RandomMessageGenerator implements MessageGenerator {
 
     private int maxCameraId = 3;

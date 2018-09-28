@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class CommandLineMessengerTests {
 
-    @Qualifier("commandLineMessenger")
     @Autowired //Field injection!
     private Messenger messenger;
 
