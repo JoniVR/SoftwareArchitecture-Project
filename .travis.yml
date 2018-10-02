@@ -1,9 +1,8 @@
 language: java
 
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+install:
+ - wget https://download.java.net/java/GA/jdk10/10/binaries/openjdk-10_linux-x64_bin.tar.gz
+ - tar -xzf openjdk-10_linux-x64_bin.tar.gz
+ - export JAVA_HOME=$(pwd)/jdk-10
+ 
+ 
