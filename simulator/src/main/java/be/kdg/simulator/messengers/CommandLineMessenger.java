@@ -17,6 +17,7 @@ public class CommandLineMessenger implements Messenger {
     @Override
     public void sendMessage() {
 
+        LOGGER.info("Placing message on command line.");
         LOGGER.info(messageOriginHandler.relayMessage().toString());
     }
 }

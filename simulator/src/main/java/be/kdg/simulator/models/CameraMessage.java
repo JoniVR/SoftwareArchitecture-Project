@@ -1,16 +1,17 @@
 package be.kdg.simulator.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class CameraMessage {
+public class CameraMessage implements Serializable {
 
     private int id;
     private String licenseplate;
     private LocalDateTime timestamp;
 
     public CameraMessage() {
-        //default
+        //default, used for serialization
     }
 
     public CameraMessage(int id, String licenseplate, LocalDateTime timestamp) {

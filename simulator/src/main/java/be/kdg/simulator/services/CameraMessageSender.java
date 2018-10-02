@@ -5,10 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+/**
+ * The CameraMessageSender is responsible for sending messages to the Queue or command line
+ * depending on configuration.
+ *
+ * @Author Joni Van Roost
+ */
 @Service
-public class MessageSchedulerService {
+public class CameraMessageSender {
 
-    @Autowired //Field injection!
+    @Autowired
     private Messenger messenger;
 
     @Scheduled(fixedRate=1000)
