@@ -5,4 +5,10 @@ install:
  - tar -xzf openjdk-10_linux-x64_bin.tar.gz
  - export JAVA_HOME=$(pwd)/jdk-10
  
+script:
+ - cd simulator
+ - ./gradlew clean
+ - ./gradlew build
+ - ./gradlew test
+ 
  
