@@ -13,7 +13,7 @@ script:
  - ./gradlew test
  
 # test processor
- -cd ../processor
+ - cd ../processor
  - ./gradlew clean
  - ./gradlew build
  - ./gradlew test
