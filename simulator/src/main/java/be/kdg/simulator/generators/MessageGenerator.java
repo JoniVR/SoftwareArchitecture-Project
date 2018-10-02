@@ -3,8 +3,8 @@ package be.kdg.simulator.generators;
 import be.kdg.simulator.models.CameraMessage;
 
 /**
- * Defineert wat de generators moeten kunnen.
- * De ene generator zal random genereren, de andere op basis van een file.
+ * Defines what generators should be able to do.
+ * One generator will generate messages at random, the other based on a file.
  */
 public interface MessageGenerator {
 

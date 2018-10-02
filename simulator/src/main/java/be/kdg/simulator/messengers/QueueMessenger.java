@@ -1,6 +1,5 @@
 package be.kdg.simulator.messengers;
 
-import be.kdg.simulator.generators.MessageGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -10,10 +9,11 @@ import org.springframework.stereotype.Component;
 public class QueueMessenger implements Messenger {
 
     @Autowired
-    private MessageGenerator messageGenerator;
+    private MessageOriginHandler messageOriginHandler;
 
     @Override
     public void sendMessage() {
 
+        messageOriginHandler.relayMessage();
     }
 }

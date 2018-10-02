@@ -1,8 +1,8 @@
 package be.kdg.simulator.messengers;
 
 /**
- * Defineert wat de messengers moeten kunnen.
- * De ene messenger stuurt naar console, andere messenger stuurt naar queue.
+ * Defines what messengers should be able to do.
+ * One messenger will send messages to the console, the other one will send messages to a queue.
  */
 public interface Messenger {
 

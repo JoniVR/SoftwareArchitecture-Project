@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
- * Genereert random berichten voor load testen.
+ * Generates messages at random for load testing.
  */
 @Component
 @ConditionalOnProperty(name = "generator.type", havingValue = "random")

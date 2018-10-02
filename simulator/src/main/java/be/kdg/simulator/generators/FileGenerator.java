@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
- * Deze modus wordt gebruikt voor het simuleren van overtredingen.
- * Door te sturen berichten worden niet gegenereerd maar uit een tekstbestand gelezen dat op een instelbare locatie staat.
- * Hierin staat per bericht een door komma’s gescheiden lijn met (cameraID, nummerplaat, delay).
- * De delay (in millis) bepaalt hoe lang er na het vorige bericht moet gewacht worden.
+ * This mode will be used to simulate traffic violations.
+ * The messages that will be sent won't be generated at random but will be read from a text file at a custom location.
+ * In this file, each message item will be separated by a comma (cameraID, licensePlate, delay).
+ * The delay (in ms) determines how long we should wait after each message.
  *
  * @Author Joni Van Roost
  * @Version 0.0.1
