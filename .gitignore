@@ -19,6 +19,8 @@ activemq-data/
 
 classes/
 /build
+processor/build/*
+simulator/build/*
 buildSrc/build
 /spring-*/build
 /src/asciidoc/build

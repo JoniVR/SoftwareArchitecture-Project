@@ -6,9 +6,15 @@ install:
  - export JAVA_HOME=$(pwd)/jdk-10
  
 script:
+# test simulator
  - cd simulator
  - ./gradlew clean
  - ./gradlew build
  - ./gradlew test
  
+# test processor
+ -cd ../processor
+ - ./gradlew clean
+ - ./gradlew build
+ - ./gradlew test
  
