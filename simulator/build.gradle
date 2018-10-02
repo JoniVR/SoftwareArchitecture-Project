@@ -19,6 +19,11 @@ group = 'be.kdg'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 10
 
+bootJar {
+	baseName = 'gs-messaging-rabbitmq'
+	version =  '0.1.0'
+}
+
 repositories {
 	mavenCentral()
 }
@@ -27,6 +32,6 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	runtime('org.springframework.boot:spring-boot-devtools')
+	compile("org.springframework.boot:spring-boot-starter-amqp")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('testCompile group: \'org.hamcrest\', name: \'hamcrest-all\', version: \'1.3\'')
 }
