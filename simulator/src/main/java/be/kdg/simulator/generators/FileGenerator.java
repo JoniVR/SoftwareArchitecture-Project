@@ -1,13 +1,10 @@
 package be.kdg.simulator.generators;
 
-import be.kdg.simulator.messengers.CommandLineMessenger;
 import be.kdg.simulator.models.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
 
 /**
  * This mode will be used to simulate traffic violations.

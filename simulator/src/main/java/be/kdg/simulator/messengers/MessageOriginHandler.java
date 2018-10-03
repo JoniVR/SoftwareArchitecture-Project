@@ -11,8 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageOriginHandler {
 
+    private final MessageGenerator messageGenerator;
+
     @Autowired
-    private MessageGenerator messageGenerator;
+    public MessageOriginHandler(MessageGenerator messageGenerator) {
+        this.messageGenerator = messageGenerator;
+    }
 
     public CameraMessage relayMessage(){
         return messageGenerator.generate();

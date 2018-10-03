@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -34,7 +35,6 @@ public class RandomMessageGenerator implements MessageGenerator {
     }
 
     // private functions
-
     private String generateLicensePlate(){
 
         return String.format("%s-%s-%s", generateDigits(1), generateLetters(3), generateDigits(3));

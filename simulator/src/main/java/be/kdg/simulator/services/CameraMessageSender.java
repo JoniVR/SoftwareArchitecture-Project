@@ -3,6 +3,7 @@ package be.kdg.simulator.services;
 import be.kdg.simulator.messengers.Messenger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,11 +15,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class CameraMessageSender {
 
-    @Autowired
-    private Messenger messenger;
+    private final Messenger messenger;
 
-    @Scheduled(fixedRate=1000)
-    public void run() {
+    @Autowired
+    public CameraMessageSender(Messenger messenger) {
+        this.messenger = messenger;
+    }
+
+    @Scheduled(fixedDelay = 3000L)
+    public void sendMessage() {
 
         messenger.sendMessage();
     }

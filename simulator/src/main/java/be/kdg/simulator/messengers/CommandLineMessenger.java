@@ -1,4 +1,5 @@
 package be.kdg.simulator.messengers;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,12 @@ public class CommandLineMessenger implements Messenger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandLineMessenger.class);
 
+    private final MessageOriginHandler messageOriginHandler;
+
     @Autowired
-    private MessageOriginHandler messageOriginHandler;
+    public CommandLineMessenger(MessageOriginHandler messageOriginHandler) {
+        this.messageOriginHandler = messageOriginHandler;
+    }
 
     @Override
     public void sendMessage() {
