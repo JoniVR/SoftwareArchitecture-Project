@@ -1,4 +1,4 @@
-package be.kdg.simulator.models;
+package be.kdg.simulator.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -9,6 +9,7 @@ public class CameraMessage implements Serializable {
     private int id;
     private String licenseplate;
     private LocalDateTime timestamp;
+    private int delay;
 
     public CameraMessage() {
         //default, used for serialization
@@ -18,6 +19,7 @@ public class CameraMessage implements Serializable {
         this.id = id;
         this.licenseplate = licenseplate;
         this.timestamp = timestamp;
+        this.delay = 0;
     }
 
     public int getId() {
@@ -42,6 +44,14 @@ public class CameraMessage implements Serializable {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
     }
 
     @Override

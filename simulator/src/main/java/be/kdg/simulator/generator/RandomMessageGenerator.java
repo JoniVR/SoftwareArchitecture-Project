@@ -1,11 +1,10 @@
-package be.kdg.simulator.generators;
+package be.kdg.simulator.generator;
 
-import be.kdg.simulator.models.CameraMessage;
+import be.kdg.simulator.model.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -22,7 +21,6 @@ public class RandomMessageGenerator implements MessageGenerator {
     @Override
     public CameraMessage generate() {
 
-        LOGGER.info("Random CameraMessage was generated.");
         return new CameraMessage(generateCameraId(), generateLicensePlate(), LocalDateTime.now());
     }
 

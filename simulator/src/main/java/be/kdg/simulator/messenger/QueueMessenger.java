@@ -1,7 +1,8 @@
-package be.kdg.simulator.messengers;
+package be.kdg.simulator.messenger;
 
 import be.kdg.simulator.config.RabbitConfig;
-import be.kdg.simulator.models.CameraMessage;
+import be.kdg.simulator.model.CameraMessage;
+import be.kdg.simulator.service.XMLMapperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -15,21 +16,13 @@ public class QueueMessenger implements Messenger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueMessenger.class);
 
-    private final RabbitTemplate rabbitTemplate;
-    private final MessageOriginHandler messageOriginHandler;
-
     @Autowired
-    public QueueMessenger(RabbitTemplate rabbitTemplate, MessageOriginHandler messageOriginHandler) {
-        this.rabbitTemplate = rabbitTemplate;
-        this.messageOriginHandler = messageOriginHandler;
-    }
+    private RabbitTemplate rabbitTemplate;
 
     @Override
-    public void sendMessage() {
-
-        CameraMessage cameraMessage = messageOriginHandler.relayMessage();
+    public void sendMessage(CameraMessage cameraMessage) {
 
         LOGGER.info("Placing message on queue.");
-        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY, cameraMessage);
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY, XMLMapperService.convertObjectToXml(cameraMessage));
     }
 }
