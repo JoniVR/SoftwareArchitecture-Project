@@ -31,6 +31,10 @@ bootJar {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile("org.springframework.boot:spring-boot-starter-amqp")
+	compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
+	compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
 	runtime('org.springframework.boot:spring-boot-devtools')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	//TODO: renable once files are added
+	//compile files('libs/camera-service-1.0.jar', 'libs/license-plate-service-1.0.jar')
 }
