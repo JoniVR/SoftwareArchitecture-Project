@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
+/**
+ * Responsible for receiving messages from the RabbitMq queue.
+ */
 @Service
 public class CameraMessageReceiver {
 

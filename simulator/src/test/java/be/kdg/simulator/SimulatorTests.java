@@ -1,5 +1,7 @@
-package be.kdg.simulator.generator;
+package be.kdg.simulator;
 
+import be.kdg.simulator.generator.MessageGenerator;
+import be.kdg.simulator.generator.RandomMessageGenerator;
 import be.kdg.simulator.model.CameraMessage;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,12 +14,12 @@ import org.slf4j.Logger;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RandomMessageGeneratorTests {
+public class SimulatorTests {
 
     @Autowired //Field injection!
     private MessageGenerator messageGenerator;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RandomMessageGeneratorTests.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimulatorTests.class);
 
     /**
      * Tests is the format of the license plates is correct.

@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Responsible for providing a link between message generation and message sending.
+ */
 @Component
 public class MessageFactory {
 

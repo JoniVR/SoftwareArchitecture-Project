@@ -4,6 +4,9 @@ import be.kdg.simulator.model.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Responsible for placing messages on the command line.
+ */
 public class CommandLineMessenger implements Messenger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandLineMessenger.class);

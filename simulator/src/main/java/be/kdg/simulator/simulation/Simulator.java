@@ -29,8 +29,8 @@ public class Simulator {
         this.delay = 0;
     }
 
-    //TODO: fix scheduledDelay?
-    @Scheduled(fixedDelay = 1000L)
+    //TODO: fix scheduledDelay (make variable somehow?)
+    @Scheduled(fixedDelay = 1000)
     public void sendMessage(){
 
         try {

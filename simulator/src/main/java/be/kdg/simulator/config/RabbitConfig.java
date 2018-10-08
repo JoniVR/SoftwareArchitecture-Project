@@ -4,7 +4,9 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//@EnableRabbit
+/**
+ * Used for RebbitMQ configuration settings.
+ */
 @Configuration
 public class RabbitConfig { //implements RabbitListenerConfigurer{
 
