@@ -5,12 +5,10 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,8 +24,6 @@ import java.util.List;
  * @Author Joni Van Roost
  * @Version 0.0.1
  */
-@Component
-@ConditionalOnProperty(name = "generator.type", havingValue = "file")
 public class FileGenerator implements MessageGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileGenerator.class);
@@ -35,21 +31,29 @@ public class FileGenerator implements MessageGenerator {
     private final String csvPath;
     private Iterator it;
 
-    //TODO: fix "Error creating bean with name 'fileGenerator'" error.
-    FileGenerator(String csvPath) {
+    public FileGenerator(String csvPath) {
+
         this.csvPath = csvPath;
+
         try {
             ArrayList<CameraMessage> cameraMessages = generateAllMessages();
             it = cameraMessages.iterator();
+        } catch (NoSuchFileException noFileEx){
+            LOGGER.warn("No file found.");
+            noFileEx.printStackTrace();
         } catch (IOException e) {
             LOGGER.warn("No messages could be produced from CSV file.");
             e.printStackTrace();
+        } catch (Exception ex){
+            LOGGER.warn("Something went wrong trying to generate messages from a file.");
+            ex.printStackTrace();
         }
     }
 
     @Override
     public CameraMessage generate() {
         while(it.hasNext()) return (CameraMessage) it.next();
+
         System.exit(0);
         return null;
     }
@@ -63,6 +67,7 @@ public class FileGenerator implements MessageGenerator {
 
         for (String[] row : allData) {
             CameraMessage message = new CameraMessage(Integer.parseInt(row[0]), row[1], LocalDateTime.now());
+
             message.setDelay(Integer.parseInt(row[2]));
             messages.add(message);
         }

@@ -3,16 +3,12 @@ package be.kdg.simulator.generator;
 import be.kdg.simulator.model.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
  * Generates messages at random for load testing.
  */
-@Component
-@ConditionalOnProperty(name = "generator.type", havingValue = "random")
 public class RandomMessageGenerator implements MessageGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RandomMessageGenerator.class);

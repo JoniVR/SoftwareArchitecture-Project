@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class MessageFactory {
 
@@ -20,7 +19,7 @@ public class MessageFactory {
         this.messageGenerator = messageGenerator;
     }
 
-    CameraMessage getCameraMessage(){
+    public CameraMessage getCameraMessage(){
 
         CameraMessage cameraMessage = messageGenerator.generate();
         LOGGER.info("A cameramessage was generated: " + cameraMessage);

@@ -1,6 +1,7 @@
 package be.kdg.simulator.generator;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -16,7 +17,13 @@ public class GeneratorConfig {
     private String path;
 
     @Bean
-    public TaskScheduler taskScheduler() {
-        return new ConcurrentTaskScheduler(); //single threaded by default
-    }
+    @ConditionalOnProperty(name = "generator.type", havingValue = "file")
+    public MessageGenerator fileGenerator() { return new FileGenerator(path); }
+
+    @Bean
+    @ConditionalOnProperty(name = "generator.type", havingValue = "random")
+    public MessageGenerator randomMessageGenerator() { return new RandomMessageGenerator(); }
+
+    @Bean
+    public TaskScheduler taskScheduler() { return new ConcurrentTaskScheduler(); } //single threaded by default
 }
