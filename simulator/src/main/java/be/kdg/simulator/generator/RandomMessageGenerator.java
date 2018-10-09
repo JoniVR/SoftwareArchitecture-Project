@@ -2,6 +2,7 @@ package be.kdg.simulator.generator;
 
 import be.kdg.simulator.model.CameraMessage;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -12,9 +13,9 @@ public class RandomMessageGenerator implements MessageGenerator {
     private int maxCameraId = 3;
 
     @Override
-    public CameraMessage generate() {
+    public Optional<CameraMessage> generate() {
 
-        return new CameraMessage(generateCameraId(), generateLicensePlate(), LocalDateTime.now());
+        return Optional.of(new CameraMessage(generateCameraId(), generateLicensePlate(), LocalDateTime.now()));
     }
 
     public void setMaxCameraId(int maxCameraId) {

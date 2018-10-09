@@ -19,7 +19,8 @@ public class CameraMessage implements Serializable {
         this.id = id;
         this.licenseplate = licenseplate;
         this.timestamp = timestamp;
-        this.delay = 0;
+        //TODO: change default delay once implemented busy hours!!
+        this.delay = 1000;
     }
 
     public int getId() {

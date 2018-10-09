@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This mode will be used to simulate traffic violations.
@@ -48,10 +49,9 @@ public class FileGenerator implements MessageGenerator {
     }
 
     @Override
-    public CameraMessage generate() {
+    public Optional<CameraMessage> generate() {
 
-        if (it.hasNext()) return (CameraMessage) it.next();
-        else return null;
+        return Optional.of((CameraMessage) it.next());
     }
 
     private ArrayList<CameraMessage> generateAllMessages() throws IOException {

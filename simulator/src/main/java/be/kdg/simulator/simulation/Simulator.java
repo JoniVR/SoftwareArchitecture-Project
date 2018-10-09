@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 /**
  * Provides a link between message generation/source and the Messenger.
  */
@@ -35,11 +37,11 @@ public class Simulator implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        CameraMessage cameraMessage = messageGenerator.generate();
+        Optional<CameraMessage> cameraMessage = messageGenerator.generate();
 
-        while ((cameraMessage != null)) {
+        while ((cameraMessage.isPresent())) {
 
-            LOGGER.info("A message was generated: " + cameraMessage);
+            LOGGER.info("A message was generated: " + cameraMessage.get());
 
             try {
                 Thread.sleep(delay);
@@ -47,12 +49,11 @@ public class Simulator implements CommandLineRunner {
                 LOGGER.warn("Thread sleep was interrupted.", e);
             }
 
-            messenger.sendMessage(cameraMessage);
-            delay = cameraMessage.getDelay();
+            messenger.sendMessage(cameraMessage.get());
+            delay = cameraMessage.get().getDelay();
 
             cameraMessage = messageGenerator.generate();
         }
-
         System.exit(0);
     }
 }
