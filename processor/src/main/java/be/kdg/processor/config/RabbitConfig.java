@@ -13,7 +13,7 @@ public class RabbitConfig {
     public static final String QUEUE_SPECIFIC_NAME = "messageQueue";
 
     @Bean
-    public Queue appQueueSpecific() {
+    public Queue queue() {
         return new Queue(QUEUE_SPECIFIC_NAME);
     }
 }

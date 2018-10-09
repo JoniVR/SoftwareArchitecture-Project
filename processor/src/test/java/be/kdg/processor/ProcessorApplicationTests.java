@@ -6,11 +6,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties = {"job.autorun.enabled=false"})
 public class ProcessorApplicationTests {
 
 	@Test
 	public void contextLoads() {
-	}
 
+
+	}
 }

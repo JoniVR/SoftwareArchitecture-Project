@@ -13,7 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.slf4j.Logger;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+// prevent the CommandLineRunner from working inside unit tests
+@SpringBootTest(properties = {"job.autorun.enabled=false"})
 public class SimulatorTests {
 
     @Autowired //Field injection!
@@ -37,27 +38,5 @@ public class SimulatorTests {
                 cameraMessage.getLicenseplate().matches(expectedRegex));
 
         LOGGER.info("testRandomLicensePlateFormat - Tested license plate: " + cameraMessage.getLicenseplate());
-    }
-
-    /**
-     * Tests if the camera ID is between the correct bounds.
-     * Might not always be a valid test since random ids can fit bounds randomly
-     * (so even if the code that is generating the ID is wrong, the test could still succeed because it fits the bound "by accident).
-     * But I figured it would never hurt to add an extra check.
-     */
-    @Test
-    public void testRandomLicensePlateCameraIdBounds(){
-
-        CameraMessage cameraMessage = messageGenerator.generate();
-
-        RandomMessageGenerator randomMessageGenerator = (RandomMessageGenerator) messageGenerator;
-
-        int maxCameraId = randomMessageGenerator.getMaxCameraId();
-        int camId = cameraMessage.getId();
-
-        Assert.assertTrue("Random cameraID does not fit correct bounds.",
-                (camId <= maxCameraId) && camId > 0);
-
-        LOGGER.info("testRandomLicensePlateCameraIdBounds - Tested cameraId: " + camId);
     }
 }
