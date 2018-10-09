@@ -17,5 +17,4 @@ public class MessengerConfig {
     @Bean
     @ConditionalOnProperty(name = "messenger.type", havingValue = "cmd")
     public Messenger commandLineMessenger() { return new CommandLineMessenger(); }
-
 }

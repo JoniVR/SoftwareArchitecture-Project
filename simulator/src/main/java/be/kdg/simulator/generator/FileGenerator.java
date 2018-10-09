@@ -49,10 +49,9 @@ public class FileGenerator implements MessageGenerator {
 
     @Override
     public CameraMessage generate() {
-        while(it.hasNext()) return (CameraMessage) it.next();
 
-        System.exit(0);
-        return null;
+        if (it.hasNext()) return (CameraMessage) it.next();
+        else return null;
     }
 
     private ArrayList<CameraMessage> generateAllMessages() throws IOException {

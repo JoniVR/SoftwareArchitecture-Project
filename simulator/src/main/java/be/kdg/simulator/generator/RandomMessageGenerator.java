@@ -1,8 +1,6 @@
 package be.kdg.simulator.generator;
 
 import be.kdg.simulator.model.CameraMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -11,7 +9,6 @@ import java.util.Random;
  */
 public class RandomMessageGenerator implements MessageGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RandomMessageGenerator.class);
     private int maxCameraId = 3;
 
     @Override

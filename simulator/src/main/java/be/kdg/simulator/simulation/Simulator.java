@@ -1,47 +1,53 @@
 package be.kdg.simulator.simulation;
 
+import be.kdg.simulator.generator.MessageGenerator;
 import be.kdg.simulator.messenger.Messenger;
 import be.kdg.simulator.model.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 /**
  * Provides a link between message generation/source and the Messenger.
  */
-@EnableScheduling
 @Component
-public class Simulator {
+public class Simulator implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Simulator.class);
 
-    private MessageFactory messageFactory;
+    private MessageGenerator messageGenerator;
     private Messenger messenger;
     private int delay;
 
     @Autowired
-    public Simulator(MessageFactory messageFactory, Messenger messenger) {
-        this.messageFactory = messageFactory;
+    public Simulator(MessageGenerator messageGenerator, Messenger messenger) {
+        this.messageGenerator = messageGenerator;
         this.messenger = messenger;
         this.delay = 0;
     }
 
-    //TODO: fix scheduledDelay (make variable somehow?)
-    @Scheduled(fixedDelay = 1000)
-    public void sendMessage(){
+    // Executed at startup
+    @Override
+    public void run(String... args) {
 
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            LOGGER.warn("Thread sleep was interrupted.");
-            e.printStackTrace();
+        CameraMessage cameraMessage = messageGenerator.generate();
+
+        while ((cameraMessage != null)) {
+
+            LOGGER.info("A message was generated: " + cameraMessage);
+
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                LOGGER.warn("Thread sleep was interrupted.", e);
+            }
+
+            messenger.sendMessage(cameraMessage);
+            delay = cameraMessage.getDelay();
+
+            cameraMessage = messageGenerator.generate();
         }
-
-        CameraMessage cameraMessage = messageFactory.getCameraMessage();
-        messenger.sendMessage(cameraMessage);
-        delay = cameraMessage.getDelay();
     }
 }
