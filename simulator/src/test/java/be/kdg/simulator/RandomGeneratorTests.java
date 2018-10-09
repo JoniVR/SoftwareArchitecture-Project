@@ -1,28 +1,27 @@
 package be.kdg.simulator;
 
 import be.kdg.simulator.generator.MessageGenerator;
-import be.kdg.simulator.generator.RandomMessageGenerator;
 import be.kdg.simulator.model.CameraMessage;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.slf4j.Logger;
 
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 // prevent the CommandLineRunner from working inside unit tests
 @SpringBootTest(properties = {"job.autorun.enabled=false"})
-public class SimulatorTests {
+public class RandomGeneratorTests {
 
-    @Autowired //Field injection!
+    private static final Logger LOGGER = LoggerFactory.getLogger(RandomGeneratorTests.class);
+
+    @Autowired
     private MessageGenerator messageGenerator;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimulatorTests.class);
 
     /**
      * Tests is the format of the license plates is correct.
