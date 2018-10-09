@@ -20,7 +20,7 @@ public class XMLMapperService {
 
     /**
      * Takes an object and converts it to a String formatted as XML.
-     * @return String formatted as XML
+     * @return String formatted as XML.
      */
     public static String convertObjectToXml(Object object){
 
@@ -37,8 +37,7 @@ public class XMLMapperService {
 
         } catch (JsonProcessingException e) {
 
-            LOGGER.warn("Error processing JSON.");
-            e.printStackTrace();
+            LOGGER.warn("Error processing JSON.", e);
         }
         return objectAsXML;
     }
