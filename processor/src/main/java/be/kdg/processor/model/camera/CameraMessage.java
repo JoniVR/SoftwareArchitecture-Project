@@ -1,4 +1,4 @@
-package be.kdg.processor.model;
+package be.kdg.processor.model.camera;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

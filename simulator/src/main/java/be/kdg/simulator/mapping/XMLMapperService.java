@@ -1,4 +1,4 @@
-package be.kdg.simulator.service;
+package be.kdg.simulator.mapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -32,7 +32,7 @@ public class CameraServiceTests {
         // test if getting regular object matches
         Assert.assertTrue(EXPECTEDSTRING.equals(testedString));
 
-        // Test for service to throw correct exception
+        // Test for mapping to throw correct exception
         thrown.expect(IOException.class);
         thrown.expectMessage("Camera ID 101 forced a communication error for testing purposes");
 
