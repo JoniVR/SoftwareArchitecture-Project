@@ -22,7 +22,7 @@ public class XMLMapperService {
      * Takes an object and converts it to a String formatted as XML.
      * @return String formatted as XML.
      */
-    public static String convertObjectToXml(Object object){
+    public String convertObjectToXml(Object object){
 
         String objectAsXML = null;
         ObjectMapper objectMapper = new XmlMapper();

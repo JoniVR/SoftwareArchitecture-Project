@@ -14,13 +14,19 @@ public class QueueMessenger implements Messenger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueMessenger.class);
 
+    private final RabbitTemplate rabbitTemplate;
+    private final XMLMapperService xmlMapperService;
+
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    public QueueMessenger(RabbitTemplate rabbitTemplate, XMLMapperService xmlMapperService) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.xmlMapperService = xmlMapperService;
+    }
 
     @Override
     public void sendMessage(CameraMessage cameraMessage) {
 
         LOGGER.info("Placing message on queue.");
-        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY, XMLMapperService.convertObjectToXml(cameraMessage));
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY, xmlMapperService.convertObjectToXml(cameraMessage));
     }
 }
