@@ -1,6 +1,5 @@
 package be.kdg.processor.service;
 
-import be.kdg.sa.services.CameraServiceProxy;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,7 +16,7 @@ import java.io.IOException;
 public class CameraServiceTests {
 
     @Autowired
-    public CameraServiceProxy cameraServiceProxy;
+    public ProxyService proxyService;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -27,7 +26,7 @@ public class CameraServiceTests {
 
         final String EXPECTEDSTRING = "{\"cameraId\":2,\"location\":{\"lat\":51.229822,\"long\":4.44383}}";
 
-        String testedString = cameraServiceProxy.get(2);
+        String testedString = proxyService.cameraServiceProxy().get(2);
 
         // test if getting regular object matches
         Assert.assertTrue(EXPECTEDSTRING.equals(testedString));
@@ -36,6 +35,6 @@ public class CameraServiceTests {
         thrown.expect(IOException.class);
         thrown.expectMessage("Camera ID 101 forced a communication error for testing purposes");
 
-        cameraServiceProxy.get(101);
+        proxyService.cameraServiceProxy().get(101);
     }
 }

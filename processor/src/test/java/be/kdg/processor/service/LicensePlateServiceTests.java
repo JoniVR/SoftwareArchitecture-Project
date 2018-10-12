@@ -1,7 +1,6 @@
 package be.kdg.processor.service;
 
 import be.kdg.sa.services.InvalidLicensePlateException;
-import be.kdg.sa.services.LicensePlateServiceProxy;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +17,7 @@ import java.io.IOException;
 public class LicensePlateServiceTests {
 
     @Autowired
-    public LicensePlateServiceProxy licensePlateServiceProxy;
+    public ProxyService proxyService;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -32,12 +31,12 @@ public class LicensePlateServiceTests {
         String expectedResponse = "{\"plateId\":\"1-ABC-123\",\"nationalNumber\":\"69.05.22-123.1\",\"euroNumber\":1}";
 
         // Test correct plate
-        String result = licensePlateServiceProxy.get(correctPlate);
+        String result = proxyService.licensePlateServiceProxy().get(correctPlate);
         Assert.assertEquals(result, expectedResponse);
 
         // Test incorrect plate (exception)
         thrown.expect(InvalidLicensePlateException.class);
         thrown.expectMessage("Plate  id "+ incorrectPlate +" is invalid");
-        licensePlateServiceProxy.get(incorrectPlate);
+        proxyService.licensePlateServiceProxy().get(incorrectPlate);
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Responsible for handling messages from the RabbitMq queue.
+ * Responsible for handling/processing of messages from the RabbitMq queue.
  */
 @Service
 public class Processor {

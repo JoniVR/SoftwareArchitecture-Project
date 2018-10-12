@@ -1,4 +1,4 @@
-package be.kdg.processor.model.fine;
+package be.kdg.processor.fine;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

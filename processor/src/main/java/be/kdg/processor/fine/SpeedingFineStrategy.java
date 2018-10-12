@@ -1,8 +1,8 @@
-package be.kdg.processor.model.fine;
+package be.kdg.processor.fine;
 
 import be.kdg.processor.model.camera.CameraMessage;
 
-public class EmissionFineStrategy implements FineStrategy {
+public class SpeedingFineStrategy implements FineStrategy {
 
     @Override
     public void calculateValue(CameraMessage cameraMessage) {
