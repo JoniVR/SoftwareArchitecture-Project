@@ -28,8 +28,6 @@ public class XMLMapperService {
         ObjectMapper objectMapper = new XmlMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        JacksonXmlModule xmlModule = new JacksonXmlModule();
-        xmlModule.setDefaultUseWrapper(false);
 
         try {
 

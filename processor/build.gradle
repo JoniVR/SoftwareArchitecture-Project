@@ -29,12 +29,17 @@ bootJar {
 }
 
 dependencies {
+	// SPRING BOOT
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile("org.springframework.boot:spring-boot-starter-amqp")
-	compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
-	compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
-	runtime('org.springframework.boot:spring-boot-devtools')
-	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	// XML
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.7'
+    compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
+	compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
+	// LOMBOK
+	compileOnly('org.projectlombok:lombok')
+	// PROVIDED SERVICES
 	compile files('libs/camera-service-1/libs/camera-service-1.0.jar', 'libs/license-plate-service-1/libs/license-plate-service-1.0.jar')
 }
