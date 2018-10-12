@@ -34,6 +34,7 @@ dependencies {
 	compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
 	compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
 	runtime('org.springframework.boot:spring-boot-devtools')
+	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	compile files('libs/camera-service-1/libs/camera-service-1.0.jar', 'libs/license-plate-service-1/libs/license-plate-service-1.0.jar')
 }

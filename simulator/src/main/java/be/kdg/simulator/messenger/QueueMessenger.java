@@ -14,14 +14,10 @@ public class QueueMessenger implements Messenger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueMessenger.class);
 
-    private final RabbitTemplate rabbitTemplate;
-    private final XMLMapperService xmlMapperService;
-
     @Autowired
-    public QueueMessenger(RabbitTemplate rabbitTemplate, XMLMapperService xmlMapperService) {
-        this.rabbitTemplate = rabbitTemplate;
-        this.xmlMapperService = xmlMapperService;
-    }
+    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private XMLMapperService xmlMapperService;
 
     @Override
     public void sendMessage(CameraMessage cameraMessage) {

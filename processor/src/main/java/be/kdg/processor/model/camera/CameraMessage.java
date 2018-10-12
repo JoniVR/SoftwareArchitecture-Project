@@ -1,57 +1,30 @@
 package be.kdg.processor.model.camera;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Data
+@AllArgsConstructor
 public class CameraMessage implements Serializable {
 
     private int id;
+    @Getter @Setter
     private String licenseplate;
+    @Getter @Setter
     private LocalDateTime timestamp;
-    private int delay;
-
-    public CameraMessage() {
-        //default, used for serialization
-    }
+    @Getter @Setter
+    private int delay = 1000; //TODO: change default delay once implemented busy hours!!
 
     public CameraMessage(int id, String licenseplate, LocalDateTime timestamp) {
         this.id = id;
         this.licenseplate = licenseplate;
         this.timestamp = timestamp;
-        this.delay = 0;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLicenseplate() {
-        return licenseplate;
-    }
-
-    public void setLicenseplate(String licenseplate) {
-        this.licenseplate = licenseplate;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public int getDelay() {
-        return delay;
-    }
-
-    public void setDelay(int delay) {
-        this.delay = delay;
     }
 
     @Override

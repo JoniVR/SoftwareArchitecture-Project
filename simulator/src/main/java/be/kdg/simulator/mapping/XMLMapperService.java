@@ -8,12 +8,12 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * Responsible for mapping an object to XML (as string).
  */
-@Service
+@Component
 public class XMLMapperService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XMLMapperService.class);
