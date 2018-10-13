@@ -1,9 +1,11 @@
 package be.kdg.processor.violation;
 
-import be.kdg.processor.fine.EmissionFine;
 import be.kdg.processor.model.camera.Camera;
-import be.kdg.processor.model.camera.EmissionCamera;
+import be.kdg.processor.model.camera.CameraType;
+import be.kdg.processor.model.fine.Fine;
+import be.kdg.processor.model.fine.FineType;
 import be.kdg.processor.model.vehicle.Vehicle;
+import be.kdg.processor.service.FineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +18,27 @@ public class EmissionViolation implements ViolationStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmissionViolation.class);
 
     @Autowired
-    private EmissionFine emissionFine;
+    private FineService fineService;
 
     @Override
     public void detect(Camera camera, Vehicle vehicle) {
 
-        if(camera instanceof EmissionCamera){
+        if(camera.getCameraType() == CameraType.EMISSION){
 
-            EmissionCamera emissionCamera = (EmissionCamera) camera;
+            if (vehicle.getEuroNumber() < camera.getEuroNorm()){
 
-            if (vehicle.getEuroNumber() < emissionCamera.getEuroNorm()){
-
-                //TODO: call emissionFine...
                 LOGGER.info("Emission violation detected for {}", vehicle);
+                calculateFine(vehicle);
             }
         }
+    }
+
+    private void calculateFine(Vehicle vehicle){
+
+        double fineAmount = 1000.00;
+        Fine fine = new Fine(fineAmount, FineType.EMISSION, false, null, vehicle.getPlateId());
+
+        fineService.save(fine);
+        LOGGER.info("Created fine and saved it to the database: {}", fine);
     }
 }

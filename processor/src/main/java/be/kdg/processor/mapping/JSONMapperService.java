@@ -2,8 +2,7 @@ package be.kdg.processor.mapping;
 
 import be.kdg.processor.exceptions.ObjectMappingException;
 import be.kdg.processor.model.camera.Camera;
-import be.kdg.processor.model.camera.EmissionCamera;
-import be.kdg.processor.model.camera.SpeedCamera;
+import be.kdg.processor.model.camera.CameraType;
 import be.kdg.processor.model.vehicle.Vehicle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -25,12 +24,15 @@ public class JSONMapperService {
 
         try {
 
-            // Check which type of camera and return correct object.
-            if (JSONString.toLowerCase().contains("speedlimit")) {
-                return objectMapper.readValue(JSONString, SpeedCamera.class);
+            Camera camera = objectMapper.readValue(JSONString, Camera.class);
+
+            if (camera.getEuroNorm() == 0){
+                camera.setCameraType(CameraType.SPEED);
             } else {
-                return objectMapper.readValue(JSONString, EmissionCamera.class);
+                camera.setCameraType(CameraType.EMISSION);
             }
+
+            return camera;
 
         } catch (IOException e) {
 

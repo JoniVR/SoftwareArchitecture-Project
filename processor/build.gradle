@@ -42,4 +42,12 @@ dependencies {
 	compileOnly('org.projectlombok:lombok')
 	// PROVIDED SERVICES
 	compile files('libs/camera-service-1/libs/camera-service-1.0.jar', 'libs/license-plate-service-1/libs/license-plate-service-1.0.jar')
+	// DB
+	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compile('com.h2database:h2')
+	compile 'org.modelmapper.extensions:modelmapper-spring:2.3.0'
+	// REST
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.springframework.boot:spring-boot-starter-validation')
+
 }

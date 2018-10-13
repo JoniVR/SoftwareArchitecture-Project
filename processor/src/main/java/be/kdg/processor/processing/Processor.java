@@ -6,6 +6,7 @@ import be.kdg.processor.mapping.JSONMapperService;
 import be.kdg.processor.mapping.XMLMapperService;
 import be.kdg.processor.model.camera.Camera;
 import be.kdg.processor.model.camera.CameraMessage;
+import be.kdg.processor.model.camera.CameraType;
 import be.kdg.processor.model.vehicle.Vehicle;
 import be.kdg.processor.service.ProxyService;
 import be.kdg.processor.violation.ViolationStrategy;
@@ -13,16 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Responsible for processing/handling of messages from the RabbitMq queue.
- * Receives the cameraMessage and notifies & passes it to the MessageHandler.
- *
- * @Author Joni Van Roost
  */
 public class Processor {
 
@@ -63,7 +60,7 @@ public class Processor {
      * The reason we process it here instead of inside the respective listeners is for extendability reasons.
      * By making the implementation more abstract, we can easily add new ViolationStrategies without much work
      * since talking to the ProxyService already happens here.
-     * Processing on this level also makes caching results from the ProxyService easier.
+     * Processing on this level also makes caching results from the ProxyService easier and reduces overhead (only call proxyservices once).
      *
      * @param cameraMessage The incoming CameraMessage from RabbitMQ.
      */
