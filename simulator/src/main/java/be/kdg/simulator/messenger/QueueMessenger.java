@@ -1,8 +1,8 @@
 package be.kdg.simulator.messenger;
 
 import be.kdg.simulator.config.RabbitConfig;
-import be.kdg.simulator.model.CameraMessage;
 import be.kdg.simulator.mapping.XMLMapperService;
+import be.kdg.simulator.model.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

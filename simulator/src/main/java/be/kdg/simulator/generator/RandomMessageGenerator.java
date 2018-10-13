@@ -1,6 +1,7 @@
 package be.kdg.simulator.generator;
 
 import be.kdg.simulator.model.CameraMessage;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
