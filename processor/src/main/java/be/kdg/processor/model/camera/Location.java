@@ -7,14 +7,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class Camera {
+public class Location {
 
     @Getter @Setter
-    private int id;
+    private float lattitude;
     @Getter @Setter
-    private Location location;
-    @Getter @Setter
-    private Segment segment;
-    @Getter @Setter
-    private int euroNorm;
+    private float longtitude;
 }

@@ -7,14 +7,12 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class Camera {
+public class Segment {
 
     @Getter @Setter
-    private int id;
+    private int connectedCameraId;
     @Getter @Setter
-    private Location location;
+    private long distance;
     @Getter @Setter
-    private Segment segment;
-    @Getter @Setter
-    private int euroNorm;
+    private int speedLimit;
 }

@@ -1,7 +1,10 @@
 package be.kdg.processor.violation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
 
 @Configuration
 public class ViolationConfig {
@@ -11,4 +14,7 @@ public class ViolationConfig {
 
     @Bean
     public SpeedingViolation speedingViolation() { return new SpeedingViolation(); }
+
+    @Bean
+    public HashMap<String, ViolationStrategy> violationStrategies() { return new HashMap<>(); }
 }
