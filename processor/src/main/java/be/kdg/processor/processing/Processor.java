@@ -79,7 +79,7 @@ public class Processor {
             Vehicle vehicle = jsonMapperService.convertJSONStringToVehicle(proxyService.licensePlateServiceProxy().get(licensePlate));
             LOGGER.info("Received Vehicle info from ProxyService: {}", vehicle);
 
-            listeners.forEach(listener -> listener.detect(camera, vehicle));
+            notifyListeners(camera, vehicle);
 
         } catch (ObjectMappingException e) {
 
@@ -90,5 +90,9 @@ public class Processor {
             LOGGER.warn("Probleem met één van de ProxyServices.", e);
 
         }
+    }
+
+    private void notifyListeners(Camera camera, Vehicle vehicle){
+        listeners.forEach(listener -> listener.detect(camera, vehicle));
     }
 }
