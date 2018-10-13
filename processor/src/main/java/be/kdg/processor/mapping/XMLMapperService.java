@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -13,27 +14,28 @@ import java.io.IOException;
 /**
  * Responsible for mapping an object to XML (as string).
  */
-@Component
 public class XMLMapperService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XMLMapperService.class);
+
+    @Autowired
+    private XmlMapper xmlMapper;
 
     /**
      * Takes a String formatted as XML and returns a CameraMessage object.
      *
      * @return A CameraMessage object.
      */
-    public CameraMessage convertXmlStringToObject(String string) {
+    public CameraMessage convertXmlStringToCameraMessage(String string) {
 
         CameraMessage cameraMessage = null;
 
-        XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.registerModule(new JavaTimeModule());
         xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+        //TODO: handle exception correctly
         try {
 
-            System.out.println(string);
             cameraMessage = xmlMapper.readValue(string, CameraMessage.class);
 
         } catch (IOException e) {

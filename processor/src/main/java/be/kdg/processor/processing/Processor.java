@@ -4,6 +4,7 @@ import be.kdg.processor.config.RabbitConfig;
 import be.kdg.processor.mapping.XMLMapperService;
 import be.kdg.processor.model.camera.CameraMessage;
 import be.kdg.processor.service.ProxyService;
+import be.kdg.processor.violation.ViolationStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -20,7 +21,7 @@ import java.util.Collection;
  *
  * @Author Joni Van Roost
  */
-@Component
+
 public class Processor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class);
@@ -29,7 +30,7 @@ public class Processor {
     private XMLMapperService xmlMapperService;
 
     @Autowired
-    private Collection<ProcessorListener> listeners = new ArrayList<>();
+    private Collection<ViolationStrategy> listeners = new ArrayList<>();
 
     @Autowired
     private ProxyService proxyService;
@@ -39,20 +40,19 @@ public class Processor {
 
         LOGGER.info("Received message as specific class: {}", cameraMessageString);
 
-        CameraMessage cameraMessage = xmlMapperService.convertXmlStringToObject(cameraMessageString);
+        CameraMessage cameraMessage = xmlMapperService.convertXmlStringToCameraMessage(cameraMessageString);
 
-        // TODO: move to messageHandler
-        try {
+        //TODO: handle exceptions
+        listeners.forEach(listener -> {
 
-            LOGGER.info("CAMERASERVICE: "+proxyService.cameraServiceProxy().get(cameraMessage.getId()));
-            LOGGER.info("LICENSEPLATESERVICE: "+proxyService.licensePlateServiceProxy().get(cameraMessage.getLicenseplate()));
+            try {
 
-        } catch (IOException e) {
+                listener.detect(cameraMessage);
 
-            e.printStackTrace();
+            } catch (IOException e) {
 
-        }
-
-        listeners.forEach(listener -> listener.onCameraMessageReceived(cameraMessage));
+                LOGGER.warn("There's something wrong with the Services.", e);
+            }
+        });
     }
 }

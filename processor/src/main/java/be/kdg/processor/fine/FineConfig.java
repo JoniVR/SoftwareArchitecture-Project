@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 public class FineConfig {
 
     @Bean
-    public EmissionFineStrategy emissionFineStrategy() { return new EmissionFineStrategy(); }
+    public EmissionFine emissionFine() { return new EmissionFine(); }
 
     @Bean
-    public SpeedingFineStrategy speedingFineStrategy() { return new SpeedingFineStrategy(); }
+    public SpeedingFine speedingFine() { return new SpeedingFine(); }
 }

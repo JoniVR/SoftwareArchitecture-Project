@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Camera {
+public class SpeedCamera extends Camera {
 
     @Getter @Setter
-    int id;
-    @Getter @Setter
-    Location location;
+    private Segment segment;
+    @Getter
+    private final CameraType cameraType = CameraType.SPEED;
 }

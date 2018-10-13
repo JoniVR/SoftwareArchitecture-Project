@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Camera {
+public class EmissionCamera {
 
     @Getter @Setter
-    int id;
-    @Getter @Setter
-    Location location;
+    private int euroNorm;
+    @Getter
+    private final CameraType cameraType = CameraType.EMISSION;
 }

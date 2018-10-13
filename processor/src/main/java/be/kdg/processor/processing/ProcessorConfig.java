@@ -1,5 +1,6 @@
 package be.kdg.processor.processing;
 
+import be.kdg.processor.violation.ViolationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,9 +10,8 @@ import java.util.ArrayList;
 public class ProcessorConfig {
 
     @Bean
-    public MessageHandler messageHandler() { return new MessageHandler(); }
+    public Processor processor() { return new Processor(); }
 
     @Bean
-    public ArrayList<ProcessorListener> listeners() { return new ArrayList<>(); }
-
+    public ArrayList<ViolationStrategy> listeners() { return new ArrayList<>(); }
 }

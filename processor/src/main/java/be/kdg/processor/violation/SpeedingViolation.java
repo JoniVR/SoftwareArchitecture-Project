@@ -1,17 +1,16 @@
 package be.kdg.processor.violation;
 
 import be.kdg.processor.model.camera.CameraMessage;
+import be.kdg.processor.service.ProxyService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SpeedingViolation implements ViolationStrategy {
 
-    @Override
-    public void detect() {
-
-    }
+    @Autowired
+    private ProxyService proxyService;
 
     @Override
-    public void onCameraMessageReceived(CameraMessage cameraMessage) {
+    public void detect(CameraMessage cameraMessage) {
 
-        System.out.println("Speeding-violation");
     }
 }

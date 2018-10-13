@@ -1,8 +1,10 @@
 package be.kdg.processor.violation;
 
-import be.kdg.processor.processing.ProcessorListener;
+import be.kdg.processor.model.camera.CameraMessage;
 
-public interface ViolationStrategy extends ProcessorListener {
+import java.io.IOException;
 
-    void detect();
+public interface ViolationStrategy {
+
+    void detect(CameraMessage cameraMessage) throws IOException;
 }
