@@ -6,7 +6,6 @@ import be.kdg.processor.mapping.JSONMapperService;
 import be.kdg.processor.mapping.XMLMapperService;
 import be.kdg.processor.model.camera.Camera;
 import be.kdg.processor.model.camera.CameraMessage;
-import be.kdg.processor.model.camera.CameraType;
 import be.kdg.processor.model.vehicle.Vehicle;
 import be.kdg.processor.service.ProxyService;
 import be.kdg.processor.violation.ViolationStrategy;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
