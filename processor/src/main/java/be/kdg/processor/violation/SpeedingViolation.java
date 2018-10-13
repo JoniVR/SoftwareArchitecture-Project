@@ -1,16 +1,29 @@
 package be.kdg.processor.violation;
 
-import be.kdg.processor.model.camera.CameraMessage;
-import be.kdg.processor.service.ProxyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import be.kdg.processor.model.camera.Camera;
+import be.kdg.processor.model.camera.SpeedCamera;
+import be.kdg.processor.model.vehicle.Vehicle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SpeedingViolation implements ViolationStrategy {
 
-    @Autowired
-    private ProxyService proxyService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpeedingViolation.class);
 
     @Override
-    public void detect(CameraMessage cameraMessage) {
+    public void detect(Camera camera, Vehicle vehicle) {
 
+        if(camera instanceof SpeedCamera){
+
+            SpeedCamera speedCamera = (SpeedCamera) camera;
+
+            //TODO: check speed limit.
+            /*
+            if (){
+
+                //TODO: call speedFine...
+                LOGGER.info("Speed violation detected for {}", vehicle);
+            }*/
+        }
     }
 }

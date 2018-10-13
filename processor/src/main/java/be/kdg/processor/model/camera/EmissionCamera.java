@@ -7,10 +7,14 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmissionCamera {
+public class EmissionCamera extends Camera {
 
-    @Getter @Setter
-    private int euroNorm;
     @Getter
-    private final CameraType cameraType = CameraType.EMISSION;
+    @Setter
+    private int euroNorm;
+
+    @Override
+    public String toString() {
+        return String.format("%s, euroNorm: %d", super.toString(), euroNorm);
+    }
 }

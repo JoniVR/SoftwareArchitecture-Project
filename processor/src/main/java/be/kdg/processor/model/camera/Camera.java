@@ -1,5 +1,6 @@
 package be.kdg.processor.model.camera;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public abstract class Camera {
 
-    @Getter @Setter
+    @JsonProperty("cameraId")
+    @Getter
+    @Setter
     int id;
-    @Getter @Setter
+
+    @Getter
+    @Setter
     Location location;
+
+    @Override
+    public String toString() {
+        return String.format("id: %d, location: %s", id, location);
+    }
 }

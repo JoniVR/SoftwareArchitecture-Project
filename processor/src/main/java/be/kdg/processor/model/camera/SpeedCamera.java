@@ -9,8 +9,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SpeedCamera extends Camera {
 
-    @Getter @Setter
-    private Segment segment;
     @Getter
-    private final CameraType cameraType = CameraType.SPEED;
+    @Setter
+    private Segment segment;
+
+    @Override
+    public String toString() {
+        return String.format("%s, %s", super.toString(), segment.toString());
+    }
 }

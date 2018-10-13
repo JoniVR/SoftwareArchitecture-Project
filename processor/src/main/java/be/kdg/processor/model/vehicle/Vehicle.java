@@ -1,4 +1,4 @@
-package be.kdg.processor.model.camera;
+package be.kdg.processor.model.vehicle;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,22 +7,20 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class Segment {
+public class Vehicle {
 
     @Getter
     @Setter
-    private int connectedCameraId;
-
+    private String plateId;
     @Getter
     @Setter
-    private long distance;
-
+    private String nationalNumber;
     @Getter
     @Setter
-    private int speedLimit;
+    private int euroNumber;
 
     @Override
     public String toString() {
-        return String.format("ConnectedCamId: %d, distance: %d, speedLimit: %d", connectedCameraId, distance, speedLimit);
+        return String.format("plate: %s, NN: %s, euronorm: %d", plateId, nationalNumber, euroNumber);
     }
 }

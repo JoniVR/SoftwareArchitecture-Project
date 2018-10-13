@@ -14,11 +14,14 @@ import java.util.Objects;
 public class CameraMessage implements Serializable {
 
     private int id;
-    @Getter @Setter
+    @Getter
+    @Setter
     private String licenseplate;
-    @Getter @Setter
+    @Getter
+    @Setter
     private LocalDateTime timestamp;
-    @Getter @Setter
+    @Getter
+    @Setter
     private int delay = 1000; //TODO: change default delay once implemented busy hours!!
 
     public CameraMessage(int id, String licenseplate, LocalDateTime timestamp) {
@@ -44,6 +47,6 @@ public class CameraMessage implements Serializable {
     @Override
     public String toString() {
 
-        return String.format("Camera id: %d, license plate: %s, timestamp: %s",this.id,this.licenseplate, this.timestamp);
+        return String.format("Camera id: %d, license plate: %s, timestamp: %s", this.id, this.licenseplate, this.timestamp);
     }
 }
