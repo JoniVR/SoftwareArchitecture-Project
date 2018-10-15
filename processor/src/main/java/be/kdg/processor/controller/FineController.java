@@ -49,12 +49,25 @@ public class FineController {
      * @return Returns a FineDTO object.
      * @throws FineException In case no fines were found this will throw a FineException.
      */
-    @PutMapping("/fines/{id}")
-    public ResponseEntity<FineDTO> updateFine(@PathVariable Long id,
+    @PutMapping(value = "/fines/{id}", params = "isApproved")
+    public ResponseEntity<FineDTO> updateFineApproved(@PathVariable Long id,
                                               @RequestParam("isApproved") boolean isApproved) throws FineException {
 
         Fine fineIn = fineService.load(id);
         fineIn.setApproved(isApproved); //TODO: move to service layer
+        Fine fineOut = fineService.save(fineIn);
+
+        return new ResponseEntity<>(modelMapper.map(fineOut, FineDTO.class), HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping(value = "/fines/{id}", params = {"amount","comments"})
+    public ResponseEntity<FineDTO> updateFineAmount(@PathVariable Long id,
+                                              @RequestParam("amount") double amount,
+                                              @RequestParam("comments") String comment) throws FineException {
+
+        Fine fineIn = fineService.load(id);
+        fineIn.setAmount(amount);
+        fineIn.setComments(comment);
         Fine fineOut = fineService.save(fineIn);
 
         return new ResponseEntity<>(modelMapper.map(fineOut, FineDTO.class), HttpStatus.ACCEPTED);
