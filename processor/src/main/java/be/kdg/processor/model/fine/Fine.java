@@ -2,9 +2,12 @@ package be.kdg.processor.model.fine;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.h2.util.DateTimeUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -20,6 +23,7 @@ public class Fine {
     private boolean isApproved;
     private String comments;
     private String licensePlate;
+    private LocalDateTime creationDate;
 
     public Fine(double amount, FineType fineType, boolean isApproved, String comments, String licensePlate) {
         this.amount = amount;
@@ -27,5 +31,6 @@ public class Fine {
         this.isApproved = isApproved;
         this.comments = comments;
         this.licensePlate = licensePlate;
+        this.creationDate = LocalDateTime.now();
     }
 }
