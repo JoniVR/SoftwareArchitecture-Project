@@ -13,5 +13,8 @@ public class ProcessorConfig {
     public Processor processor() { return new Processor(); }
 
     @Bean
+    public ProcessorMessageHandler processorMessageHandler() { return new ProcessorMessageHandler(); }
+
+    @Bean
     public ArrayList<ViolationStrategy> listeners() { return new ArrayList<>(); }
 }

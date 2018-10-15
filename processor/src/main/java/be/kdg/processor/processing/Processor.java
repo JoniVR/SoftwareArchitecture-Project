@@ -29,13 +29,7 @@ public class Processor {
     private XMLMapperService xmlMapperService;
 
     @Autowired
-    private JSONMapperService jsonMapperService;
-
-    @Autowired
-    private Collection<ViolationStrategy> listeners = new ArrayList<>();
-
-    @Autowired
-    private ProxyService proxyService;
+    private ProcessorMessageHandler processorMessageHandler;
 
     //TODO: handle exceptions correctly
 
@@ -46,50 +40,13 @@ public class Processor {
 
             CameraMessage cameraMessage = xmlMapperService.convertXmlStringToCameraMessage(cameraMessageString);
             LOGGER.info("Received CameraMessage: {}", cameraMessage);
-            processMessage(cameraMessage);
+
+            processorMessageHandler.processMessage(cameraMessage);
 
         } catch (ObjectMappingException e) {
 
             LOGGER.warn("Probleem met het mappen van het object.", e);
 
         }
-    }
-
-    /**
-     * In here we process the received cameraMessage.
-     * The reason we process it here instead of inside the respective listeners is for extendability reasons.
-     * By making the implementation more abstract, we can easily add new ViolationStrategies without much work
-     * since talking to the ProxyService already happens here.
-     * Processing on this level also makes caching results from the ProxyService easier and reduces overhead (only call proxyservices once).
-     *
-     * @param cameraMessage The incoming CameraMessage from RabbitMQ.
-     */
-    private void processMessage(CameraMessage cameraMessage) {
-
-        int camId = cameraMessage.getId();
-        String licensePlate = cameraMessage.getLicenseplate();
-
-        try {
-
-            Camera camera = jsonMapperService.convertJSONStringToCameraObject(proxyService.cameraServiceProxy().get(camId));
-            LOGGER.info("Received Camera info from ProxyService: {}", camera);
-            Vehicle vehicle = jsonMapperService.convertJSONStringToVehicle(proxyService.licensePlateServiceProxy().get(licensePlate));
-            LOGGER.info("Received Vehicle info from ProxyService: {}", vehicle);
-
-            notifyListeners(camera, vehicle);
-
-        } catch (ObjectMappingException e) {
-
-            LOGGER.warn("Probleem met het mappen van het object.", e);
-
-        } catch (IOException e) {
-
-            LOGGER.warn("Probleem met één van de ProxyServices.", e);
-
-        }
-    }
-
-    private void notifyListeners(Camera camera, Vehicle vehicle){
-        listeners.forEach(listener -> listener.detect(camera, vehicle));
     }
 }

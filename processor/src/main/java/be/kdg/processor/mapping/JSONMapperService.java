@@ -41,7 +41,7 @@ public class JSONMapperService {
         }
     }
 
-    public Vehicle convertJSONStringToVehicle(String JSONString) throws ObjectMappingException {
+    public Vehicle convertJSONStringToVehicleObject(String JSONString) throws ObjectMappingException {
 
         try {
 
