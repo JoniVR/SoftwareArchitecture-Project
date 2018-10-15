@@ -42,12 +42,19 @@ public class FineController {
         return fines.stream().map(entity -> modelMapper.map(entity, FineDTO.class)).collect(Collectors.toList());
     }
 
-    // goedkeuren van een boete
+    /**
+     * This method allows us to update a fine "isApproved" status.
+     * @param id The id of the Fine object as a Long.
+     * @param isApproved The boolean value that you want to set.
+     * @return Returns a FineDTO object.
+     * @throws FineException In case no fines were found this will throw a FineException.
+     */
     @PutMapping("/fines/{id}")
-    public ResponseEntity<FineDTO> updateFine(@PathVariable Long id, @RequestParam("isApproved") boolean isApproved) throws FineException {
+    public ResponseEntity<FineDTO> updateFine(@PathVariable Long id,
+                                              @RequestParam("isApproved") boolean isApproved) throws FineException {
 
         Fine fineIn = fineService.load(id);
-        fineIn.setApproved(isApproved);
+        fineIn.setApproved(isApproved); //TODO: move to service layer
         Fine fineOut = fineService.save(fineIn);
 
         return new ResponseEntity<>(modelMapper.map(fineOut, FineDTO.class), HttpStatus.ACCEPTED);
