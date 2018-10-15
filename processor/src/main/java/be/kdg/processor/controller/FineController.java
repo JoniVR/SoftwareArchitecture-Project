@@ -46,7 +46,7 @@ public class FineController {
      * This method allows us to update a fine "isApproved" status.
      * @param id The id of the Fine object as a Long.
      * @param isApproved The boolean value that you want to set.
-     * @return Returns a FineDTO object.
+     * @return A FineDTO object.
      * @throws FineException In case no fines were found this will throw a FineException.
      */
     @PutMapping(value = "/fines/{id}", params = "isApproved")
@@ -60,6 +60,14 @@ public class FineController {
         return new ResponseEntity<>(modelMapper.map(fineOut, FineDTO.class), HttpStatus.ACCEPTED);
     }
 
+    /**
+     * This method allows us to update the fine "amount" and add a comment.
+     * @param id The id of the Fine object as a Long.
+     * @param amount The amount of the fine.
+     * @param comment A comment as to why the fine amount was changed.
+     * @return A FineDTO object.
+     * @throws FineException In case no fines were found this will throw a FineException.
+     */
     @PutMapping(value = "/fines/{id}", params = {"amount","comments"})
     public ResponseEntity<FineDTO> updateFineAmount(@PathVariable Long id,
                                               @RequestParam("amount") double amount,
