@@ -2,22 +2,18 @@ package be.kdg.processor.model.camera;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Location {
 
     @JsonProperty("lat")
-    @Getter
-    @Setter
     private float lattitude;
 
     @JsonProperty("long")
-    @Getter
-    @Setter
     private float longtitude;
 
     @Override

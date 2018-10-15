@@ -3,7 +3,6 @@ package be.kdg.processor.violation;
 import be.kdg.processor.model.camera.Camera;
 import be.kdg.processor.model.fine.Fine;
 import be.kdg.processor.model.vehicle.Vehicle;
-import jdk.jshell.spi.ExecutionControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

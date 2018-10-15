@@ -1,4 +1,4 @@
-package be.kdg.simulator;
+package be.kdg.simulator.random;
 
 import be.kdg.simulator.generator.MessageGenerator;
 import be.kdg.simulator.model.CameraMessage;

@@ -2,7 +2,6 @@ package be.kdg.processor.model.fine;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.h2.util.DateTimeUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

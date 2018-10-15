@@ -2,8 +2,6 @@ package be.kdg.simulator.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -14,14 +12,8 @@ import java.util.Objects;
 public class CameraMessage implements Serializable {
 
     private int id;
-    @Getter
-    @Setter
     private String licenseplate;
-    @Getter
-    @Setter
     private LocalDateTime timestamp;
-    @Getter
-    @Setter
     private int delay = 1000; //TODO: change default delay once implemented busy hours!!
 
     public CameraMessage(int id, String licenseplate, LocalDateTime timestamp) {

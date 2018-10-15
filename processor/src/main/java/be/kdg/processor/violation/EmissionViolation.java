@@ -5,10 +5,8 @@ import be.kdg.processor.model.camera.CameraType;
 import be.kdg.processor.model.fine.Fine;
 import be.kdg.processor.model.fine.FineType;
 import be.kdg.processor.model.vehicle.Vehicle;
-import be.kdg.processor.service.FineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Detects if an emission violation has occured and calculating the fines.
