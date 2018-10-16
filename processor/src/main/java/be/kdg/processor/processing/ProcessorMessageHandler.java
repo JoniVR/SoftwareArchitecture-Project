@@ -8,6 +8,7 @@ import be.kdg.processor.model.fine.Fine;
 import be.kdg.processor.model.vehicle.Vehicle;
 import be.kdg.processor.service.FineService;
 import be.kdg.processor.service.ProxyService;
+import be.kdg.processor.service.ProxyServiceAdapter;
 import be.kdg.processor.violation.ViolationStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +26,13 @@ public class ProcessorMessageHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessorMessageHandler.class);
 
     @Autowired
-    private JSONMapperService jsonMapperService;
-
-    @Autowired
     private FineService fineService;
 
     @Autowired
     private Collection<ViolationStrategy> listeners = new ArrayList<>();
 
     @Autowired
-    private ProxyService proxyService;
+    private ProxyServiceAdapter proxyServiceAdapter;
 
     /**
      * In here we process the received cameraMessage.
@@ -52,9 +50,9 @@ public class ProcessorMessageHandler {
 
         try {
 
-            Camera camera = jsonMapperService.convertJSONStringToCameraObject(proxyService.cameraServiceProxy().get(camId));
+            Camera camera = proxyServiceAdapter.getCameraObject(camId);
             LOGGER.info("Received Camera info from ProxyService: {}", camera);
-            Vehicle vehicle = jsonMapperService.convertJSONStringToVehicleObject(proxyService.licensePlateServiceProxy().get(licensePlate));
+            Vehicle vehicle = proxyServiceAdapter.getVehicleObject(licensePlate);
             LOGGER.info("Received Vehicle info from ProxyService: {}", vehicle);
 
             notifyListeners(camera, vehicle);
