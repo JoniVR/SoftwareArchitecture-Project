@@ -1,4 +1,4 @@
-package be.kdg.processor.controller;
+package be.kdg.processor.controller.rest;
 
 import be.kdg.processor.exceptions.FineException;
 import be.kdg.processor.model.fine.Fine;

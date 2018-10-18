@@ -1,13 +1,11 @@
 package be.kdg.processor.processing;
 
 import be.kdg.processor.exceptions.ObjectMappingException;
-import be.kdg.processor.mapping.JSONMapperService;
 import be.kdg.processor.model.camera.Camera;
 import be.kdg.processor.model.camera.CameraMessage;
 import be.kdg.processor.model.fine.Fine;
 import be.kdg.processor.model.vehicle.Vehicle;
 import be.kdg.processor.service.FineService;
-import be.kdg.processor.service.ProxyService;
 import be.kdg.processor.service.ProxyServiceAdapter;
 import be.kdg.processor.violation.ViolationStrategy;
 import org.slf4j.Logger;
