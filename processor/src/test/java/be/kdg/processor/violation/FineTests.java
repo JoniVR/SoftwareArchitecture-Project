@@ -5,6 +5,7 @@ import be.kdg.processor.model.camera.CameraType;
 import be.kdg.processor.model.camera.Location;
 import be.kdg.processor.model.camera.Segment;
 import be.kdg.processor.model.fine.Fine;
+import be.kdg.processor.model.fine.FineFactor;
 import be.kdg.processor.model.vehicle.Vehicle;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,5 +30,10 @@ public class FineTests {
         Fine fine = emissionViolation.calculateFine(testCamera, testvehicleViolation);
 
         Assert.assertNotNull("Fine is null.", fine);
+
+        // bedrag testen
+        FineFactor fineFactor = new FineFactor();
+        double amount = fineFactor.getEmissionFactor();
+        Assert.assertEquals("Fine price is not equal.",fine.getAmount(), amount,0);
     }
 }
