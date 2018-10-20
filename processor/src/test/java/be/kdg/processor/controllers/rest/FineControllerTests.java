@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.containsString;
@@ -40,13 +42,8 @@ public class FineControllerTests {
     private FineService fineService;
 
     @Test
+    @Transactional
     public void testUpdateFineApproved() throws Exception {
-
-        /**
-         * TODO: find better solution!
-         * Momenteel steken we eerst een fine in de repo om te testen,
-         * wanneer de databank persistent blijft ipv in memory is deze oplossing niet ideaal (omdat we dan elke keer dat we testen dit object opnieuw toevoegen)
-         */
 
         // setup data to change
         Fine fine = new Fine(1L,10, FineType.EMISSION, false, null, "1-ABC-123", LocalDateTime.now());
