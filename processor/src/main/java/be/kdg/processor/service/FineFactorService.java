@@ -1,6 +1,6 @@
 package be.kdg.processor.service;
 
-import be.kdg.processor.model.fine.FineFactor;
+import be.kdg.processor.domain.fine.FineFactor;
 import be.kdg.processor.persistence.FineFactorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

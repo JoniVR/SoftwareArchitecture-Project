@@ -1,7 +1,7 @@
 package be.kdg.processor.service;
 
-import be.kdg.processor.model.fine.Fine;
-import be.kdg.processor.model.fine.FineType;
+import be.kdg.processor.domain.fine.Fine;
+import be.kdg.processor.domain.fine.FineType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

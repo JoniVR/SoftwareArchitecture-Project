@@ -1,7 +1,7 @@
 package be.kdg.processor.service;
 
 import be.kdg.processor.exceptions.FineException;
-import be.kdg.processor.model.fine.Fine;
+import be.kdg.processor.domain.fine.Fine;
 import be.kdg.processor.persistence.FineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
 package be.kdg.processor.controllers.rest;
 
 
-import be.kdg.processor.model.fine.Fine;
-import be.kdg.processor.model.fine.FineDTO;
-import be.kdg.processor.model.fine.FineType;
+import be.kdg.processor.domain.fine.Fine;
+import be.kdg.processor.domain.fine.FineDTO;
+import be.kdg.processor.domain.fine.FineType;
 import be.kdg.processor.service.FineService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;

@@ -1,16 +1,37 @@
 package be.kdg.processor.service;
 
+import be.kdg.processor.exceptions.ObjectMappingException;
+import be.kdg.processor.util.JSONMapperService;
+import be.kdg.processor.domain.camera.Camera;
+import be.kdg.processor.domain.vehicle.Vehicle;
 import be.kdg.sa.services.CameraServiceProxy;
 import be.kdg.sa.services.LicensePlateServiceProxy;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Service
+import java.io.IOException;
+
+/**
+ * This class is responsible for reaching out
+ * to external services and adapting their results to the correct objects.
+ */
 public class ProxyService {
 
-    @Bean
-    public CameraServiceProxy cameraServiceProxy() { return new CameraServiceProxy(); }
+    @Autowired
+    private LicensePlateServiceProxy licensePlateServiceProxy;
 
-    @Bean
-    public LicensePlateServiceProxy licensePlateServiceProxy() { return new LicensePlateServiceProxy(); }
+    @Autowired
+    private CameraServiceProxy cameraServiceProxy;
+
+    @Autowired
+    private JSONMapperService jsonMapperService;
+
+    public Camera getCameraObject(int id) throws IOException, ObjectMappingException {
+
+        return jsonMapperService.convertJSONStringToCameraObject(cameraServiceProxy.get(id));
+    }
+
+    public Vehicle getVehicleObject(String licensePlate) throws IOException, ObjectMappingException {
+
+        return jsonMapperService.convertJSONStringToVehicleObject(licensePlateServiceProxy.get(licensePlate));
+    }
 }
