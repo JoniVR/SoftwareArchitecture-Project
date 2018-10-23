@@ -23,7 +23,4 @@ public class GeneratorConfig {
     @Bean
     @ConditionalOnProperty(name = "generator.type", havingValue = "random")
     public MessageGenerator randomMessageGenerator() { return new RandomMessageGenerator(); }
-
-    @Bean
-    public TaskScheduler taskScheduler() { return new ConcurrentTaskScheduler(); } //single threaded by default
 }

@@ -74,7 +74,7 @@ public class FineController {
                                               @RequestParam("comments") String comment) throws FineException {
 
         Fine fineIn = fineService.load(id);
-        fineIn.setAmount(amount);
+        fineIn.setAmount(amount); //TODO: move to service layer!!
         fineIn.setComments(comment);
         Fine fineOut = fineService.save(fineIn);
 

@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -24,12 +26,14 @@ public class Simulator implements CommandLineRunner {
 
     private final MessageGenerator messageGenerator;
     private final Messenger messenger;
+    private final ConfigurableApplicationContext context;
     private int delay;
 
     @Autowired
-    public Simulator(MessageGenerator messageGenerator, Messenger messenger) {
+    public Simulator(MessageGenerator messageGenerator, Messenger messenger, ConfigurableApplicationContext context) {
         this.messageGenerator = messageGenerator;
         this.messenger = messenger;
+        this.context = context;
         this.delay = 0;
     }
 
@@ -54,6 +58,6 @@ public class Simulator implements CommandLineRunner {
 
             cameraMessage = messageGenerator.generate();
         }
-        System.exit(0);
+        System.exit(SpringApplication.exit(context));
     }
 }

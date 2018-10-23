@@ -40,12 +40,8 @@ public class FileGenerator implements MessageGenerator {
         try {
             ArrayList<CameraMessage> cameraMessages = generateAllMessages();
             it = cameraMessages.iterator();
-        } catch (NoSuchFileException ex){
-            LOGGER.warn("No file found.");
-        } catch (IOException ex) {
-            LOGGER.warn("No messages could be produced from CSV file.");
-        } catch (Exception ex){
-            LOGGER.warn("Something went wrong trying to generate messages from a file.", ex);
+        } catch (IOException e){
+            LOGGER.error("No file found.", e);
         }
     }
 

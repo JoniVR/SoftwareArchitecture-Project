@@ -1,16 +1,25 @@
 package be.kdg.processor.business.processing;
 
 import be.kdg.processor.config.RabbitConfig;
+import be.kdg.processor.domain.FailedQueueMessage;
+import be.kdg.processor.domain.camera.CameraMessage;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import be.kdg.processor.util.XMLMapperService;
-import be.kdg.processor.domain.camera.CameraMessage;
+import be.kdg.sa.services.CameraNotFoundException;
+import be.kdg.sa.services.LicensePlateNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
- * Responsible for processing/handling of messages from the RabbitMq queue.
+ * Responsible for processing/handling of messages from the RabbitMq messageQueue.
  */
 public class Processor {
 
@@ -22,9 +31,10 @@ public class Processor {
     @Autowired
     private ProcessorMessageHandler processorMessageHandler;
 
-    //TODO: handle exceptions correctly
+    @Autowired
+    private CopyOnWriteArrayList<FailedQueueMessage> failedQueueMessages;
 
-    @RabbitListener(queues = RabbitConfig.QUEUE_SPECIFIC_NAME)
+    @RabbitListener(queues = RabbitConfig.MESSAGE_QUEUE)
     public void receiveMessage(final String cameraMessageString) {
 
         try {
@@ -34,10 +44,10 @@ public class Processor {
 
             processorMessageHandler.processMessage(cameraMessage);
 
-        } catch (ObjectMappingException e) {
+        } catch (ObjectMappingException | IOException | CameraNotFoundException | LicensePlateNotFoundException e) {
 
-            LOGGER.warn("Probleem met het mappen van het object.", e);
-
+            LOGGER.warn("Problem processing CameraMessage {}. Message will be sent to FailedMessageProcessor.", cameraMessageString);
+            failedQueueMessages.add(new FailedQueueMessage(cameraMessageString,0));
         }
     }
 }

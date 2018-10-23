@@ -32,13 +32,11 @@ public class FineService {
         throw new FineException("Fine not found");
     }
 
-    //TODO: correct error handling.
-    public List<Fine> loadAll() throws FineException {
+    public List<Fine> loadAll() {
 
         return fineRepository.findAll();
     }
 
-    //TODO: correct error handling.
     /**
      * Get a filtered list of fines between two LocalDateTimes.
      * @param from The date from which we should start filtering. Format: yyyy-MM-dd'T'HH:mm:ss

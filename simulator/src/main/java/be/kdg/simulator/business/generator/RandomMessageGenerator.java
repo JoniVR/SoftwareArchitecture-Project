@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class RandomMessageGenerator implements MessageGenerator {
 
-    private int maxCameraId = 3;
+    private int maxCameraId = 102;
 
     @Override
     public Optional<CameraMessage> generate() {

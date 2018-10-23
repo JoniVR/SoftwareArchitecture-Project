@@ -21,8 +21,6 @@ public class XMLMapperService {
     @Autowired
     private XmlMapper xmlMapper;
 
-    //TODO: better exception handling
-
     /**
      * Takes a String formatted as XML and returns a CameraMessage object.
      *
