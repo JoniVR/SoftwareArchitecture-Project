@@ -6,14 +6,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Used for RebbitMQ configuration settings.
+ * Used for RabbitMQ configuration settings.
  */
 @Configuration
 public class RabbitConfig {
 
     public static final String EXCHANGE_NAME = "appExchange";
-    public static final String MESSAGE_QUEUE = "messageQueue";
     public static final String ROUTING_KEY = "messages.key";
+    private static final String MESSAGE_QUEUE = "messageQueue";
 
     @Bean
     public Queue queue() { return new Queue(MESSAGE_QUEUE); }

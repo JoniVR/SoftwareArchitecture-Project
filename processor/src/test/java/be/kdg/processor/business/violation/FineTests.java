@@ -25,13 +25,13 @@ public class FineTests {
     public void testEmissionFineCalculation(){
 
         Camera testCamera = new Camera(1, CameraType.EMISSION, new Location(),3,new Segment());
-        Vehicle testvehicleViolation = new Vehicle("1-ABC-123","47.11.10-171.40",1);
+        Vehicle testVehicleViolation = new Vehicle("1-ABC-123","47.11.10-171.40",1);
 
-        Fine fine = emissionViolation.calculateFine(testCamera, testvehicleViolation);
+        Fine fine = emissionViolation.calculateFine(testCamera, testVehicleViolation);
 
         Assert.assertNotNull("Fine is null.", fine);
 
-        // bedrag testen
+        // test amount
         FineFactor fineFactor = new FineFactor();
         double amount = fineFactor.getEmissionFactor();
         Assert.assertEquals("Fine price is not equal.",fine.getAmount(), amount,0);

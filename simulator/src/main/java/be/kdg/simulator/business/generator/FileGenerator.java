@@ -21,9 +21,6 @@ import java.util.Optional;
  * The messages that will be sent won't be generated at random but will be read from a text file at a custom location.
  * In this file, each message item will be separated by a comma (cameraID, licensePlate, delay).
  * The delay (in ms) determines how long we should wait after each message.
- *
- * @Author Joni Van Roost
- * @Version 0.0.1
  */
 public class FileGenerator implements MessageGenerator {
 

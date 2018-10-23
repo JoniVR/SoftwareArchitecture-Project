@@ -23,15 +23,6 @@ public class FineService {
         return fineRepository.save(fine);
     }
 
-    public Fine load(Long id) throws FineException {
-
-        Optional<Fine> optionalFine = fineRepository.findById(id);
-        if (optionalFine.isPresent()) {
-            return optionalFine.get();
-        }
-        throw new FineException("Fine not found");
-    }
-
     public Fine updateFineApproved(Long id, boolean isApproved) throws FineException {
 
         Optional<Fine> optionalFine = fineRepository.findById(id);
@@ -63,9 +54,8 @@ public class FineService {
      * @param from The date from which we should start filtering. Format: yyyy-MM-dd'T'HH:mm:ss
      * @param to   The date at which we should stop filtering. Format: yyyy-MM-dd'T'HH:mm:ss
      * @return A list of filtered fines.
-     * @throws FineException In case no fines were found this will throw a FineException.
      */
-    public List<Fine> loadAllBetween(LocalDateTime from, LocalDateTime to) throws FineException {
+    public List<Fine> loadAllBetween(LocalDateTime from, LocalDateTime to) {
 
         return fineRepository.findByCreationDateBetween(from, to);
     }

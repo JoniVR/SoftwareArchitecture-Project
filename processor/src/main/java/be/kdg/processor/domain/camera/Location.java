@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 public class Location {
 
     @JsonProperty("lat")
-    private float lattitude;
+    private float latitude;
 
     @JsonProperty("long")
-    private float longtitude;
+    private float longitude;
 
     @Override
     public String toString() {
-        return String.format("lat: %.5f, long: %.5f", lattitude, longtitude);
+        return String.format("lat: %.5f, long: %.5f", latitude, longitude);
     }
 }

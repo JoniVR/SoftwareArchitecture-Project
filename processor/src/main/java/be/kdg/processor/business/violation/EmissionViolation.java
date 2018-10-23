@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Detects if an emission violation has occured and calculating the fines.
+ * Detects if an emission violation has occurred and calculating the fines.
  */
 public class EmissionViolation implements ViolationStrategy {
 

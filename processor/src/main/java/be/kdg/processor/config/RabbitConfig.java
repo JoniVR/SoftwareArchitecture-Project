@@ -8,16 +8,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Used for RebbitMQ configuration settings.
+ * Used for RabbitMQ configuration settings.
  */
 @Configuration
 public class RabbitConfig {
 
     public static final String EXCHANGE_NAME = "appExchange";
     public static final String MESSAGE_QUEUE = "messageQueue";
-    public static final String ERROR_QUEUE = "errorQueue";
-    public static final String ROUTING_MESSAGE_KEY = "messages.key";
     public static final String ROUTING_ERROR_KEY = "errors.key";
+    private static final String ERROR_QUEUE = "errorQueue";
+    private static final String ROUTING_MESSAGE_KEY = "messages.key";
 
     @Bean
     public Queue messageQueue() { return new Queue(MESSAGE_QUEUE); }
