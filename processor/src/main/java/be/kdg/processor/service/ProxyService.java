@@ -8,7 +8,9 @@ import be.kdg.sa.services.CameraNotFoundException;
 import be.kdg.sa.services.CameraServiceProxy;
 import be.kdg.sa.services.LicensePlateNotFoundException;
 import be.kdg.sa.services.LicensePlateServiceProxy;
+import org.hibernate.annotations.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.io.IOException;
 
@@ -27,11 +29,13 @@ public class ProxyService {
     @Autowired
     private JSONMapperService jsonMapperService;
 
+    @Cacheable("cameras")
     public Camera getCameraObject(int id) throws IOException, ObjectMappingException, CameraNotFoundException {
 
         return jsonMapperService.convertJSONStringToCameraObject(cameraServiceProxy.get(id));
     }
 
+    @Cacheable("vehicles")
     public Vehicle getVehicleObject(String licensePlate) throws IOException, ObjectMappingException, LicensePlateNotFoundException {
 
         return jsonMapperService.convertJSONStringToVehicleObject(licensePlateServiceProxy.get(licensePlate));
