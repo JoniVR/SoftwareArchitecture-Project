@@ -1,9 +1,9 @@
 package be.kdg.processor.service;
 
-import be.kdg.processor.exceptions.ObjectMappingException;
-import be.kdg.processor.util.JSONMapperService;
 import be.kdg.processor.domain.camera.Camera;
 import be.kdg.processor.domain.vehicle.Vehicle;
+import be.kdg.processor.exceptions.ObjectMappingException;
+import be.kdg.processor.util.JSONMapperService;
 import be.kdg.sa.services.CameraNotFoundException;
 import be.kdg.sa.services.CameraServiceProxy;
 import be.kdg.sa.services.LicensePlateNotFoundException;

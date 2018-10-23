@@ -1,8 +1,8 @@
 package be.kdg.processor.controller.rest;
 
-import be.kdg.processor.exceptions.FineException;
 import be.kdg.processor.domain.fine.Fine;
 import be.kdg.processor.domain.fine.FineDTO;
+import be.kdg.processor.exceptions.FineException;
 import be.kdg.processor.service.FineService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
