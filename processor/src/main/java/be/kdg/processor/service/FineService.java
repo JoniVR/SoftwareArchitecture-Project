@@ -26,21 +26,42 @@ public class FineService {
     public Fine load(Long id) throws FineException {
 
         Optional<Fine> optionalFine = fineRepository.findById(id);
-        if (optionalFine.isPresent()){
+        if (optionalFine.isPresent()) {
             return optionalFine.get();
         }
         throw new FineException("Fine not found");
     }
 
-    public List<Fine> loadAll() {
+    public Fine updateFineApproved(Long id, boolean isApproved) throws FineException {
 
-        return fineRepository.findAll();
+        Optional<Fine> optionalFine = fineRepository.findById(id);
+        if (optionalFine.isPresent()) {
+            Fine fine = optionalFine.get();
+            fine.setApproved(isApproved);
+            return fineRepository.save(fine);
+        } else {
+            throw new FineException("Fine not found.");
+        }
+    }
+
+    public Fine updateFineAmount(Long id, double amount, String comment) throws FineException {
+
+        Optional<Fine> optionalFine = fineRepository.findById(id);
+        if (optionalFine.isPresent()) {
+            Fine fine = optionalFine.get();
+            fine.setAmount(amount);
+            fine.setComments(comment);
+            return fineRepository.save(fine);
+        } else {
+            throw new FineException("Fine not found.");
+        }
     }
 
     /**
      * Get a filtered list of fines between two LocalDateTimes.
+     *
      * @param from The date from which we should start filtering. Format: yyyy-MM-dd'T'HH:mm:ss
-     * @param to The date at which we should stop filtering. Format: yyyy-MM-dd'T'HH:mm:ss
+     * @param to   The date at which we should stop filtering. Format: yyyy-MM-dd'T'HH:mm:ss
      * @return A list of filtered fines.
      * @throws FineException In case no fines were found this will throw a FineException.
      */

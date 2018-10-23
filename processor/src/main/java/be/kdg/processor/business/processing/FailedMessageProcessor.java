@@ -45,15 +45,15 @@ public class FailedMessageProcessor {
             // if max read attempts, log on error queue en remove from list
             if (failedQueueMessage.getReadAttempt() >= 3) {
 
-                LOGGER.error("Failed to read message 3 times, placing it on the error queue. Message: " + failedQueueMessage.getMessage());
+                LOGGER.error("Failed to read CameraMessage 3 times, placing it on the error queue. Message: " + failedQueueMessage.getMessage());
                 rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_ERROR_KEY, failedQueueMessage.getMessage());
                 failedQueueMessages.remove(failedQueueMessage);
             }
 
             try {
 
+                LOGGER.info("Retrying failed CameraMessage {}", failedQueueMessage.getMessage());
                 CameraMessage cameraMessage = xmlMapperService.convertXmlStringToCameraMessage(failedQueueMessage.getMessage());
-                LOGGER.info("Received CameraMessage: {}", cameraMessage);
 
                 processorMessageHandler.processMessage(cameraMessage);
 
@@ -64,7 +64,7 @@ public class FailedMessageProcessor {
 
                 // increase read attempt
                 failedQueueMessage.setReadAttempt(failedQueueMessage.getReadAttempt() + 1);
-                LOGGER.warn("Attempt to read failed message failed again. Upping read attempt.");
+                LOGGER.warn("Attempt to read failed message failed again. Attempt #" +failedQueueMessage.getReadAttempt());
             }
         }
     }

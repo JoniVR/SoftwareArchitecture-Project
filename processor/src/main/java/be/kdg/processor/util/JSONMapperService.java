@@ -18,8 +18,6 @@ public class JSONMapperService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    //TODO: better error handling
-
     public Camera convertJSONStringToCameraObject(String JSONString) throws ObjectMappingException {
 
         try {

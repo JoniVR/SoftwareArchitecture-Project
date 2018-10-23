@@ -25,7 +25,6 @@ public class FineController {
     @Autowired
     public ModelMapper modelMapper;
 
-    //TODO: correct error handling
     /**
      * Get a filtered list of fines between two LocalDateTimes.
      * @param fromDate The date from which we should start filtering. Format: yyyy-MM-dd'T'HH:mm:ss
@@ -53,9 +52,7 @@ public class FineController {
     public ResponseEntity<FineDTO> updateFineApproved(@PathVariable Long id,
                                               @RequestParam("isApproved") boolean isApproved) throws FineException {
 
-        Fine fineIn = fineService.load(id);
-        fineIn.setApproved(isApproved); //TODO: move to service layer
-        Fine fineOut = fineService.save(fineIn);
+        Fine fineOut = fineService.updateFineApproved(id, isApproved);
 
         return new ResponseEntity<>(modelMapper.map(fineOut, FineDTO.class), HttpStatus.ACCEPTED);
     }
@@ -73,10 +70,7 @@ public class FineController {
                                               @RequestParam("amount") double amount,
                                               @RequestParam("comments") String comment) throws FineException {
 
-        Fine fineIn = fineService.load(id);
-        fineIn.setAmount(amount); //TODO: move to service layer!!
-        fineIn.setComments(comment);
-        Fine fineOut = fineService.save(fineIn);
+        Fine fineOut = fineService.updateFineAmount(id, amount, comment);
 
         return new ResponseEntity<>(modelMapper.map(fineOut, FineDTO.class), HttpStatus.ACCEPTED);
     }
