@@ -24,7 +24,7 @@ public class JSONMapperService {
 
             Camera camera = objectMapper.readValue(JSONString, Camera.class);
 
-            if (camera.getEuroNorm() == 0){
+            if (camera.getSegment() != null){
                 camera.setCameraType(CameraType.SPEED);
             } else {
                 camera.setCameraType(CameraType.EMISSION);
