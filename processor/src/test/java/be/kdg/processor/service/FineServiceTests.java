@@ -44,13 +44,13 @@ public class FineServiceTests {
         Fine fine = new Fine(1L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().plusHours(1), testCamera.getId());
         fineService.save(fine);
 
-        Fine fine1 = new Fine(3L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(30), testCamera.getId());
+        Fine fine1 = new Fine(2L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(30), testCamera.getId());
         fineService.save(fine1);
 
-        Fine fine2 = new Fine(2L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(1), testCamera.getId());
+        Fine fine2 = new Fine(3L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(1), testCamera.getId());
         fineService.save(fine2);
 
-        Fine fine3 = new Fine(3L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().plusHours(30), testCamera.getId());
+        Fine fine3 = new Fine(4L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().plusHours(30), testCamera.getId());
         fineService.save(fine3);
 
         Optional<Fine> fineOptional = fineService.loadLatestFineFrom(vehicle.getPlateId());
