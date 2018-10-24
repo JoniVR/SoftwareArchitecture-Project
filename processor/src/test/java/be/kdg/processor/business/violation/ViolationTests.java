@@ -7,6 +7,7 @@ import be.kdg.processor.domain.camera.Segment;
 import be.kdg.processor.domain.fine.Fine;
 import be.kdg.processor.domain.fine.FineType;
 import be.kdg.processor.domain.vehicle.Vehicle;
+import be.kdg.processor.service.FineFactorService;
 import be.kdg.processor.service.FineService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,6 +28,9 @@ public class ViolationTests {
 
     @Autowired
     private FineService fineService;
+
+    @Autowired
+    private FineFactorService fineFactorService;
 
     @Test
     public void testEmissionViolation() {
@@ -78,7 +82,7 @@ public class ViolationTests {
     @Test
     public void testNoDoubleEmissionViolation() {
 
-        int fixedTimeFrame = 24;
+        int fixedTimeFrame = fineFactorService.loadFineFactor().getEmissionTimeFrameInHours();
 
         Camera testCamera = new Camera(1, CameraType.EMISSION, new Location(),3, new Segment());
         Vehicle vehicle = new Vehicle("1-ABC-123", "47.11.10-171.40", 1);

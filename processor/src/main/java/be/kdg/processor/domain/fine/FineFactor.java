@@ -17,9 +17,11 @@ public class FineFactor {
     private Long id;
     private double emissionFactor;
     private double speedFactor;
+    private int emissionTimeFrameInHours;
 
     public FineFactor() {
         this.emissionFactor = 1000;
         this.speedFactor = 1000;
+        this.emissionTimeFrameInHours = 24;
     }
 }

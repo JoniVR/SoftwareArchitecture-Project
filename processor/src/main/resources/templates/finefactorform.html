@@ -16,17 +16,23 @@
     <div class="col-12 text-center">
         <form method="post" action="/settings/finefactor" th:object="${fineFactorDTO}">
             <div class="row">
-                <!-- <div class="col">Emission Factor</div> -->
                 <label for="fine_factor" class="col-form-label">Emission Factor</label>
                 <input th:value="*{emissionFactor}" th:field="*{emissionFactor}" id="fine_factor" class="form-control"
                        type="text">
-                <!-- <div class="col" th:text="${fineFactorDTO.getEmissionFactor()}"></div> -->
             </div>
             <div class="row">
                 <label for="speed_factor" class="col-form-label">Speed Factor</label>
-                <input th:value="*{speedFactor}" th:field="*{speedFactor}" id="speed_factor" class="form-control" type="text">
+                <input th:value="*{speedFactor}" th:field="*{speedFactor}" id="speed_factor" class="form-control"
+                       type="text">
             </div>
-            <input class="btn btn-primary" type="submit" value="Update">
+            <div class="row">
+                <label for="emission_time_frame" class="col-form-label">Emission Time frame (hours)</label>
+                <input th:value="*{emissionTimeFrameInHours}" th:field="*{emissionTimeFrameInHours}"
+                       id="emission_time_frame" class="form-control" type="text">
+            </div>
+            <div class="row mt-1">
+                <input class="btn btn-primary" type="submit" value="Update">
+            </div>
         </form>
     </div>
 

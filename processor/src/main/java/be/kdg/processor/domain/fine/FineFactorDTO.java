@@ -11,4 +11,5 @@ public class FineFactorDTO {
 
     private double emissionFactor;
     private double speedFactor;
+    private int emissionTimeFrameInHours;
 }
