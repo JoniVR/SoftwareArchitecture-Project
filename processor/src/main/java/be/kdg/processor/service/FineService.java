@@ -48,6 +48,11 @@ public class FineService {
         }
     }
 
+    public Optional<Fine> loadLatestFineFrom(String licensePlate) {
+
+        return fineRepository.findFirstByLicensePlateOrderByCreationDateDesc(licensePlate);
+    }
+
     /**
      * Get a filtered list of fines between two LocalDateTimes.
      *

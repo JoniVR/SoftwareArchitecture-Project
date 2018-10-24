@@ -41,12 +41,12 @@ public class FineControllerTests {
     @Autowired
     private FineService fineService;
 
-    @Test
     @Transactional
+    @Test
     public void testUpdateFineApproved() throws Exception {
 
         // setup data to change
-        Fine fine = new Fine(1L,10, FineType.EMISSION, false, null, "1-ABC-123", LocalDateTime.now());
+        Fine fine = new Fine(1L,10, FineType.EMISSION, false, null, "1-ABC-123", LocalDateTime.now(),1);
         fineService.save(fine);
 
         FineDTO fineDTO = modelMapper.map(fine, FineDTO.class);

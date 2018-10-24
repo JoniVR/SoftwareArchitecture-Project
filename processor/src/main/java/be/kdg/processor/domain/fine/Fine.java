@@ -23,13 +23,15 @@ public class Fine {
     private String comments;
     private String licensePlate;
     private LocalDateTime creationDate;
+    private int cameraId;
 
-    public Fine(double amount, FineType fineType, boolean isApproved, String comments, String licensePlate) {
+    public Fine(double amount, FineType fineType, boolean isApproved, String comments, String licensePlate, int cameraId) {
         this.amount = amount;
         this.fineType = fineType;
         this.isApproved = isApproved;
         this.comments = comments;
         this.licensePlate = licensePlate;
         this.creationDate = LocalDateTime.now();
+        this.cameraId = cameraId;
     }
 }
