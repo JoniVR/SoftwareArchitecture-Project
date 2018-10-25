@@ -1,15 +1,14 @@
 package be.kdg.processor.business.violation;
 
-import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.camera.CameraType;
-import be.kdg.processor.domain.camera.Location;
-import be.kdg.processor.domain.camera.Segment;
+import be.kdg.processor.domain.camera.*;
 import be.kdg.processor.domain.fine.Fine;
 import be.kdg.processor.domain.fine.FineType;
 import be.kdg.processor.domain.vehicle.Vehicle;
 import be.kdg.processor.service.FineFactorService;
 import be.kdg.processor.service.FineService;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,25 +31,43 @@ public class ViolationTests {
     @Autowired
     private FineFactorService fineFactorService;
 
+    private Camera testCamera;
+    private Vehicle vehicle;
+    private ProcessedCameraMessage processedCameraMessage;
+    private Fine fine;
+
+    @Before
+    public void setUp() {
+
+        testCamera = new Camera(1, new Location(),3,new Segment());
+        vehicle = new Vehicle("1-ABC-123","47.11.10-171.40",1);
+        processedCameraMessage = new ProcessedCameraMessage(vehicle, testCamera, LocalDateTime.now());
+        fine = new Fine(1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), testCamera.getId());
+    }
+
+    @After
+    public void tearDown(){
+        testCamera = null;
+        vehicle = null;
+        processedCameraMessage = null;
+        fine = null;
+    }
+
     @Test
     public void testEmissionViolation() {
 
-        Camera testCamera = new Camera(1, CameraType.EMISSION, new Location(),3,new Segment());
-        final String failMessage = "Violation detection is not working properly.";
-
         // test violation detected
-        Vehicle testvehicleViolation = new Vehicle("1-ABC-123","47.11.10-171.40",1);
+        boolean isViolation = emissionViolation.detect(processedCameraMessage);
 
-        boolean isViolation = emissionViolation.detect(testCamera, testvehicleViolation);
-
-        Assert.assertTrue(failMessage, isViolation);
+        Assert.assertTrue(isViolation);
 
         // test no violation detected
         Vehicle testVehicleNoViolation = new Vehicle("1-ABC-123","47.11.10-171.40",3);
+        processedCameraMessage.setVehicle(testVehicleNoViolation);
 
-        isViolation = emissionViolation.detect(testCamera, testVehicleNoViolation);
+        isViolation = emissionViolation.detect(processedCameraMessage);
 
-        Assert.assertFalse(failMessage, isViolation);
+        Assert.assertFalse(isViolation);
     }
 
     /**
@@ -60,15 +77,11 @@ public class ViolationTests {
     @Test
     public void testDoubleEmissionViolation() {
 
-        Camera testCamera = new Camera(1, CameraType.EMISSION, new Location(),3, new Segment());
-        Vehicle vehicle = new Vehicle("1-ABC-123", "47.11.10-171.40", 1);
-
-        Fine fine = new Fine(1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), testCamera.getId());
         fine.setCreationDate(LocalDateTime.now().minusHours(1));
         fineService.save(fine);
 
         // since we're testing if double emission violations get detected and prevented, this should be false
-        boolean isViolation = emissionViolation.detect(testCamera, vehicle);
+        boolean isViolation = emissionViolation.detect(processedCameraMessage);
 
         Assert.assertFalse(isViolation);
     }
@@ -84,15 +97,11 @@ public class ViolationTests {
 
         int fixedTimeFrame = fineFactorService.loadFineFactor().getEmissionTimeFrameInHours();
 
-        Camera testCamera = new Camera(1, CameraType.EMISSION, new Location(),3, new Segment());
-        Vehicle vehicle = new Vehicle("1-ABC-123", "47.11.10-171.40", 1);
-
-        Fine fine = new Fine(1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), testCamera.getId());
         fine.setCreationDate(LocalDateTime.now().minusHours(fixedTimeFrame + 1));
         fineService.save(fine);
 
         // since we're testing if double emission violations get detected and prevented, this should be true
-        boolean isViolation = emissionViolation.detect(testCamera, vehicle);
+        boolean isViolation = emissionViolation.detect(processedCameraMessage);
 
         Assert.assertTrue(isViolation);
     }

@@ -1,7 +1,7 @@
 package be.kdg.processor.business.violation;
 
 import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.camera.CameraType;
+import be.kdg.processor.domain.camera.ProcessedCameraMessage;
 import be.kdg.processor.domain.fine.Fine;
 import be.kdg.processor.domain.fine.FineType;
 import be.kdg.processor.domain.vehicle.Vehicle;
@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -28,44 +27,47 @@ public class EmissionViolation implements ViolationStrategy {
     private FineFactorService fineFactorService;
 
     @Override
-    public boolean detect(Camera camera, Vehicle vehicle) {
+    public boolean detect(ProcessedCameraMessage processedCameraMessage) {
 
-        if(camera.getCameraType() == CameraType.EMISSION){
+        Camera camera = processedCameraMessage.getCamera();
+        Vehicle vehicle = processedCameraMessage.getVehicle();
 
-            if (vehicle.getEuroNumber() < camera.getEuroNorm() && !isDoubleViolation(camera, vehicle)){
+        if (vehicle.getEuroNumber() < camera.getEuroNorm() && camera.getEuroNorm() != 0 && !isDoubleViolation(processedCameraMessage)) {
 
-                LOGGER.info("Emission violation detected for {}", vehicle);
-                return true;
-            }
+            LOGGER.info("Emission violation detected for {}", vehicle);
+            return true;
         }
         return false;
     }
 
-    public Fine calculateFine(Camera camera, Vehicle vehicle){
+    public Fine calculateFine(ProcessedCameraMessage processedCameraMessage) {
 
         double fineAmount = fineFactorService.loadFineFactor().getEmissionFactor();
 
-        return new Fine(fineAmount, FineType.EMISSION, false, null, vehicle.getPlateId(), camera.getId());
+        return new Fine(fineAmount, FineType.EMISSION, false, null, processedCameraMessage.getVehicle().getPlateId(), processedCameraMessage.getCamera().getId());
     }
 
     /**
      * Checks if an emission violation has already been detected for this vehicle.
-     * @param camera The camera that sended the CameraMessage.
-     * @param vehicle The Vehicle that is violating
+     *
+     * @param processedCameraMessage The cameraMessage with all the required specs.
      * @return A boolean value that will return true in case there is already a violation within the set time bounds.
      */
-    private boolean isDoubleViolation(Camera camera, Vehicle vehicle) {
+    private boolean isDoubleViolation(ProcessedCameraMessage processedCameraMessage) {
+
+        Camera camera = processedCameraMessage.getCamera();
+        Vehicle vehicle = processedCameraMessage.getVehicle();
 
         int timeFrameInHours = fineFactorService.loadFineFactor().getEmissionTimeFrameInHours();
 
         Optional<Fine> optionalFine = fineService.loadLatestFineFrom(vehicle.getPlateId());
 
-        if (optionalFine.isPresent()){
+        if (optionalFine.isPresent()) {
             Fine fine = optionalFine.get();
 
             // Check if the previous fine was issued after the allowed timeframe and return correct value
             return fine.getCameraId() == camera.getId()
-                    && fine.getCreationDate().plusHours(timeFrameInHours).isAfter(LocalDateTime.now());
+                    && fine.getCreationDate().plusHours(timeFrameInHours).isAfter(processedCameraMessage.getTimeStamp());
         }
         return false;
     }

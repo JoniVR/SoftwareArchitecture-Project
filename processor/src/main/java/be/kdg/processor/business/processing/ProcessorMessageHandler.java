@@ -3,14 +3,19 @@ package be.kdg.processor.business.processing;
 import be.kdg.processor.business.violation.ViolationStrategy;
 import be.kdg.processor.domain.camera.Camera;
 import be.kdg.processor.domain.camera.CameraMessage;
+import be.kdg.processor.domain.camera.ProcessedCameraMessage;
 import be.kdg.processor.domain.fine.Fine;
 import be.kdg.processor.domain.vehicle.Vehicle;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import be.kdg.processor.service.FineService;
 import be.kdg.processor.service.ProxyService;
+import be.kdg.sa.services.CameraNotFoundException;
+import be.kdg.sa.services.InvalidLicensePlateException;
+import be.kdg.sa.services.LicensePlateNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.retry.annotation.Retryable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +32,7 @@ public class ProcessorMessageHandler {
     private FineService fineService;
 
     @Autowired
-    private Collection<ViolationStrategy> listeners = new ArrayList<>();
+    private Collection<ViolationStrategy> listeners;
 
     @Autowired
     private ProxyService proxyService;
@@ -40,10 +45,8 @@ public class ProcessorMessageHandler {
      * Processing on this level also makes caching results from the ProxyService easier and reduces overhead (only call proxyservices once).
      *
      * @param cameraMessage The incoming CameraMessage from RabbitMQ.
-     * @throws IOException Will be thrown when the proxyservice has a problem.
-     * @throws ObjectMappingException Will be thrown when the queue message can't be mapped from an object.
      */
-    public void processMessage(CameraMessage cameraMessage) throws IOException, ObjectMappingException {
+    public void processMessage(CameraMessage cameraMessage) throws ObjectMappingException, IOException, CameraNotFoundException, InvalidLicensePlateException, LicensePlateNotFoundException {
 
         int camId = cameraMessage.getId();
         String licensePlate = cameraMessage.getLicenseplate();
@@ -53,20 +56,20 @@ public class ProcessorMessageHandler {
         Vehicle vehicle = proxyService.getVehicleObject(licensePlate);
         LOGGER.info("Received Vehicle info from ProxyService: {}", vehicle);
 
-        notifyListeners(camera, vehicle);
+        notifyListeners(new ProcessedCameraMessage(vehicle, camera, cameraMessage.getTimestamp()));
     }
 
-    private void notifyListeners(Camera camera, Vehicle vehicle) {
+    private void notifyListeners(ProcessedCameraMessage processedCameraMessage) {
 
         for (ViolationStrategy listener : listeners) {
-            boolean violationDetected = listener.detect(camera, vehicle);
-            if (violationDetected) handleViolation(listener, camera, vehicle);
+            boolean violationDetected = listener.detect(processedCameraMessage);
+            if (violationDetected) handleViolation(listener, processedCameraMessage);
         }
     }
 
-    private void handleViolation(ViolationStrategy strategy, Camera camera, Vehicle vehicle) {
+    private void handleViolation(ViolationStrategy strategy, ProcessedCameraMessage processedCameraMessage) {
 
-        Fine fine = strategy.calculateFine(camera, vehicle);
+        Fine fine = strategy.calculateFine(processedCameraMessage);
 
         // save fine
         fineService.save(fine);

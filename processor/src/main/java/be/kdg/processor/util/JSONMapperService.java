@@ -1,7 +1,6 @@
 package be.kdg.processor.util;
 
 import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.camera.CameraType;
 import be.kdg.processor.domain.vehicle.Vehicle;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,19 +21,11 @@ public class JSONMapperService {
 
         try {
 
-            Camera camera = objectMapper.readValue(JSONString, Camera.class);
-
-            if (camera.getSegment() != null){
-                camera.setCameraType(CameraType.SPEED);
-            } else {
-                camera.setCameraType(CameraType.EMISSION);
-            }
-
-            return camera;
+            return objectMapper.readValue(JSONString, Camera.class);
 
         } catch (IOException e) {
 
-            LOGGER.warn("Error converting JSON String to Camera object.", e);
+            LOGGER.error("Error converting JSON String to Camera object. Error: {}", e.getMessage());
             throw new ObjectMappingException("Error converting JSON String to Camera object.");
         }
     }
@@ -47,7 +38,7 @@ public class JSONMapperService {
 
         } catch (IOException e) {
 
-            LOGGER.warn("Error converting JSON String to Vehicle object.", e);
+            LOGGER.error("Error converting JSON String to Vehicle object. Error: {}", e.getMessage());
             throw new ObjectMappingException("Error converting JSON String to Vehicle object.");
         }
     }

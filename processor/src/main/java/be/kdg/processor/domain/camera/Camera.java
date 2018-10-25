@@ -13,7 +13,6 @@ public class Camera {
     @JsonProperty("cameraId")
     int id;
 
-    private CameraType cameraType;
     private Location location;
     private int euroNorm;
     private Segment segment;

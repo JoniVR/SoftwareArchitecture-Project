@@ -4,10 +4,7 @@ import be.kdg.processor.domain.camera.Camera;
 import be.kdg.processor.domain.vehicle.Vehicle;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import be.kdg.processor.util.JSONMapperService;
-import be.kdg.sa.services.CameraNotFoundException;
-import be.kdg.sa.services.CameraServiceProxy;
-import be.kdg.sa.services.LicensePlateNotFoundException;
-import be.kdg.sa.services.LicensePlateServiceProxy;
+import be.kdg.sa.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -35,7 +32,7 @@ public class ProxyService {
     }
 
     @Cacheable("vehicles")
-    public Vehicle getVehicleObject(String licensePlate) throws IOException, ObjectMappingException, LicensePlateNotFoundException {
+    public Vehicle getVehicleObject(String licensePlate) throws IOException, ObjectMappingException, LicensePlateNotFoundException, InvalidLicensePlateException {
 
         return jsonMapperService.convertJSONStringToVehicleObject(licensePlateServiceProxy.get(licensePlate));
     }

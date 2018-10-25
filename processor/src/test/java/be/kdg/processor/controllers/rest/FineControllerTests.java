@@ -6,6 +6,8 @@ import be.kdg.processor.domain.fine.FineDTO;
 import be.kdg.processor.domain.fine.FineType;
 import be.kdg.processor.service.FineService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
@@ -41,15 +43,28 @@ public class FineControllerTests {
     @Autowired
     private FineService fineService;
 
+    private Fine fine;
+    private FineDTO fineDTO;
+
+    @Before
+    public void setUp() {
+        fine = new Fine(1L,10, FineType.EMISSION, false, null, "1-ABC-123", LocalDateTime.now(),1);
+        fineDTO = modelMapper.map(fine, FineDTO.class);
+    }
+
+    @After
+    public void tearDown() {
+        fine = null;
+        fineDTO = null;
+    }
+
     @Transactional
     @Test
     public void testUpdateFineApproved() throws Exception {
 
         // setup data to change
-        Fine fine = new Fine(1L,10, FineType.EMISSION, false, null, "1-ABC-123", LocalDateTime.now(),1);
         fineService.save(fine);
 
-        FineDTO fineDTO = modelMapper.map(fine, FineDTO.class);
         String requestJSON = objectMapper.writeValueAsString(fineDTO);
 
         mockMvc.perform(put("/api/fines/{id}", 1L).param("isApproved", "true")

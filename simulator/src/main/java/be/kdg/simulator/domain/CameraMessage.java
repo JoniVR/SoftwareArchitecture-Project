@@ -14,7 +14,7 @@ public class CameraMessage implements Serializable {
     private int id;
     private String licenseplate;
     private LocalDateTime timestamp;
-    private int delay = 1000; //TODO: change default delay once implemented busy hours!!
+    private int delay = 200; //TODO: change default delay once implemented busy hours!!
 
     public CameraMessage(int id, String licenseplate, LocalDateTime timestamp) {
         this.id = id;

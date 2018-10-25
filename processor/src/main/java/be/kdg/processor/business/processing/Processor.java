@@ -1,19 +1,22 @@
 package be.kdg.processor.business.processing;
 
 import be.kdg.processor.config.RabbitConfig;
-import be.kdg.processor.domain.FailedQueueMessage;
 import be.kdg.processor.domain.camera.CameraMessage;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import be.kdg.processor.util.XMLMapperService;
 import be.kdg.sa.services.CameraNotFoundException;
+import be.kdg.sa.services.InvalidLicensePlateException;
 import be.kdg.sa.services.LicensePlateNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 
 import java.io.IOException;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Responsible for processing/handling of messages from the RabbitMq messageQueue.
@@ -29,22 +32,22 @@ public class Processor {
     private ProcessorMessageHandler processorMessageHandler;
 
     @Autowired
-    private CopyOnWriteArrayList<FailedQueueMessage> failedQueueMessages;
+    private RabbitTemplate rabbitTemplate;
 
+    @Retryable(value = {ObjectMappingException.class, IOException.class, CameraNotFoundException.class, InvalidLicensePlateException.class, LicensePlateNotFoundException.class}, backoff = @Backoff(delay = 5000))
     @RabbitListener(queues = RabbitConfig.MESSAGE_QUEUE)
-    public void receiveMessage(final String cameraMessageString) {
+    public void receiveMessage(final String cameraMessageString) throws ObjectMappingException, IOException, CameraNotFoundException, InvalidLicensePlateException, LicensePlateNotFoundException {
 
-        try {
+        CameraMessage cameraMessage = xmlMapperService.convertXmlStringToCameraMessage(cameraMessageString);
+        LOGGER.info("Received CameraMessage: {}", cameraMessage);
 
-            CameraMessage cameraMessage = xmlMapperService.convertXmlStringToCameraMessage(cameraMessageString);
-            LOGGER.info("Received CameraMessage: {}", cameraMessage);
+        processorMessageHandler.processMessage(cameraMessage);
+    }
 
-            processorMessageHandler.processMessage(cameraMessage);
+    @Recover
+    public void recover(Exception exception, String cameraMessageString) {
 
-        } catch (ObjectMappingException | IOException | CameraNotFoundException | LicensePlateNotFoundException e) {
-
-            LOGGER.warn("Problem processing CameraMessage {}. Message will be sent to FailedMessageProcessor.", cameraMessageString);
-            failedQueueMessages.add(new FailedQueueMessage(cameraMessageString,0));
-        }
+        LOGGER.error("Unable to process CameraMessage {}. Error: {} - Placing on ErrorQueue.", cameraMessageString, exception.getMessage());
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_ERROR_KEY, cameraMessageString);
     }
 }

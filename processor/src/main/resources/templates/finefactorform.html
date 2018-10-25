@@ -30,6 +30,11 @@
                 <input th:value="*{emissionTimeFrameInHours}" th:field="*{emissionTimeFrameInHours}"
                        id="emission_time_frame" class="form-control" type="text">
             </div>
+            <div class="row">
+                <label for="speed_time_buffer" class="col-form-label">Speedting buffer time (minutes)</label>
+                <input th:value="*{speedingBufferTimeInMinutes}" th:field="*{speedingBufferTimeInMinutes}"
+                       id="speed_time_buffer" class="form-control" type="text">
+            </div>
             <div class="row mt-1">
                 <input class="btn btn-primary" type="submit" value="Update">
             </div>

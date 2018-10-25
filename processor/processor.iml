@@ -41,6 +41,7 @@
     <orderEntry type="library" name="Gradle: org.webjars:webjars-locator-core:0.35" level="project" />
     <orderEntry type="library" name="Gradle: org.webjars:bootstrap:4.1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.webjars:jquery:3.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-collections4:4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.projectlombok:lombok:1.16.22" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:2.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-validation:2.0.5.RELEASE" level="project" />
