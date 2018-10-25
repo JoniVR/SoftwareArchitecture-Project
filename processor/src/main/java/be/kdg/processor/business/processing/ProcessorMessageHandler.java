@@ -50,9 +50,7 @@ public class ProcessorMessageHandler {
         String licensePlate = cameraMessage.getLicenseplate();
 
         Camera camera = proxyService.getCameraObject(camId);
-        LOGGER.info("Received Camera info from ProxyService: {}", camera);
         Vehicle vehicle = proxyService.getVehicleObject(licensePlate);
-        LOGGER.info("Received Vehicle info from ProxyService: {}", vehicle);
 
         notifyListeners(new ProcessedCameraMessage(vehicle, camera, cameraMessage.getTimestamp()));
     }
@@ -71,6 +69,6 @@ public class ProcessorMessageHandler {
 
         // save fine
         fineService.save(fine);
-        LOGGER.info("Created fine and saved it to the database: {}", fine);
+        LOGGER.info("Created: Fine and saved it to the database: {}", fine);
     }
 }

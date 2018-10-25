@@ -34,12 +34,12 @@ public class Processor {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Retryable(value = {ObjectMappingException.class, IOException.class, CameraNotFoundException.class, InvalidLicensePlateException.class, LicensePlateNotFoundException.class}, backoff = @Backoff(delay = 5000))
+    @Retryable(value = {ObjectMappingException.class, IOException.class, CameraNotFoundException.class, InvalidLicensePlateException.class, LicensePlateNotFoundException.class}, backoff = @Backoff(delay = 2000))
     @RabbitListener(queues = RabbitConfig.MESSAGE_QUEUE)
     public void receiveMessage(final String cameraMessageString) throws ObjectMappingException, IOException, CameraNotFoundException, InvalidLicensePlateException, LicensePlateNotFoundException {
 
         CameraMessage cameraMessage = xmlMapperService.convertXmlStringToCameraMessage(cameraMessageString);
-        LOGGER.info("Received CameraMessage: {}", cameraMessage);
+        LOGGER.info("Received: CameraMessage: {}", cameraMessage);
 
         processorMessageHandler.processMessage(cameraMessage);
     }
@@ -47,7 +47,7 @@ public class Processor {
     @Recover
     public void recover(Exception exception, String cameraMessageString) {
 
-        LOGGER.error("Unable to process CameraMessage {}. Error: {} - Placing on ErrorQueue.", cameraMessageString, exception.getMessage());
+        LOGGER.error("Error: {} - CameraMessage: {} - Placing on ErrorQueue.", exception.getMessage(), cameraMessageString);
         rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_ERROR_KEY, cameraMessageString);
     }
 }

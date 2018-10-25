@@ -34,7 +34,7 @@ public class EmissionViolation implements ViolationStrategy {
 
         if (vehicle.getEuroNumber() < camera.getEuroNorm() && camera.getEuroNorm() != 0 && !isDoubleViolation(processedCameraMessage)) {
 
-            LOGGER.info("Emission violation detected for {}", vehicle);
+            LOGGER.info("Detected: emission violation for {}", vehicle);
             return true;
         }
         return false;

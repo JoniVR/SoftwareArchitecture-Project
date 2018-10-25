@@ -32,8 +32,7 @@ public class SpeedingViolation implements ViolationStrategy {
 
             for (ProcessedCameraMessage previousMessage : bufferedSpeedCameraMessages.get(vehicle.getPlateId())) {
 
-                if (previousMessage.getCamera().getId() == camera.getSegment().getConnectedCameraId()
-                        && camera.getSegment().equals(previousMessage.getCamera().getSegment())) {
+                if (previousMessage.getCamera().getId() == camera.getSegment().getConnectedCameraId()) {
 
                     //TODO: implement
                     long minutes = ChronoUnit.MINUTES.between(previousMessage.getTimeStamp(), processedCameraMessage.getTimeStamp());
@@ -41,7 +40,7 @@ public class SpeedingViolation implements ViolationStrategy {
                     LOGGER.warn("T1: "+previousMessage.getTimeStamp()+ "T2: "+processedCameraMessage.getTimeStamp());
                     long speed = camera.getSegment().getDistance()/minutes;
                     LOGGER.warn("SPEED: "+speed);
-                    LOGGER.info("Speed violation detected for {}", vehicle);
+                    LOGGER.info("Detected: speed violation for {}", vehicle);
                 }
             }
 
