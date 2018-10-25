@@ -34,7 +34,7 @@ public class XMLMapperService {
 
         } catch (JsonProcessingException e) {
 
-            LOGGER.warn("Error processing JSON.", e);
+            LOGGER.warn("Error processing JSON. Error: {}", e.getMessage());
         }
         return objectAsXML;
     }

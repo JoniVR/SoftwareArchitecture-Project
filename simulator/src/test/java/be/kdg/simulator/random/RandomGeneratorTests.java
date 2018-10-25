@@ -1,5 +1,6 @@
 package be.kdg.simulator.random;
 
+import be.kdg.simulator.business.generator.MessageGenerator;
 import be.kdg.simulator.business.generator.RandomMessageGenerator;
 import be.kdg.simulator.domain.CameraMessage;
 import org.junit.Assert;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
@@ -21,7 +23,7 @@ public class RandomGeneratorTests {
     private static final Logger LOGGER = LoggerFactory.getLogger(RandomGeneratorTests.class);
 
     @Autowired
-    private RandomMessageGenerator randomMessageGenerator;
+    private MessageGenerator randomMessageGenerator;
 
     /**
      * Tests is the format of the license plates is correct.

@@ -8,6 +8,7 @@ import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class SpeedingViolation implements ViolationStrategy {
             }
 
         } else {
+
             bufferedSpeedCameraMessages.put(vehicle.getPlateId(), new ArrayList<>());
             bufferedSpeedCameraMessages.get(vehicle.getPlateId()).add(processedCameraMessage);
         }

@@ -1,6 +1,9 @@
 package be.kdg.processor.business.violation;
 
-import be.kdg.processor.domain.camera.*;
+import be.kdg.processor.domain.camera.Camera;
+import be.kdg.processor.domain.camera.Location;
+import be.kdg.processor.domain.camera.ProcessedCameraMessage;
+import be.kdg.processor.domain.camera.Segment;
 import be.kdg.processor.domain.fine.Fine;
 import be.kdg.processor.domain.fine.FineFactor;
 import be.kdg.processor.domain.vehicle.Vehicle;

@@ -37,7 +37,7 @@ public class FileGenerator implements MessageGenerator {
             ArrayList<CameraMessage> cameraMessages = generateAllMessages();
             it = cameraMessages.iterator();
         } catch (IOException e){
-            LOGGER.error("No file found.", e);
+            LOGGER.error("No file found. Error: {}", e.getMessage());
         }
     }
 
