@@ -2,6 +2,7 @@ package be.kdg.simulator.business.generator;
 
 import be.kdg.simulator.domain.CameraMessage;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -10,5 +11,5 @@ import java.util.Optional;
  */
 public interface MessageGenerator {
 
-    Optional<CameraMessage> generate();
+    Optional<CameraMessage> generate() throws IOException;
 }

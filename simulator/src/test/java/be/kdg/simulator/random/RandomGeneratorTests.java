@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -29,7 +30,7 @@ public class RandomGeneratorTests {
      * Tests is the format of the license plates is correct.
      */
     @Test
-    public void testRandomLicensePlateFormat() {
+    public void testRandomLicensePlateFormat() throws IOException {
 
         Optional<CameraMessage> cameraMessage = randomMessageGenerator.generate();
 

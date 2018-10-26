@@ -29,20 +29,16 @@ public class FileGenerator implements MessageGenerator {
     private final String csvPath;
     private Iterator it;
 
-    public FileGenerator(String csvPath) {
+    public FileGenerator(String csvPath) throws IOException {
 
         this.csvPath = csvPath;
 
-        try {
-            ArrayList<CameraMessage> cameraMessages = generateAllMessages();
-            it = cameraMessages.iterator();
-        } catch (IOException e){
-            LOGGER.error("No file found. Error: {}", e.getMessage());
-        }
+        ArrayList<CameraMessage> cameraMessages = generateAllMessages();
+        it = cameraMessages.iterator();
     }
 
     @Override
-    public Optional<CameraMessage> generate() {
+    public Optional<CameraMessage> generate() throws IOException, IllegalArgumentException {
 
         return Optional.of((CameraMessage) it.next());
     }

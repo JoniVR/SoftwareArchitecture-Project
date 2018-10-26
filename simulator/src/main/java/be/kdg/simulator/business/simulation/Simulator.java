@@ -5,13 +5,16 @@ import be.kdg.simulator.business.messenger.Messenger;
 import be.kdg.simulator.domain.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.AmqpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -26,20 +29,19 @@ public class Simulator implements CommandLineRunner {
 
     private final MessageGenerator messageGenerator;
     private final Messenger messenger;
-    private final ConfigurableApplicationContext context;
     private int delay;
 
     @Autowired
-    public Simulator(MessageGenerator messageGenerator, Messenger messenger, ConfigurableApplicationContext context) {
+    public Simulator(MessageGenerator messageGenerator, Messenger messenger) {
         this.messageGenerator = messageGenerator;
         this.messenger = messenger;
-        this.context = context;
         this.delay = 0;
     }
 
     // Executed at startup
+    @Retryable(value = {AmqpException.class, IOException.class, InterruptedException.class, IllegalArgumentException.class}, backoff = @Backoff(delay = 5000))
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws IOException, AmqpException, InterruptedException, IllegalArgumentException {
 
         Optional<CameraMessage> cameraMessage = messageGenerator.generate();
 
@@ -47,17 +49,18 @@ public class Simulator implements CommandLineRunner {
 
             LOGGER.info("A message was generated: " + cameraMessage.get());
 
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                LOGGER.warn("Thread sleep was interrupted.", e);
-            }
+            Thread.sleep(delay);
 
             messenger.sendMessage(cameraMessage.get());
             delay = cameraMessage.get().getDelay();
 
             cameraMessage = messageGenerator.generate();
         }
-        System.exit(SpringApplication.exit(context));
+    }
+
+    @Recover
+    private void recover(AmqpException e, CameraMessage message) {
+
+        LOGGER.error("Error trying to place message on queue. Error: {} - Message: {}", e.getMessage(), message);
     }
 }

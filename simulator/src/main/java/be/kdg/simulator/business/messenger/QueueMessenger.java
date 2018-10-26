@@ -5,9 +5,15 @@ import be.kdg.simulator.domain.CameraMessage;
 import be.kdg.simulator.util.XMLMapperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 public class QueueMessenger implements Messenger {
@@ -20,7 +26,7 @@ public class QueueMessenger implements Messenger {
     private XMLMapperService xmlMapperService;
 
     @Override
-    public void sendMessage(CameraMessage cameraMessage) {
+    public void sendMessage(CameraMessage cameraMessage) throws IOException, AmqpException {
 
         LOGGER.info("Placing message on queue.");
         rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY, xmlMapperService.convertObjectToXml(cameraMessage));
