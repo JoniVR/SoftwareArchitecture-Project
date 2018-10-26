@@ -34,7 +34,7 @@ public class Processor {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Retryable(value = {ObjectMappingException.class, IOException.class, CameraNotFoundException.class, InvalidLicensePlateException.class, LicensePlateNotFoundException.class}, backoff = @Backoff(delay = 2000))
+    @Retryable(value = { ObjectMappingException.class, IOException.class, CameraNotFoundException.class, InvalidLicensePlateException.class, LicensePlateNotFoundException.class }, backoff = @Backoff(delay = 2000))
     @RabbitListener(queues = RabbitConfig.MESSAGE_QUEUE)
     public void receiveMessage(final String cameraMessageString) throws ObjectMappingException, IOException, CameraNotFoundException, InvalidLicensePlateException, LicensePlateNotFoundException {
 

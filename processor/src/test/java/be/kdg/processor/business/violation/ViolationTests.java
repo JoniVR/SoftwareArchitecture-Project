@@ -42,10 +42,10 @@ public class ViolationTests {
     @Before
     public void setUp() {
 
-        testCamera = new Camera(1, new Location(),3,new Segment());
+        testCamera = new Camera(1, new Location(),3, new Segment(2, 100,100));
         vehicle = new Vehicle("1-ABC-123","47.11.10-171.40",1);
         processedCameraMessage = new ProcessedCameraMessage(vehicle, testCamera, LocalDateTime.now());
-        fine = new Fine(1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), testCamera.getId());
+        fine = new Fine(1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), 2);
     }
 
     @After
@@ -92,7 +92,6 @@ public class ViolationTests {
     /**
      * Tests if a double violation outside of a given timeframe does not create a new fine.
      * Given timeframe might need some adjustments when changed (currently still hardcoded)
-     * TODO: make timeframe not hardcoded and change hardcoded value here.
      */
     @Transactional
     @Test

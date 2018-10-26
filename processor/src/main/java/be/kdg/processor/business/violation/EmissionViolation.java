@@ -34,7 +34,7 @@ public class EmissionViolation implements ViolationStrategy {
 
         if (vehicle.getEuroNumber() < camera.getEuroNorm() && camera.getEuroNorm() != 0 && !isDoubleViolation(processedCameraMessage)) {
 
-            LOGGER.info("Detected: emission violation for {}", vehicle);
+            LOGGER.info("Detected: emission violation for {} with camera {}", vehicle, camera);
             return true;
         }
         return false;
@@ -67,6 +67,7 @@ public class EmissionViolation implements ViolationStrategy {
 
             // Check if the previous fine was issued after the allowed timeframe and return correct value
             return fine.getCameraId() == camera.getId()
+                    || camera.getSegment().getConnectedCameraId() == fine.getCameraId()
                     && fine.getCreationDate().plusHours(timeFrameInHours).isAfter(processedCameraMessage.getTimeStamp());
         }
         return false;
