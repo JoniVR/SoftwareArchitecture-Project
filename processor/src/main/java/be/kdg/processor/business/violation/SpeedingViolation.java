@@ -26,19 +26,20 @@ public class SpeedingViolation implements ViolationStrategy {
         Vehicle vehicle = processedCameraMessage.getVehicle();
         Camera camera = processedCameraMessage.getCamera();
 
-        if(camera.getSegment() == null) return false;
-
         if (bufferedSpeedCameraMessages.containsKey(vehicle.getPlateId())) {
 
             for (ProcessedCameraMessage previousMessage : bufferedSpeedCameraMessages.get(vehicle.getPlateId())) {
 
-                if (previousMessage.getCamera().getId() == camera.getSegment().getConnectedCameraId()) {
+                Camera previousCamera = previousMessage.getCamera();
+
+                if (previousCamera.getSegment() != null
+                        && previousCamera.getSegment().getConnectedCameraId() == camera.getId()) {
 
                     //TODO: implement
-                    long minutes = ChronoUnit.MINUTES.between(previousMessage.getTimeStamp(), processedCameraMessage.getTimeStamp());
-                    LOGGER.warn("MINUTES: "+minutes);
-                    LOGGER.warn("T1: "+previousMessage.getTimeStamp()+ "T2: "+processedCameraMessage.getTimeStamp());
-                    long speed = camera.getSegment().getDistance()/minutes;
+                    long seconds = ChronoUnit.MICROS.between(previousMessage.getTimeStamp(), processedCameraMessage.getTimeStamp());
+                    LOGGER.warn("MINUTES: "+seconds);
+                    LOGGER.warn("T1: "+previousMessage.getTimeStamp()+ "T2: " + processedCameraMessage.getTimeStamp());
+                    long speed = previousCamera.getSegment().getDistance()/seconds;
                     LOGGER.warn("SPEED: "+speed);
                     LOGGER.info("Detected: speed violation for {}", vehicle);
                 }
@@ -46,6 +47,7 @@ public class SpeedingViolation implements ViolationStrategy {
 
         } else {
 
+            LOGGER.warn("ADDED TO THE LIST: "+vehicle.getPlateId());
             bufferedSpeedCameraMessages.put(vehicle.getPlateId(), new ArrayList<>());
             bufferedSpeedCameraMessages.get(vehicle.getPlateId()).add(processedCameraMessage);
         }

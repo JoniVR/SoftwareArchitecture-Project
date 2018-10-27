@@ -45,7 +45,7 @@ public class ViolationTests {
         testCamera = new Camera(1, new Location(),3, new Segment(2, 100,100));
         vehicle = new Vehicle("1-ABC-123","47.11.10-171.40",1);
         processedCameraMessage = new ProcessedCameraMessage(vehicle, testCamera, LocalDateTime.now());
-        fine = new Fine(1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), 2);
+        fine = new Fine(1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), 2,1);
     }
 
     @After

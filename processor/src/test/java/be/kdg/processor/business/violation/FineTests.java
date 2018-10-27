@@ -33,7 +33,7 @@ public class FineTests {
     @Before
     public void setUp() {
 
-        testCamera = new Camera(1, new Location(),3,new Segment());
+        testCamera = new Camera(1, new Location(),3,null);
         testVehicleViolation = new Vehicle("1-ABC-123","47.11.10-171.40",1);
         processedCameraMessage = new ProcessedCameraMessage(testVehicleViolation, testCamera, LocalDateTime.now());
         fineFactor = new FineFactor();
@@ -44,6 +44,7 @@ public class FineTests {
         testCamera = null;
         testVehicleViolation = null;
         processedCameraMessage = null;
+        fineFactor = null;
     }
 
     @Test

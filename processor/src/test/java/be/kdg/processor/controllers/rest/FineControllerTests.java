@@ -48,7 +48,7 @@ public class FineControllerTests {
 
     @Before
     public void setUp() {
-        fine = new Fine(1L,10, FineType.EMISSION, false, null, "1-ABC-123", LocalDateTime.now(),1);
+        fine = new Fine(1L,10, FineType.EMISSION, false, null, "1-ABC-123", LocalDateTime.now(),1,2);
         fineDTO = modelMapper.map(fine, FineDTO.class);
     }
 

@@ -51,9 +51,11 @@ public class ProcessorMessageHandler {
 
         Camera camera = proxyService.getCameraObject(camId);
         Vehicle vehicle = proxyService.getVehicleObject(licensePlate);
+        LOGGER.info("Received: Camera from proxyservice: {}", camera);
+        LOGGER.info("Received: Vehicle from proxyservice: {}", vehicle);
 
         ProcessedCameraMessage processedCameraMessage = new ProcessedCameraMessage(vehicle, camera, cameraMessage.getTimestamp());
-        LOGGER.info("Generated: ProcessedCameraMessage: {}", processedCameraMessage);
+        LOGGER.info("Generated: ProcessedCameraMessage: CameraId: {}, VehiclePlate: {}, Timestamp: {}", camera.getId(), vehicle.getPlateId(), processedCameraMessage.getTimeStamp());
 
         notifyListeners(processedCameraMessage);
     }

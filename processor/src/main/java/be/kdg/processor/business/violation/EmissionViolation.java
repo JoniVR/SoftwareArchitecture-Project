@@ -42,9 +42,12 @@ public class EmissionViolation implements ViolationStrategy {
 
     public Fine calculateFine(ProcessedCameraMessage processedCameraMessage) {
 
+        Camera camera = processedCameraMessage.getCamera();
+        Vehicle vehicle = processedCameraMessage.getVehicle();
+
         double fineAmount = fineFactorService.loadFineFactor().getEmissionFactor();
 
-        return new Fine(fineAmount, FineType.EMISSION, false, null, processedCameraMessage.getVehicle().getPlateId(), processedCameraMessage.getCamera().getId());
+        return new Fine(fineAmount, FineType.EMISSION, false, null, vehicle.getPlateId(), camera.getId(), camera.getSegment() == null ? 0 : camera.getSegment().getConnectedCameraId());
     }
 
     /**
@@ -66,8 +69,7 @@ public class EmissionViolation implements ViolationStrategy {
             Fine fine = optionalFine.get();
 
             // Check if the previous fine was issued after the allowed timeframe and return correct value
-            return fine.getCameraId() == camera.getId()
-                    || camera.getSegment().getConnectedCameraId() == fine.getCameraId()
+            return fine.getConnectedCameraId() == camera.getId()
                     && fine.getCreationDate().plusHours(timeFrameInHours).isAfter(processedCameraMessage.getTimeStamp());
         }
         return false;

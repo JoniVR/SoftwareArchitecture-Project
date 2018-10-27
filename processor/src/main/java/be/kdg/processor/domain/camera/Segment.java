@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Segment {
 
-    private int connectedCameraId;
     private long distance;
     private int speedLimit;
+    private int connectedCameraId;
 
     @Override
     public String toString() {

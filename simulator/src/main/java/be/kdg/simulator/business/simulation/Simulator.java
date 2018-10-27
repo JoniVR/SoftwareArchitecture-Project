@@ -27,16 +27,10 @@ public class Simulator implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Simulator.class);
 
-    private final MessageGenerator messageGenerator;
-    private final Messenger messenger;
-    private int delay;
-
     @Autowired
-    public Simulator(MessageGenerator messageGenerator, Messenger messenger) {
-        this.messageGenerator = messageGenerator;
-        this.messenger = messenger;
-        this.delay = 0;
-    }
+    private MessageGenerator messageGenerator;
+    @Autowired
+    private Messenger messenger;
 
     // Executed at startup
     @Retryable(value = {AmqpException.class, IOException.class, InterruptedException.class, IllegalArgumentException.class}, backoff = @Backoff(delay = 5000))
@@ -48,18 +42,15 @@ public class Simulator implements CommandLineRunner {
         while ((cameraMessage.isPresent())) {
 
             LOGGER.info("A message was generated: " + cameraMessage.get());
-
-            Thread.sleep(delay);
-
+            Thread.sleep(cameraMessage.get().getDelay());
             messenger.sendMessage(cameraMessage.get());
-            delay = cameraMessage.get().getDelay();
 
             cameraMessage = messageGenerator.generate();
         }
     }
 
     @Recover
-    private void recover(AmqpException e, CameraMessage message) {
+    private void recover(Exception e, CameraMessage message) {
 
         LOGGER.error("Error trying to place message on queue. Error: {} - Message: {}", e.getMessage(), message);
     }

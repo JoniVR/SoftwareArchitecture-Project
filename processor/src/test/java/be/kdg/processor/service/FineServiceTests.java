@@ -41,11 +41,11 @@ public class FineServiceTests {
         testCamera = new Camera(1, new Location(),3, new Segment());
         vehicle = new Vehicle("1-ABC-123", "47.11.10-171.40", 1);
 
-        fineToSave = new Fine( 10.0, FineType.EMISSION, true, "Dit is een test.", "1-ABC-123", 1);
-        fine = new Fine(1L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().plusHours(1), testCamera.getId());
-        fine1 = new Fine(2L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(30), testCamera.getId());
-        fine2 = new Fine(3L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(1), testCamera.getId());
-        fine3 = new Fine(4L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().plusHours(30), testCamera.getId());
+        fineToSave = new Fine( 10.0, FineType.EMISSION, true, "Dit is een test.", "1-ABC-123", testCamera.getId(),2);
+        fine = new Fine(1L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().plusHours(1), testCamera.getId(),2);
+        fine1 = new Fine(2L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(30), testCamera.getId(),2);
+        fine2 = new Fine(3L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(1), testCamera.getId(),2);
+        fine3 = new Fine(4L, 1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), LocalDateTime.now().plusHours(30), testCamera.getId(),2);
     }
 
     @After

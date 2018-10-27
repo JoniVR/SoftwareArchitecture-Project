@@ -24,8 +24,9 @@ public class Fine {
     private String licensePlate;
     private LocalDateTime creationDate;
     private int cameraId;
+    private int connectedCameraId;
 
-    public Fine(double amount, FineType fineType, boolean isApproved, String comments, String licensePlate, int cameraId) {
+    public Fine(double amount, FineType fineType, boolean isApproved, String comments, String licensePlate, int cameraId, int connectedCameraId) {
         this.amount = amount;
         this.fineType = fineType;
         this.isApproved = isApproved;
@@ -33,5 +34,6 @@ public class Fine {
         this.licensePlate = licensePlate;
         this.creationDate = LocalDateTime.now();
         this.cameraId = cameraId;
+        this.connectedCameraId = connectedCameraId;
     }
 }

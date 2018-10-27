@@ -1,7 +1,6 @@
 package be.kdg.simulator.random;
 
 import be.kdg.simulator.business.generator.MessageGenerator;
-import be.kdg.simulator.business.generator.RandomMessageGenerator;
 import be.kdg.simulator.domain.CameraMessage;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,14 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
-// prevent the CommandLineRunner from working inside unit tests
 @SpringBootTest(properties = {"job.autorun.enabled=false"})
 public class RandomGeneratorTests {
 

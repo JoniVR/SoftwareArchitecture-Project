@@ -2,18 +2,11 @@ package be.kdg.simulator.business.generator;
 
 import be.kdg.simulator.domain.CameraMessage;
 import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,38 +17,34 @@ import java.util.Optional;
  */
 public class FileGenerator implements MessageGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileGenerator.class);
+    // Tried to inject these two, gave me a bunch of issues (including with tests)
+    private CSVReader csvReader;
+    private Reader reader;
 
-    private final String csvPath;
-    private Iterator it;
-
-    public FileGenerator(String csvPath) throws IOException {
-
-        this.csvPath = csvPath;
-
-        ArrayList<CameraMessage> cameraMessages = generateAllMessages();
-        it = cameraMessages.iterator();
+    FileGenerator(String path) throws IOException {
+        reader = Files.newBufferedReader(Paths.get(path));
+        csvReader = new CSVReader(reader);
     }
 
     @Override
-    public Optional<CameraMessage> generate() throws IOException, IllegalArgumentException {
+    public Optional<CameraMessage> generate() throws IOException {
 
-        return Optional.of((CameraMessage) it.next());
+        return readLine();
     }
 
-    private ArrayList<CameraMessage> generateAllMessages() throws IOException {
-        ArrayList<CameraMessage> messages = new ArrayList<>();
+    private Optional<CameraMessage> readLine() throws IOException {
 
-        Reader reader = Files.newBufferedReader(Paths.get(csvPath));
-        CSVReader csvReader = new CSVReaderBuilder(reader).build();
-        List<String[]> allData = csvReader.readAll();
+        String[] row = csvReader.readNext();
 
-        for (String[] row : allData) {
-            CameraMessage message = new CameraMessage(Integer.parseInt(row[0]), row[1], LocalDateTime.now());
-
-            message.setDelay(Integer.parseInt(row[2]));
-            messages.add(message);
+        if (row == null || row.length == 0) {
+            csvReader.close();
+            reader.close();
+            return Optional.empty();
         }
-        return messages;
+
+        CameraMessage message = new CameraMessage(Integer.parseInt(row[0]), row[1], LocalDateTime.now());
+        message.setDelay(Integer.parseInt(row[2]));
+
+        return Optional.of(message);
     }
 }

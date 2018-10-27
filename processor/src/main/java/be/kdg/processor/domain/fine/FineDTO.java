@@ -18,4 +18,5 @@ public class FineDTO {
     private String licensePlate;
     private LocalDateTime creationDate;
     private int cameraId;
+    private int connectedCameraId;
 }
