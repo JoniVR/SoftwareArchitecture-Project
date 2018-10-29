@@ -1,6 +1,6 @@
 package be.kdg.processor.business.violation;
 
-import be.kdg.processor.domain.camera.ProcessedCameraMessage;
+import be.kdg.processor.business.domain.camera.ProcessedCameraMessage;
 import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
-package be.kdg.processor.service;
+package be.kdg.processor.business.service;
 
-import be.kdg.processor.domain.fine.Fine;
+import be.kdg.processor.business.domain.fine.Fine;
 import be.kdg.processor.exceptions.FineException;
 import be.kdg.processor.persistence.FineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +48,6 @@ public class FineService {
         }
     }
 
-    public Optional<Fine> loadLatestFineFrom(String licensePlate) {
-
-        return fineRepository.findFirstByLicensePlateOrderByCreationDateDesc(licensePlate);
-    }
-
     /**
      * Get a filtered list of fines between two LocalDateTimes.
      *
@@ -62,6 +57,6 @@ public class FineService {
      */
     public List<Fine> loadAllBetween(LocalDateTime from, LocalDateTime to) {
 
-        return fineRepository.findByCreationDateBetween(from, to);
+        return fineRepository.findByViolationCreationDateBetween(from, to);
     }
 }

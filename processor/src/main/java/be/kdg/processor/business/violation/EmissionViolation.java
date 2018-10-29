@@ -1,14 +1,13 @@
 package be.kdg.processor.business.violation;
 
-import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.camera.ProcessedCameraMessage;
-import be.kdg.processor.domain.fine.Fine;
-import be.kdg.processor.domain.fine.FineType;
-import be.kdg.processor.domain.vehicle.Vehicle;
-import be.kdg.processor.service.FineFactorService;
-import be.kdg.processor.service.FineService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import be.kdg.processor.business.domain.camera.Camera;
+import be.kdg.processor.business.domain.camera.ProcessedCameraMessage;
+import be.kdg.processor.business.domain.fine.Fine;
+import be.kdg.processor.business.domain.vehicle.Vehicle;
+import be.kdg.processor.business.domain.violation.Violation;
+import be.kdg.processor.business.domain.violation.ViolationType;
+import be.kdg.processor.business.service.FineFactorService;
+import be.kdg.processor.business.service.ViolationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -18,36 +17,32 @@ import java.util.Optional;
  */
 public class EmissionViolation implements ViolationStrategy {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmissionViolation.class);
-
     @Autowired
-    private FineService fineService;
+    private ViolationService violationService;
 
     @Autowired
     private FineFactorService fineFactorService;
 
     @Override
-    public boolean detect(ProcessedCameraMessage processedCameraMessage) {
+    public Optional<Violation> detect(ProcessedCameraMessage processedCameraMessage) {
 
         Camera camera = processedCameraMessage.getCamera();
         Vehicle vehicle = processedCameraMessage.getVehicle();
 
-        if (vehicle.getEuroNumber() < camera.getEuroNorm() && camera.getEuroNorm() != 0 && !isDoubleViolation(processedCameraMessage)) {
+        if (vehicle.getEuroNumber() < camera.getEuroNorm() && camera.getEuroNorm() != 0 && !isDoubleViolation(processedCameraMessage)){
 
-            LOGGER.info("Detected: emission violation for {} with camera {}", vehicle, camera);
-            return true;
+            int connectedCamId = camera.getSegment() == null ? 0 : camera.getSegment().getConnectedCameraId();
+
+            return Optional.of(new Violation(ViolationType.EMISSION, null, null, vehicle.getEuroNumber(), vehicle.getPlateId(), processedCameraMessage.getTimeStamp(), camera.getId(), connectedCamId));
         }
-        return false;
+        return Optional.empty();
     }
 
-    public Fine calculateFine(ProcessedCameraMessage processedCameraMessage) {
-
-        Camera camera = processedCameraMessage.getCamera();
-        Vehicle vehicle = processedCameraMessage.getVehicle();
+    public Fine calculateFine(Violation violation) {
 
         double fineAmount = fineFactorService.loadFineFactor().getEmissionFactor();
 
-        return new Fine(fineAmount, FineType.EMISSION, false, null, vehicle.getPlateId(), camera.getId(), camera.getSegment() == null ? 0 : camera.getSegment().getConnectedCameraId());
+        return new Fine(fineAmount, false, null, violation);
     }
 
     /**
@@ -63,14 +58,14 @@ public class EmissionViolation implements ViolationStrategy {
 
         int timeFrameInHours = fineFactorService.loadFineFactor().getEmissionTimeFrameInHours();
 
-        Optional<Fine> optionalFine = fineService.loadLatestFineFrom(vehicle.getPlateId());
+        Optional<Violation> optionalViolation = violationService.loadLatestViolationFrom(vehicle.getPlateId());
 
-        if (optionalFine.isPresent()) {
-            Fine fine = optionalFine.get();
+        if (optionalViolation.isPresent()) {
+            Violation violation = optionalViolation.get();
 
             // Check if the previous fine was issued after the allowed timeframe and return correct value
-            return fine.getConnectedCameraId() == camera.getId()
-                    && fine.getCreationDate().plusHours(timeFrameInHours).isAfter(processedCameraMessage.getTimeStamp());
+            return violation.getConnectedCameraId() == camera.getId()
+                    && violation.getCreationDate().plusHours(timeFrameInHours).isAfter(processedCameraMessage.getTimeStamp());
         }
         return false;
     }

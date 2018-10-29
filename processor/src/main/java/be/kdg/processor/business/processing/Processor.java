@@ -1,7 +1,7 @@
 package be.kdg.processor.business.processing;
 
+import be.kdg.processor.business.domain.camera.CameraMessage;
 import be.kdg.processor.config.RabbitConfig;
-import be.kdg.processor.domain.camera.CameraMessage;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import be.kdg.processor.util.XMLMapperService;
 import be.kdg.sa.services.CameraNotFoundException;

@@ -1,14 +1,14 @@
 package be.kdg.processor.business.violation;
 
-import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.camera.Location;
-import be.kdg.processor.domain.camera.ProcessedCameraMessage;
-import be.kdg.processor.domain.camera.Segment;
-import be.kdg.processor.domain.fine.Fine;
-import be.kdg.processor.domain.fine.FineType;
-import be.kdg.processor.domain.vehicle.Vehicle;
-import be.kdg.processor.service.FineFactorService;
-import be.kdg.processor.service.FineService;
+import be.kdg.processor.business.domain.camera.Camera;
+import be.kdg.processor.business.domain.camera.Location;
+import be.kdg.processor.business.domain.camera.ProcessedCameraMessage;
+import be.kdg.processor.business.domain.camera.Segment;
+import be.kdg.processor.business.domain.vehicle.Vehicle;
+import be.kdg.processor.business.domain.violation.Violation;
+import be.kdg.processor.business.domain.violation.ViolationType;
+import be.kdg.processor.business.service.FineFactorService;
+import be.kdg.processor.business.service.ViolationService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,7 +30,7 @@ public class ViolationTests {
     private EmissionViolation emissionViolation;
 
     @Autowired
-    private FineService fineService;
+    private ViolationService violationService;
 
     @Autowired
     private FineFactorService fineFactorService;
@@ -37,15 +38,15 @@ public class ViolationTests {
     private Camera testCamera;
     private Vehicle vehicle;
     private ProcessedCameraMessage processedCameraMessage;
-    private Fine fine;
+    private Violation violation;
 
     @Before
     public void setUp() {
 
-        testCamera = new Camera(1, new Location(),3, new Segment(2, 100,100));
+        testCamera = new Camera(1, new Location(),3, new Segment(2, 100,2));
         vehicle = new Vehicle("1-ABC-123","47.11.10-171.40",1);
         processedCameraMessage = new ProcessedCameraMessage(vehicle, testCamera, LocalDateTime.now());
-        fine = new Fine(1000.0, FineType.EMISSION, false, null, vehicle.getPlateId(), 2,1);
+        violation = new Violation(ViolationType.EMISSION, null, null, vehicle.getEuroNumber(), vehicle.getPlateId(), LocalDateTime.now(), 2, 1);
     }
 
     @After
@@ -53,45 +54,44 @@ public class ViolationTests {
         testCamera = null;
         vehicle = null;
         processedCameraMessage = null;
-        fine = null;
+        violation = null;
     }
 
     @Test
     public void testEmissionViolation() {
 
         // test violation detected
-        boolean isViolation = emissionViolation.detect(processedCameraMessage);
+        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage);
 
-        Assert.assertTrue(isViolation);
+        Assert.assertTrue(violationOptional.isPresent());
 
         // test no violation detected
         Vehicle testVehicleNoViolation = new Vehicle("1-ABC-123","47.11.10-171.40",3);
         processedCameraMessage.setVehicle(testVehicleNoViolation);
 
-        isViolation = emissionViolation.detect(processedCameraMessage);
+        violationOptional = emissionViolation.detect(processedCameraMessage);
 
-        Assert.assertFalse(isViolation);
+        Assert.assertFalse(violationOptional.isPresent());
     }
 
     /**
-     * Tests if a double violation within a given timeframe does not create a new fine.
+     * Tests if a double violation within a given timeframe does not create a new violation.
      */
     @Transactional
     @Test
     public void testDoubleEmissionViolation() {
 
-        fine.setCreationDate(LocalDateTime.now().minusHours(1));
-        fineService.save(fine);
+        violation.setCreationDate(LocalDateTime.now().minusHours(1));
+        violationService.save(violation);
 
-        // since we're testing if double emission violations get detected and prevented, this should be false
-        boolean isViolation = emissionViolation.detect(processedCameraMessage);
+        // since we're testing if double emission violations get detected and prevented
+        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage);
 
-        Assert.assertFalse(isViolation);
+        Assert.assertFalse(violationOptional.isPresent());
     }
 
     /**
-     * Tests if a double violation outside of a given timeframe does not create a new fine.
-     * Given timeframe might need some adjustments when changed (currently still hardcoded)
+     * Tests if a double violation outside of a given timeframe does not create a new violation.
      */
     @Transactional
     @Test
@@ -99,12 +99,12 @@ public class ViolationTests {
 
         int fixedTimeFrame = fineFactorService.loadFineFactor().getEmissionTimeFrameInHours();
 
-        fine.setCreationDate(LocalDateTime.now().minusHours(fixedTimeFrame + 1));
-        fineService.save(fine);
+        violation.setCreationDate(LocalDateTime.now().minusHours(fixedTimeFrame + 1));
+        violationService.save(violation);
 
-        // since we're testing if double emission violations get detected and prevented, this should be true
-        boolean isViolation = emissionViolation.detect(processedCameraMessage);
+        // since we're testing if double emission violations get detected and prevented
+        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage);
 
-        Assert.assertTrue(isViolation);
+        Assert.assertTrue(violationOptional.isPresent());
     }
 }

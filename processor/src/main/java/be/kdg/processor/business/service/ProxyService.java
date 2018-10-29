@@ -1,7 +1,7 @@
-package be.kdg.processor.service;
+package be.kdg.processor.business.service;
 
-import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.vehicle.Vehicle;
+import be.kdg.processor.business.domain.camera.Camera;
+import be.kdg.processor.business.domain.vehicle.Vehicle;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import be.kdg.processor.util.JSONMapperService;
 import be.kdg.sa.services.*;

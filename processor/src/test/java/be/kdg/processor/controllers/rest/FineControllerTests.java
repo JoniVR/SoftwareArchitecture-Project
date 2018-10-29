@@ -1,10 +1,11 @@
 package be.kdg.processor.controllers.rest;
 
 
-import be.kdg.processor.domain.fine.Fine;
-import be.kdg.processor.domain.fine.FineDTO;
-import be.kdg.processor.domain.fine.FineType;
-import be.kdg.processor.service.FineService;
+import be.kdg.processor.business.domain.fine.Fine;
+import be.kdg.processor.business.domain.fine.FineDTO;
+import be.kdg.processor.business.domain.violation.Violation;
+import be.kdg.processor.business.domain.violation.ViolationType;
+import be.kdg.processor.business.service.FineService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
@@ -48,7 +49,9 @@ public class FineControllerTests {
 
     @Before
     public void setUp() {
-        fine = new Fine(1L,10, FineType.EMISSION, false, null, "1-ABC-123", LocalDateTime.now(),1,2);
+
+        Violation violation = new Violation(ViolationType.EMISSION, null, null, 1, "1-ABC-123", LocalDateTime.now(), 1,2);
+        fine = new Fine(1L, 10, false, null, violation);
         fineDTO = modelMapper.map(fine, FineDTO.class);
     }
 

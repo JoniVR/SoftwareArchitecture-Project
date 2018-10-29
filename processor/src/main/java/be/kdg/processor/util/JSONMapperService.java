@@ -1,7 +1,7 @@
 package be.kdg.processor.util;
 
-import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.vehicle.Vehicle;
+import be.kdg.processor.business.domain.camera.Camera;
+import be.kdg.processor.business.domain.vehicle.Vehicle;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

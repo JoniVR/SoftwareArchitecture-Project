@@ -1,8 +1,8 @@
 package be.kdg.processor.controller.web;
 
-import be.kdg.processor.domain.fine.FineFactor;
-import be.kdg.processor.domain.fine.FineFactorDTO;
-import be.kdg.processor.service.FineFactorService;
+import be.kdg.processor.business.domain.fine.FineFactor;
+import be.kdg.processor.business.domain.fine.FineFactorDTO;
+import be.kdg.processor.business.service.FineFactorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

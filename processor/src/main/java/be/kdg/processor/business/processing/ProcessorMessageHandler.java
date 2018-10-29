@@ -1,14 +1,16 @@
 package be.kdg.processor.business.processing;
 
+import be.kdg.processor.business.domain.camera.Camera;
+import be.kdg.processor.business.domain.camera.CameraMessage;
+import be.kdg.processor.business.domain.camera.ProcessedCameraMessage;
+import be.kdg.processor.business.domain.fine.Fine;
+import be.kdg.processor.business.domain.vehicle.Vehicle;
+import be.kdg.processor.business.domain.violation.Violation;
+import be.kdg.processor.business.service.FineService;
+import be.kdg.processor.business.service.ProxyService;
+import be.kdg.processor.business.service.ViolationService;
 import be.kdg.processor.business.violation.ViolationStrategy;
-import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.camera.CameraMessage;
-import be.kdg.processor.domain.camera.ProcessedCameraMessage;
-import be.kdg.processor.domain.fine.Fine;
-import be.kdg.processor.domain.vehicle.Vehicle;
 import be.kdg.processor.exceptions.ObjectMappingException;
-import be.kdg.processor.service.FineService;
-import be.kdg.processor.service.ProxyService;
 import be.kdg.sa.services.CameraNotFoundException;
 import be.kdg.sa.services.InvalidLicensePlateException;
 import be.kdg.sa.services.LicensePlateNotFoundException;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Responsible for handling a detected cameraMessage once processed.
@@ -28,6 +31,9 @@ public class ProcessorMessageHandler {
 
     @Autowired
     private FineService fineService;
+
+    @Autowired
+    private ViolationService violationService;
 
     @Autowired
     private Collection<ViolationStrategy> listeners;
@@ -62,15 +68,25 @@ public class ProcessorMessageHandler {
 
     private void notifyListeners(ProcessedCameraMessage processedCameraMessage) {
 
+        Vehicle vehicle = processedCameraMessage.getVehicle();
+
         for (ViolationStrategy listener : listeners) {
-            boolean violationDetected = listener.detect(processedCameraMessage);
-            if (violationDetected) handleViolation(listener, processedCameraMessage);
+
+            Optional<Violation> violationOptional = listener.detect(processedCameraMessage);
+
+            violationOptional.ifPresent(violation -> {
+
+                LOGGER.info("Detected: {} for plate: {}, NN: {}, euroNr: {}", listener.getClass().getSimpleName(), vehicle.getPlateId(), vehicle.getNationalNumber(), vehicle.getEuroNumber());
+                violationService.save(violation);
+                LOGGER.info("Created: Violation and saved it to the database {}", violation);
+                handleViolation(listener, violation);
+            });
         }
     }
 
-    private void handleViolation(ViolationStrategy strategy, ProcessedCameraMessage processedCameraMessage) {
+    private void handleViolation(ViolationStrategy strategy, Violation violation) {
 
-        Fine fine = strategy.calculateFine(processedCameraMessage);
+        Fine fine = strategy.calculateFine(violation);
 
         // save fine
         fineService.save(fine);

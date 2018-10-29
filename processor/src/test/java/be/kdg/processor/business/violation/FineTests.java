@@ -1,12 +1,9 @@
 package be.kdg.processor.business.violation;
 
-import be.kdg.processor.domain.camera.Camera;
-import be.kdg.processor.domain.camera.Location;
-import be.kdg.processor.domain.camera.ProcessedCameraMessage;
-import be.kdg.processor.domain.camera.Segment;
-import be.kdg.processor.domain.fine.Fine;
-import be.kdg.processor.domain.fine.FineFactor;
-import be.kdg.processor.domain.vehicle.Vehicle;
+import be.kdg.processor.business.domain.fine.Fine;
+import be.kdg.processor.business.domain.fine.FineFactor;
+import be.kdg.processor.business.domain.violation.Violation;
+import be.kdg.processor.business.domain.violation.ViolationType;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,32 +22,27 @@ public class FineTests {
     @Autowired
     private EmissionViolation emissionViolation;
 
-    private Camera testCamera;
-    private Vehicle testVehicleViolation;
-    private ProcessedCameraMessage processedCameraMessage;
     private FineFactor fineFactor;
+    private Violation violation;
 
     @Before
     public void setUp() {
 
-        testCamera = new Camera(1, new Location(),3,null);
-        testVehicleViolation = new Vehicle("1-ABC-123","47.11.10-171.40",1);
-        processedCameraMessage = new ProcessedCameraMessage(testVehicleViolation, testCamera, LocalDateTime.now());
+        violation = new Violation(ViolationType.EMISSION, null, null, 3, "1-ABC-123,", LocalDateTime.now(), 1,2);
         fineFactor = new FineFactor();
     }
 
     @After
     public void tearDown() {
-        testCamera = null;
-        testVehicleViolation = null;
-        processedCameraMessage = null;
+
         fineFactor = null;
+        violation = null;
     }
 
     @Test
     public void testEmissionFineCalculation(){
 
-        Fine fine = emissionViolation.calculateFine(processedCameraMessage);
+        Fine fine = emissionViolation.calculateFine(violation);
 
         Assert.assertNotNull("Fine is null.", fine);
 

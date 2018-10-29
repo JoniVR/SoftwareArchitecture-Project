@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides a link between message generation/source and the Messenger.
@@ -32,6 +33,7 @@ public class Simulator implements CommandLineRunner {
     @Autowired
     private Messenger messenger;
 
+    //FIXME: not exiting by itself.
     // Executed at startup
     @Retryable(value = {AmqpException.class, IOException.class, InterruptedException.class, IllegalArgumentException.class}, backoff = @Backoff(delay = 5000))
     @Override
@@ -41,7 +43,7 @@ public class Simulator implements CommandLineRunner {
 
         while ((cameraMessage.isPresent())) {
 
-            LOGGER.info("A message was generated: " + cameraMessage.get());
+            LOGGER.info("A message was generated: " + cameraMessage.get()+ "SLEEP: "+cameraMessage.get().getDelay());
             Thread.sleep(cameraMessage.get().getDelay());
             messenger.sendMessage(cameraMessage.get());
 

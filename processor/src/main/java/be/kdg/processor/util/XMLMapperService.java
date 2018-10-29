@@ -1,6 +1,6 @@
 package be.kdg.processor.util;
 
-import be.kdg.processor.domain.camera.CameraMessage;
+import be.kdg.processor.business.domain.camera.CameraMessage;
 import be.kdg.processor.exceptions.ObjectMappingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;

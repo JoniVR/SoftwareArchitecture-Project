@@ -1,10 +1,9 @@
-package be.kdg.processor.domain.fine;
+package be.kdg.processor.business.domain.fine;
 
+import be.kdg.processor.business.domain.violation.Violation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,8 +13,5 @@ public class FineDTO {
     private double amount;
     private boolean isApproved;
     private String comments;
-    private String licensePlate;
-    private LocalDateTime creationDate;
-    private int cameraId;
-    private int connectedCameraId;
+    private Violation violation;
 }
