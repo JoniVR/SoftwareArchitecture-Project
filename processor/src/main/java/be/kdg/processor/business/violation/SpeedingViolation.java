@@ -12,14 +12,13 @@ import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class SpeedingViolation implements ViolationStrategy {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpeedingViolation.class);
 
     @Autowired
     private PassiveExpiringMap<String, List<ProcessedCameraMessage>> bufferedSpeedCameraMessages;
@@ -42,14 +41,7 @@ public class SpeedingViolation implements ViolationStrategy {
                 if (previousCamera.getSegment() != null
                         && previousCamera.getSegment().getConnectedCameraId() == camera.getId()) {
 
-                    double ms = ChronoUnit.MILLIS.between(previousMessage.getTimeStamp(), processedCameraMessage.getTimeStamp());
-                    LOGGER.warn("MS: "+ms);
-                    double seconds = ms / 1000;
-                    LOGGER.warn("SECONDS: "+seconds);
-                    // convert m/s -> km/h
-                    double speed = (previousCamera.getSegment().getDistance()/seconds) * 3.6;
-                    LOGGER.warn("ALLOWED: "+ previousCamera.getSegment().getSpeedLimit());
-                    LOGGER.warn("SPEED: "+speed);
+                    double speed = calculateSpeed(previousMessage, processedCameraMessage);
 
                     if (speed > previousCamera.getSegment().getSpeedLimit()){
                         return Optional.of(new Violation(
@@ -81,5 +73,16 @@ public class SpeedingViolation implements ViolationStrategy {
         double fineAmount = (violation.getSpeed() - violation.getSpeedLimit()) * fineFactor.getSpeedFactor();
 
         return new Fine(fineAmount, false, null, violation);
+    }
+
+    private double calculateSpeed(ProcessedCameraMessage previousMessage, ProcessedCameraMessage processedMessage){
+
+        Camera previousCamera = previousMessage.getCamera();
+
+        double ms = ChronoUnit.MICROS.between(previousMessage.getTimeStamp(), processedMessage.getTimeStamp());
+        double seconds = ms / 1000000;
+
+        // convert m/s -> km/h + return
+        return (previousCamera.getSegment().getDistance()/seconds) * 3.6;
     }
 }

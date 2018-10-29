@@ -1,6 +1,6 @@
 package be.kdg.simulator.business.messenger;
 
-import be.kdg.simulator.domain.CameraMessage;
+import be.kdg.simulator.business.domain.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

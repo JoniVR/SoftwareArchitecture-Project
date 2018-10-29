@@ -1,6 +1,6 @@
 package be.kdg.simulator.business.messenger;
 
-import be.kdg.simulator.domain.CameraMessage;
+import be.kdg.simulator.business.domain.CameraMessage;
 import org.springframework.amqp.AmqpException;
 
 import java.io.IOException;

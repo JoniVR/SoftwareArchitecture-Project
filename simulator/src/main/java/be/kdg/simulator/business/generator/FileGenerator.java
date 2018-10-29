@@ -1,7 +1,8 @@
 package be.kdg.simulator.business.generator;
 
-import be.kdg.simulator.domain.CameraMessage;
+import be.kdg.simulator.business.domain.CameraMessage;
 import com.opencsv.CSVReader;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;

@@ -1,6 +1,6 @@
 package be.kdg.simulator.business.generator;
 
-import be.kdg.simulator.domain.CameraMessage;
+import be.kdg.simulator.business.domain.CameraMessage;
 
 import java.io.IOException;
 import java.util.Optional;

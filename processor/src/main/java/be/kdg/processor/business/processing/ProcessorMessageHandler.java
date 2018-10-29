@@ -68,15 +68,13 @@ public class ProcessorMessageHandler {
 
     private void notifyListeners(ProcessedCameraMessage processedCameraMessage) {
 
-        Vehicle vehicle = processedCameraMessage.getVehicle();
-
         for (ViolationStrategy listener : listeners) {
 
             Optional<Violation> violationOptional = listener.detect(processedCameraMessage);
 
             violationOptional.ifPresent(violation -> {
 
-                LOGGER.info("Detected: {} for plate: {}, NN: {}, euroNr: {}", listener.getClass().getSimpleName(), vehicle.getPlateId(), vehicle.getNationalNumber(), vehicle.getEuroNumber());
+                LOGGER.info("Detected: {} for plate: {}, NN: {}, euroNr: {}", listener.getClass().getSimpleName(), violation.getLicensePlate(), violation.getEuroNorm());
                 violationService.save(violation);
                 LOGGER.info("Created: Violation and saved it to the database {}", violation);
                 handleViolation(listener, violation);

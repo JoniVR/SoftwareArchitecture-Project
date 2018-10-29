@@ -2,7 +2,7 @@ package be.kdg.simulator.business.simulation;
 
 import be.kdg.simulator.business.generator.MessageGenerator;
 import be.kdg.simulator.business.messenger.Messenger;
-import be.kdg.simulator.domain.CameraMessage;
+import be.kdg.simulator.business.domain.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Provides a link between message generation/source and the Messenger.

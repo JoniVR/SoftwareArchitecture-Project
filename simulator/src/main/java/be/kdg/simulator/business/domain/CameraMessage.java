@@ -1,4 +1,4 @@
-package be.kdg.simulator.domain;
+package be.kdg.simulator.business.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
