@@ -30,10 +30,6 @@ public class ViolationService {
 
         Optional<Violation> optionalViolation = violationRepository.findById(id);
 
-        if (optionalViolation.isPresent()){
-            return optionalViolation.get();
-        } else {
-            throw new ViolationException("Violation not Found.");
-        }
+        return optionalViolation.orElseThrow(() -> new ViolationException("Violation not found."));
     }
 }

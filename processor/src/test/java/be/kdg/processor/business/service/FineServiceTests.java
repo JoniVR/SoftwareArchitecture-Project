@@ -45,7 +45,6 @@ public class FineServiceTests {
 
         testCamera = null;
         vehicle = null;
-
         fineToSave = null;
     }
 

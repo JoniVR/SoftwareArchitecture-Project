@@ -9,8 +9,6 @@ import be.kdg.processor.business.domain.violation.Violation;
 import be.kdg.processor.business.domain.violation.ViolationType;
 import be.kdg.processor.business.service.FineFactorService;
 import org.apache.commons.collections4.map.PassiveExpiringMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.temporal.ChronoUnit;

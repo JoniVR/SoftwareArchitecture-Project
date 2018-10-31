@@ -57,4 +57,6 @@ dependencies {
 	compile('org.webjars:jquery:3.0.0')
 	// OTHER
 	compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
+	// SECURITY
+    compile 'org.springframework.boot:spring-boot-starter-security'
 }

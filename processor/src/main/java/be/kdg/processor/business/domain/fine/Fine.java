@@ -2,6 +2,7 @@ package be.kdg.processor.business.domain.fine;
 
 import be.kdg.processor.business.domain.violation.Violation;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.OneToOne;
 
 @Data
 @Entity
+@Builder
 @AllArgsConstructor
 public class Fine {
 

@@ -7,6 +7,7 @@ import be.kdg.processor.util.JSONMapperService;
 import be.kdg.sa.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
  * This class is responsible for reaching out
  * to external services and adapting their results to the correct objects.
  */
+@EnableCaching
 public class ProxyService {
 
     @Autowired

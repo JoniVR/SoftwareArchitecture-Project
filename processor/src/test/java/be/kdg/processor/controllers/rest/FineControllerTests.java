@@ -8,6 +8,7 @@ import be.kdg.processor.business.domain.violation.ViolationType;
 import be.kdg.processor.business.service.FineService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FineControllerTests {
 
     @Autowired
+    private FineService fineService;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -41,9 +45,6 @@ public class FineControllerTests {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private FineService fineService;
-
     private Fine fine;
     private FineDTO fineDTO;
 
@@ -51,7 +52,9 @@ public class FineControllerTests {
     public void setUp() {
 
         Violation violation = new Violation(ViolationType.EMISSION, null, null, 1, "1-ABC-123", LocalDateTime.now(), 1,2);
-        fine = new Fine(1L, 10, false, null, violation);
+
+        fine = new Fine(10, false, null, violation);
+
         fineDTO = modelMapper.map(fine, FineDTO.class);
     }
 
@@ -61,19 +64,21 @@ public class FineControllerTests {
         fineDTO = null;
     }
 
+
     @Transactional
     @Test
     public void testUpdateFineApproved() throws Exception {
 
-        // setup data to change
         fineService.save(fine);
 
         String requestJSON = objectMapper.writeValueAsString(fineDTO);
 
-        mockMvc.perform(put("/api/fines/{id}", 1L).param("isApproved", "true")
+        mockMvc.perform(put("/api/fines/{id}", fine.getId()).param("isApproved", "true")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJSON))
                 .andExpect(status().isAccepted())
                 .andExpect(content().string(containsString("true")));
+
+        Assert.assertTrue(true);
     }
 }
