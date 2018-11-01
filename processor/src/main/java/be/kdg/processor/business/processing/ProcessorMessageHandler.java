@@ -75,7 +75,7 @@ public class ProcessorMessageHandler {
             violationOptional.ifPresent(violation -> {
 
                 LOGGER.info("Detected: {} for plate: {}, NN: {}, euroNr: {}", listener.getClass().getSimpleName(), violation.getLicensePlate(), violation.getEuroNorm());
-                violationService.save(violation);
+                violationService.addViolation(violation);
                 LOGGER.info("Created: Violation and saved it to the database {}", violation);
                 handleViolation(listener, violation);
             });

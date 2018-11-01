@@ -61,10 +61,10 @@ public class ViolationServiceTests {
     @Test
     public void testLoadLatestViolationFrom() {
 
-        violationService.save(violation);
-        violationService.save(violation1);
-        violationService.save(violation2);
-        violationService.save(violation3);
+        violationService.addViolation(violation);
+        violationService.addViolation(violation1);
+        violationService.addViolation(violation2);
+        violationService.addViolation(violation3);
 
         Optional<Violation> violationOptional = violationService.loadLatestViolationFrom(vehicle.getPlateId());
 

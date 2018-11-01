@@ -7,9 +7,10 @@ import java.util.Set;
 @Data
 public class UserDTO {
 
+    private Long id;
     private String email;
     private String name;
-    private String lasteName;
+    private String lastName;
     private String password;
     private boolean isActive;
     private Set<Role> roles;

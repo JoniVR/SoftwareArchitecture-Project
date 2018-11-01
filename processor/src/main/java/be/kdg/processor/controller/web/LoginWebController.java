@@ -3,6 +3,8 @@ package be.kdg.processor.controller.web;
 import be.kdg.processor.business.domain.user.User;
 import be.kdg.processor.business.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,14 +39,14 @@ public class LoginWebController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        Optional<User> userExists = userService.loadByEmail(user.getEmail());
+        Optional<User> userExists = userService.loadUserByEmail(user.getEmail());
 
         userExists.ifPresent(actualUser -> bindingResult.rejectValue("email", "error.user", "A user with this email already exists."));
 
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
-            userService.save(user);
+            userService.addUser(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("registration");
@@ -53,16 +55,14 @@ public class LoginWebController {
     }
 
     //FIXME: optional beter afhandelen
-    /*
     @RequestMapping(value = "/user/home", method = RequestMethod.GET)
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.loadByEmail(auth.getName()).get();
+        User user = userService.loadUserByEmail(auth.getName()).get();
         modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
         modelAndView.setViewName("user/home");
         return modelAndView;
     }
-    */
 }

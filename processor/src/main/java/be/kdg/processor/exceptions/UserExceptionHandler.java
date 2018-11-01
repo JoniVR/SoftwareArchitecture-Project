@@ -9,10 +9,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class FineExceptionHandler extends ResponseEntityExceptionHandler {
+public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = { FineException.class })
-    protected ResponseEntity<?> handleFineNotFound(RuntimeException ex, WebRequest request) {
+    @ExceptionHandler(value = { UserException.class })
+    protected ResponseEntity<?> handleUserNotFound(RuntimeException ex, WebRequest request) {
 
         return handleExceptionInternal(ex, "Fine not found.", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }

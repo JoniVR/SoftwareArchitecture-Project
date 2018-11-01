@@ -64,7 +64,6 @@ public class FineControllerTests {
         fineDTO = null;
     }
 
-
     @Transactional
     @Test
     public void testUpdateFineApproved() throws Exception {

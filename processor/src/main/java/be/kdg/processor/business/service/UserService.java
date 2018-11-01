@@ -2,7 +2,7 @@ package be.kdg.processor.business.service;
 
 import be.kdg.processor.business.domain.user.Role;
 import be.kdg.processor.business.domain.user.User;
-import be.kdg.processor.exceptions.UserNotFoundException;
+import be.kdg.processor.exceptions.UserException;
 import be.kdg.processor.persistence.RoleRepository;
 import be.kdg.processor.persistence.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,31 +35,45 @@ public class UserService implements UserDetailsService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public User save(User user) {
+    public User addUser(User user) {
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        Role userRole = roleRepository.findByRole("ADMIN");
-        user.setRoles(new HashSet<>(Collections.singletonList(userRole)));
+        user.setRoles(Set.of(new Role("ADMIN")));
         return userRepository.save(user);
     }
 
-    public User load(Long id) throws UserNotFoundException {
+    public User changeUser(User user) {
+
+        return this.addUser(user);
+    }
+
+    public User loadUser(Long id) throws UserException {
 
         Optional<User> userOptional = userRepository.findById(id);
 
-        return userOptional.orElseThrow(() -> new UserNotFoundException("User not found."));
+        return userOptional.orElseThrow(() -> new UserException("User not found."));
     }
 
-    public boolean delete(Long id) throws UserNotFoundException {
+    public List<User> loadAllWithRole(String role) {
+
+        return userRepository.findAllByRolesContaining(role);
+    }
+
+    public List<User> loadAllUsers() {
+
+        return userRepository.findAll();
+    }
+
+    public boolean deleteUser(Long id) throws UserException {
 
         Optional<User> account = userRepository.findById(id);
         if (account.isPresent()) {
             userRepository.delete(account.get());
             return true;
-        } else throw new UserNotFoundException("User not found");
+        } else throw new UserException("User not found");
     }
 
-    public Optional<User> loadByEmail(String email) {
+    public Optional<User> loadUserByEmail(String email) {
 
         return userRepository.findByEmail(email);
     }
@@ -73,19 +87,22 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("Username not found.");
         } else {
             User user = optionalUser.get();
-            return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+            return new org.springframework.security.core.userdetails.User(user.getName() +" "+user.getLastName(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
         }
     }
 
+    // Set up some default users
     @PostConstruct
-    private void init() {
-        HashSet hashSet = new HashSet();
-        hashSet.add(new Role("ADMIN"));
-        User demoUser = new User("joni.vr@hotmail.com", bCryptPasswordEncoder.encode("password"), "joni", "van roost", true, hashSet);
+    public void init() {
+
+        User demoUser = new User("joni.vr@hotmail.com", bCryptPasswordEncoder.encode("password"), "joni", "van roost", true, Set.of(new Role("ADMIN")));
 
         if (!userRepository.findByEmail("joni.vr@hotmail.com").isPresent()) {
             userRepository.save(demoUser);
         }
+
+        roleRepository.save(new Role("ADMIN"));
+        roleRepository.save(new Role("USER"));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {

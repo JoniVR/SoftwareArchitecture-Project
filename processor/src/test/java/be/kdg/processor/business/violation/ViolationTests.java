@@ -82,7 +82,7 @@ public class ViolationTests {
     public void testDoubleEmissionViolation() {
 
         violation.setCreationDate(LocalDateTime.now().minusHours(1));
-        violationService.save(violation);
+        violationService.addViolation(violation);
 
         // since we're testing if double emission violations get detected and prevented
         Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage);
@@ -100,7 +100,7 @@ public class ViolationTests {
         int fixedTimeFrame = fineFactorService.loadFineFactor().getEmissionTimeFrameInHours();
 
         violation.setCreationDate(LocalDateTime.now().minusHours(fixedTimeFrame + 1));
-        violationService.save(violation);
+        violationService.addViolation(violation);
 
         // since we're testing if double emission violations get detected and prevented
         Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage);

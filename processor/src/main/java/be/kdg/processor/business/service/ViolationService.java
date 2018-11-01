@@ -16,7 +16,7 @@ public class ViolationService {
     @Autowired
     private ViolationRepository violationRepository;
 
-    public Violation save(Violation violation) {
+    public Violation addViolation(Violation violation) {
 
         return violationRepository.save(violation);
     }
@@ -26,10 +26,8 @@ public class ViolationService {
         return violationRepository.findFirstByLicensePlateOrderByCreationDateDesc(licensePlate);
     }
 
-    public Violation load(Long id) throws ViolationException {
+    public Violation loadViolation(Long id) throws ViolationException {
 
-        Optional<Violation> optionalViolation = violationRepository.findById(id);
-
-        return optionalViolation.orElseThrow(() -> new ViolationException("Violation not found."));
+        return violationRepository.findById(id).orElseThrow(() -> new ViolationException("Violation not found."));
     }
 }

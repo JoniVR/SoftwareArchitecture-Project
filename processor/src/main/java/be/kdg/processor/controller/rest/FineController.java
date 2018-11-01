@@ -30,11 +30,10 @@ public class FineController {
      * @param fromDate The date from which we should start filtering. Format: yyyy-MM-dd'T'HH:mm:ss
      * @param toDate The date at which we should stop filtering. Format: yyyy-MM-dd'T'HH:mm:ss
      * @return A list of filtered fines.
-     * @throws FineException In case no fines were found this will throw a FineException.
      */
     @GetMapping("/fines/")
     public List<FineDTO> getFinesBetween(@RequestParam("from") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") LocalDateTime fromDate,
-                                         @RequestParam("to") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") LocalDateTime toDate) throws FineException {
+                                         @RequestParam("to") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") LocalDateTime toDate) {
 
         List<Fine> fines = fineService.loadAllBetween(fromDate, toDate);
 
