@@ -52,6 +52,10 @@ public class UserControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private User user1;
+    private User user2;
+    private User user3;
+
     @Before
     public void setUp() {
 
@@ -60,41 +64,41 @@ public class UserControllerTests {
         // Not using injection because that would trigger the @PostConstruct and mess with the data.
         userControllerUnderTest = new UserController(userServiceUnderTest, modelMapper);
         mockMvc = MockMvcBuilders.standaloneSetup(userControllerUnderTest).build();
-    }
 
-    @Transactional
-    @Test
-    public void testGetAllUsers() throws Exception {
-
-        User user1 = User.builder()
+        user1 = User.builder()
                 .id(1L)
                 .name("Joni")
                 .lastName("Van Roost")
                 .password("password")
                 .email("joni.vr@hotmail.com")
-                .roles(Set.of(new Role(1L, "ADMIN")))
+                .roles(Set.of(new Role("ADMIN")))
                 .active(true)
                 .build();
 
-        User user2 = User.builder()
+        user2 = User.builder()
                 .id(2L)
                 .name("Inoj")
                 .lastName("Tsoor Nav")
                 .password("password")
                 .email("inoj.sn@hotmail.com")
-                .roles(Set.of(new Role(2L, "ADMIN")))
+                .roles(Set.of(new Role("USER")))
                 .active(true)
                 .build();
 
-        User user3 = User.builder()
+        user3 = User.builder()
                 .id(3L)
                 .name("Steve")
                 .lastName("Jobs")
                 .password("password")
                 .email("sjobs@apple.com")
-                .roles(Set.of(new Role(1L, "ADMIN")))
+                .roles(Set.of(new Role("ADMIN")))
                 .active(true)
                 .build();
+    }
+
+    @Transactional
+    @Test
+    public void testGetAllUsers() throws Exception {
 
         Mockito.when(userServiceUnderTest.loadAllUsers())
                 .thenReturn(List.of(user1, user2, user3));
@@ -112,7 +116,7 @@ public class UserControllerTests {
     @Test
     public void testCreateUser() throws Exception {
 
-        User userToCreate = new User(1L,"test@test.com", "password","joni","van roost", true, Set.of(new Role(1L,"ADMIN")));
+        User userToCreate = new User(1L,"test@test.com", "password","joni","van roost", true, Set.of(new Role("ADMIN")));
 
         Mockito.when(userServiceUnderTest.addUser(userToCreate))
                 .thenReturn(userToCreate);

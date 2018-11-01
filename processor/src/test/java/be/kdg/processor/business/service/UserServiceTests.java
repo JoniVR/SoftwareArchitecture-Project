@@ -62,12 +62,6 @@ public class UserServiceTests {
         Mockito.when(mockUserRepository.findById(any()))
                 .thenReturn(Optional.of(user));
 
-        Mockito.when(mockUserRepository.findAllByRolesContaining("USER"))
-                .thenReturn(List.of(user));
-
-        Mockito.when(mockUserRepository.findAllByRolesContaining("ADMIN"))
-                .thenReturn(List.of());
-
         Mockito.when(mockUserRepository.findAll())
                 .thenReturn(List.of(user));
 
@@ -149,19 +143,6 @@ public class UserServiceTests {
         List<User> result = userServiceUnderTest.loadAllUsers();
 
         assertEquals(1, result.size());
-    }
-
-    @Test
-    @Transactional
-    public void loadAllUsersWithRole() {
-
-        // Run the test
-        List<User> resultNoValues = userServiceUnderTest.loadAllWithRole("ADMIN");
-        List<User> resultValues = userServiceUnderTest.loadAllWithRole("USER");
-
-        // Verify the results
-        assertEquals(0, resultNoValues.size());
-        assertEquals(1, resultValues.size());
     }
 
     @Test

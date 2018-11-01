@@ -32,22 +32,6 @@ public class UserController {
         return users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/users/user/")
-    public List<UserDTO> getAllUsersOfTypeUser() {
-
-        List<User> users = userService.loadAllWithRole("USER");
-
-        return users.stream().map(entity -> modelMapper.map(entity, UserDTO.class)).collect(Collectors.toList());
-    }
-
-    @GetMapping(value = "/users/admin/")
-    public List<UserDTO> getAllUsersOfTypeAdmin() {
-
-        List<User> users = userService.loadAllWithRole("ADMIN");
-
-        return users.stream().map(entity -> modelMapper.map(entity, UserDTO.class)).collect(Collectors.toList());
-    }
-
     @PostMapping(value = "/users/")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
 

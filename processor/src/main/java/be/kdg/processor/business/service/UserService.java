@@ -54,11 +54,6 @@ public class UserService implements UserDetailsService {
         return userOptional.orElseThrow(() -> new UserException("User not found."));
     }
 
-    public List<User> loadAllWithRole(String role) {
-
-        return userRepository.findAllByRolesContaining(role);
-    }
-
     public List<User> loadAllUsers() {
 
         return userRepository.findAll();
