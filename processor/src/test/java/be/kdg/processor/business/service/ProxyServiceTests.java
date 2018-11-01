@@ -25,7 +25,7 @@ public class ProxyServiceTests {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
 
-    @Test
+    @Test(expected = IOException.class)
     public void testCameraService() throws IOException, ObjectMappingException {
 
         Camera camera = proxyService.getCameraObject(2);
@@ -34,14 +34,10 @@ public class ProxyServiceTests {
         Assert.assertNotNull(camera);
         Assert.assertEquals(2, camera.getId());
 
-        // Test for util to throw correct exception
-        thrown.expect(IOException.class);
-        thrown.expectMessage("Camera ID 101 forced a communication error for testing purposes");
-
         proxyService.getCameraObject(101);
     }
 
-    @Test
+    @Test(expected = InvalidLicensePlateException.class)
     public void testLicensePlateService() throws IOException, ObjectMappingException {
 
         String correctPlate = "1-ABC-123";
@@ -52,9 +48,6 @@ public class ProxyServiceTests {
         Assert.assertNotNull(vehicle);
         Assert.assertEquals(vehicle.getPlateId(), correctPlate);
 
-        // Test incorrect plate (exception)
-        thrown.expect(InvalidLicensePlateException.class);
-        thrown.expectMessage("Plate  id "+ incorrectPlate +" is invalid");
         proxyService.getVehicleObject(incorrectPlate);
     }
 }

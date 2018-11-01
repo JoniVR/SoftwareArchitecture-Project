@@ -81,7 +81,7 @@ public class UserService implements UserDetailsService {
     private void init() {
         HashSet hashSet = new HashSet();
         hashSet.add(new Role("ADMIN"));
-        User demoUser = new User("joni.VR@hotmail.com", bCryptPasswordEncoder.encode("password"), "joni", "van roost", true, hashSet);
+        User demoUser = new User("joni.vr@hotmail.com", bCryptPasswordEncoder.encode("password"), "joni", "van roost", true, hashSet);
 
         if (!userRepository.findByEmail("joni.vr@hotmail.com").isPresent()) {
             userRepository.save(demoUser);

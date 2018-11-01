@@ -14,10 +14,12 @@ public interface ViolationStrategy {
 
     /**
      * This method will detect if a violation has occured of the specific strategy.
-     * If the violation did occur, it will return a Violation of the optional type.
+     * If the violation did occur, it will return a Violation of the optional type and the ProcessorMessageHandler
+     * will pass this violation to the calculateFine() method.
      * If the violation did not occur, it will return an empty optional.
      * @param processedCameraMessage The CameraMessage that was processed by the Processor.
-     * @return An optional Violation.
+     * @return An optional Violation, if this violation is not Optional.empty(), the ProcessorMessageHandler
+     * will automatically save the fine and call the calculateFine() method below.
      */
     Optional<Violation> detect(ProcessedCameraMessage processedCameraMessage);
 
