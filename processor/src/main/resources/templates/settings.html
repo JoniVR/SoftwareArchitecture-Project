@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <head>
-        <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
-
-        <!-- Scripts -->
-        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-        <meta charset="UTF-8">
-        <title>Welcome</title>
-    </head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Settings</title>
 <body>
 
 <div class="container">
     <div class="col-12 text-center">
-        <form method="post" action="/settings/finefactor" th:object="${settingsDTO}">
+        <form method="post" action="/settings" th:object="${settingsDTO}">
             <div class="row">
-                <label for="fine_factor" class="col-form-label">Emission Factor</label>
-                <input th:value="*{emissionFactor}" th:field="*{emissionFactor}" id="fine_factor" class="form-control"
+                <label for="emission_factor" class="col-form-label">Emission Factor</label>
+                <input th:value="*{emissionFactor}" th:field="*{emissionFactor}" id="emission_factor" class="form-control"
                        type="text">
             </div>
             <div class="row">

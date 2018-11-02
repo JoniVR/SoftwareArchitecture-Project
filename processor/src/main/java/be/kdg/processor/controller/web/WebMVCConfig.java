@@ -16,6 +16,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/index").setViewName("index");
         registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/settings").setViewName("settings");
         registry.addViewController("/registration").setViewName("registration");
     }
 

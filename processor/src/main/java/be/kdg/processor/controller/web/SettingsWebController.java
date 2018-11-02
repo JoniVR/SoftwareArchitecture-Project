@@ -13,29 +13,28 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/settings")
-public class FineFactorWebController {
+public class SettingsWebController {
 
     @Autowired
     private SettingsService settingsService;
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("/finefactor")
-    public ModelAndView showFineFactorForm() {
+    @GetMapping
+    public ModelAndView showSettings() {
 
         Settings settings = settingsService.loadSettings();
         settingsDTO settingsDTO = modelMapper.map(settings, settingsDTO.class);
 
-        return new ModelAndView("finefactorform", "fineFactorDTO", settingsDTO);
+        return new ModelAndView("settings", "settingsDTO", settingsDTO);
     }
 
-    @PostMapping("/finefactor")
-    public ModelAndView saveFineFactor(settingsDTO settingsDTO) {
+    @PostMapping
+    public ModelAndView saveSettings(settingsDTO settingsDTO) {
 
         Settings settings = modelMapper.map(settingsDTO, Settings.class);
-        settings.setId(1L);
         settingsService.updateSettings(settings);
 
-        return new ModelAndView("finefactorform", "fineFactorDTO", settingsDTO);
+        return new ModelAndView("settings", "settingsDTO", settingsDTO);
     }
 }
