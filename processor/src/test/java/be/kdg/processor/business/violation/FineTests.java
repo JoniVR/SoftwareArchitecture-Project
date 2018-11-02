@@ -22,13 +22,16 @@ public class FineTests {
     @Autowired
     private EmissionViolation emissionViolation;
 
+    @Autowired
+    private SpeedingViolation speedingViolation;
+
     private FineFactor fineFactor;
     private Violation violation;
 
     @Before
     public void setUp() {
 
-        violation = new Violation(ViolationType.EMISSION, null, null, 3, "1-ABC-123,", LocalDateTime.now(), 1,2);
+        violation = new Violation(ViolationType.EMISSION, 100.0, 70, 3, "1-ABC-123,", LocalDateTime.now(), 1,2);
         fineFactor = new FineFactor();
     }
 
@@ -49,5 +52,16 @@ public class FineTests {
         // test amount
         double amount = fineFactor.getEmissionFactor();
         Assert.assertEquals("Fine price is not equal.",fine.getAmount(), amount,0);
+    }
+
+    @Test
+    public void testSpeedingFineCalculation() {
+
+        Fine fine = speedingViolation.calculateFine(violation);
+
+        Assert.assertNotNull(fine);
+
+        double amount = (violation.getSpeed() - violation.getSpeedLimit()) * fineFactor.getSpeedFactor();
+        Assert.assertEquals(amount, fine.getAmount(),0);
     }
 }

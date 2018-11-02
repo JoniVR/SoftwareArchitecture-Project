@@ -59,7 +59,6 @@ public class UserRepositoryTests {
                 .roles(Set.of(new Role("USER")))
                 .build();
 
-
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);

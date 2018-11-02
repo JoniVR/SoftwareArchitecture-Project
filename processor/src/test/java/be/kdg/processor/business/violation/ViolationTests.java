@@ -30,30 +30,35 @@ public class ViolationTests {
     private EmissionViolation emissionViolation;
 
     @Autowired
+    private SpeedingViolation speedingViolation;
+
+    @Autowired
     private ViolationService violationService;
 
     @Autowired
     private FineFactorService fineFactorService;
 
-    private Camera testCamera;
+    private Camera testCamera1;
+    private Camera testCamera2;
     private Vehicle vehicle;
-    private ProcessedCameraMessage processedCameraMessage;
+    private ProcessedCameraMessage processedCameraMessage1;
+    private ProcessedCameraMessage processedCameraMessage2;
     private Violation violation;
 
     @Before
     public void setUp() {
 
-        testCamera = new Camera(1, new Location(),3, new Segment(2, 100,2));
-        vehicle = new Vehicle("1-ABC-123","47.11.10-171.40",1);
-        processedCameraMessage = new ProcessedCameraMessage(vehicle, testCamera, LocalDateTime.now());
+        testCamera1 = new Camera(1, new Location(), 3, new Segment(1000, 100, 2));
+        vehicle = new Vehicle("1-ABC-123", "47.11.10-171.40", 1);
+        processedCameraMessage1 = new ProcessedCameraMessage(vehicle, testCamera1, LocalDateTime.now());
         violation = new Violation(ViolationType.EMISSION, null, null, vehicle.getEuroNumber(), vehicle.getPlateId(), LocalDateTime.now(), 2, 1);
     }
 
     @After
-    public void tearDown(){
-        testCamera = null;
+    public void tearDown() {
+        testCamera1 = null;
         vehicle = null;
-        processedCameraMessage = null;
+        processedCameraMessage1 = null;
         violation = null;
     }
 
@@ -61,15 +66,15 @@ public class ViolationTests {
     public void testEmissionViolation() {
 
         // test violation detected
-        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage);
+        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage1);
 
         Assert.assertTrue(violationOptional.isPresent());
 
         // test no violation detected
-        Vehicle testVehicleNoViolation = new Vehicle("1-ABC-123","47.11.10-171.40",3);
-        processedCameraMessage.setVehicle(testVehicleNoViolation);
+        Vehicle testVehicleNoViolation = new Vehicle("1-ABC-123", "47.11.10-171.40", 3);
+        processedCameraMessage1.setVehicle(testVehicleNoViolation);
 
-        violationOptional = emissionViolation.detect(processedCameraMessage);
+        violationOptional = emissionViolation.detect(processedCameraMessage1);
 
         Assert.assertFalse(violationOptional.isPresent());
     }
@@ -85,7 +90,7 @@ public class ViolationTests {
         violationService.addViolation(violation);
 
         // since we're testing if double emission violations get detected and prevented
-        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage);
+        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage1);
 
         Assert.assertFalse(violationOptional.isPresent());
     }
@@ -103,8 +108,28 @@ public class ViolationTests {
         violationService.addViolation(violation);
 
         // since we're testing if double emission violations get detected and prevented
-        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage);
+        Optional<Violation> violationOptional = emissionViolation.detect(processedCameraMessage1);
 
         Assert.assertTrue(violationOptional.isPresent());
+    }
+
+    @Test
+    @Transactional
+    public void testSpeedingViolation() {
+
+        testCamera2 = new Camera(2, new Location(), 3, null);
+        processedCameraMessage2 = new ProcessedCameraMessage(vehicle, testCamera2, processedCameraMessage1.getTimeStamp().plusSeconds(1));
+
+        // We need to run a first message to the detection method because it needs to be buffered first
+        speedingViolation.detect(processedCameraMessage1);
+        Optional<Violation> violationOptional1 = speedingViolation.detect(processedCameraMessage2);
+
+        Assert.assertTrue(violationOptional1.isPresent());
+
+        // Test if not a violation
+        processedCameraMessage2.setTimeStamp(processedCameraMessage1.getTimeStamp().plusHours(10));
+        Optional<Violation> violationOptional2 = speedingViolation.detect(processedCameraMessage2);
+
+        Assert.assertFalse(violationOptional2.isPresent());
     }
 }
