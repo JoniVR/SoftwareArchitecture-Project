@@ -17,6 +17,7 @@ import be.kdg.sa.services.LicensePlateNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -66,7 +67,7 @@ public class ProcessorMessageHandler {
         notifyListeners(processedCameraMessage);
     }
 
-    private void notifyListeners(ProcessedCameraMessage processedCameraMessage) {
+    private void notifyListeners(ProcessedCameraMessage processedCameraMessage) throws DataAccessException {
 
         for (ViolationStrategy listener : listeners) {
 
@@ -82,7 +83,7 @@ public class ProcessorMessageHandler {
         }
     }
 
-    private void handleViolation(ViolationStrategy strategy, Violation violation) {
+    private void handleViolation(ViolationStrategy strategy, Violation violation) throws DataAccessException {
 
         Fine fine = strategy.calculateFine(violation);
 
