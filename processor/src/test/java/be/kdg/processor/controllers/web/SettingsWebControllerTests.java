@@ -21,11 +21,11 @@ public class SettingsWebControllerTests {
     private MockMvc mockMvc;
 
     @Test
-    public void loadFineFactors() throws Exception {
+    public void loadSettings() throws Exception {
 
-        mockMvc.perform(get("/settings/finefactor"))
+        mockMvc.perform(get("/settings"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("finefactorform"))
+                .andExpect(view().name("settings"))
                 .andExpect(content().string(containsString("emissionFactor")));
     }
 }
