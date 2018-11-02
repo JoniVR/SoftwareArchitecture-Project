@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/users/")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) throws UserException {
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
 
         User userIn = modelMapper.map(userDTO, User.class);
         User userOut = userService.changeUser(userIn);
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/users/{id}")
-    public void  deleteUser(@PathVariable Long id) throws UserException {
+    public void deleteUser(@PathVariable Long id) throws UserException {
 
         userService.deleteUser(id);
     }

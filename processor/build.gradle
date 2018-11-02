@@ -59,4 +59,6 @@ dependencies {
 	compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
 	// SECURITY
     compile 'org.springframework.boot:spring-boot-starter-security'
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+	testCompile("org.springframework.security:spring-security-test")
 }

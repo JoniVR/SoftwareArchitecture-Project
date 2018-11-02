@@ -2,8 +2,11 @@ package be.kdg.processor.controllers.rest;
 
 import be.kdg.processor.business.domain.user.Role;
 import be.kdg.processor.business.domain.user.User;
+import be.kdg.processor.business.domain.user.UserDTO;
 import be.kdg.processor.business.service.UserService;
 import be.kdg.processor.controller.rest.UserController;
+import be.kdg.processor.exceptions.UserException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,12 +27,13 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -117,11 +121,12 @@ public class UserControllerTests {
     public void testCreateUser() throws Exception {
 
         User userToCreate = new User(1L,"test@test.com", "password","joni","van roost", true, Set.of(new Role("ADMIN")));
+        UserDTO userDTO = modelMapper.map(userToCreate, UserDTO.class);
 
         Mockito.when(userServiceUnderTest.addUser(userToCreate))
                 .thenReturn(userToCreate);
 
-        String requestJSON = objectMapper.writeValueAsString(userToCreate);
+        String requestJSON = objectMapper.writeValueAsString(userDTO);
 
         mockMvc.perform(post("/api/users/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -129,6 +134,42 @@ public class UserControllerTests {
                 .content(requestJSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().string(containsString("test@test.com")))
+                .andDo(print());
+    }
+
+    @Transactional
+    @Test
+    public void updateUser() throws Exception {
+
+        User userToUpdate = new User(1L,"test@test.com", "password","joni","van roost", true, Set.of(new Role("ADMIN")));
+        UserDTO userDTO = modelMapper.map(userToUpdate, UserDTO.class);
+
+        Mockito.when(userServiceUnderTest.changeUser(userToUpdate))
+                .thenReturn(userToUpdate);
+
+        String requestJSON = objectMapper.writeValueAsString(userDTO);
+
+        mockMvc.perform(put("/api/users/").param("id", userDTO.getId().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestJSON))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.email", is("test@test.com")))
+                .andDo(print());
+    }
+
+    @Transactional
+    @Test
+    public void deleteUser() throws UserException, Exception {
+
+        User userToDelete = new User(1L,"test@test.com", "password","joni","van roost", true, Set.of(new Role("ADMIN")));
+
+        Mockito.when(userServiceUnderTest.deleteUser(userToDelete.getId()))
+                .thenReturn(true);
+
+        mockMvc.perform(delete("/api/users/"+userToDelete.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 }
