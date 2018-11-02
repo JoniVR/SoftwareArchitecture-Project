@@ -1,8 +1,8 @@
 package be.kdg.processor.controller.web;
 
-import be.kdg.processor.business.domain.fine.FineFactor;
-import be.kdg.processor.business.domain.fine.FineFactorDTO;
-import be.kdg.processor.business.service.FineFactorService;
+import be.kdg.processor.business.domain.settings.Settings;
+import be.kdg.processor.business.domain.settings.settingsDTO;
+import be.kdg.processor.business.service.SettingsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,26 +16,26 @@ import org.springframework.web.servlet.ModelAndView;
 public class FineFactorWebController {
 
     @Autowired
-    private FineFactorService fineFactorService;
+    private SettingsService settingsService;
     @Autowired
     private ModelMapper modelMapper;
 
     @GetMapping("/finefactor")
     public ModelAndView showFineFactorForm() {
 
-        FineFactor fineFactor = fineFactorService.loadFineFactor();
-        FineFactorDTO fineFactorDTO = modelMapper.map(fineFactor, FineFactorDTO.class);
+        Settings settings = settingsService.loadSettings();
+        settingsDTO settingsDTO = modelMapper.map(settings, settingsDTO.class);
 
-        return new ModelAndView("finefactorform", "fineFactorDTO", fineFactorDTO);
+        return new ModelAndView("finefactorform", "fineFactorDTO", settingsDTO);
     }
 
     @PostMapping("/finefactor")
-    public ModelAndView saveFineFactor(FineFactorDTO fineFactorDTO) {
+    public ModelAndView saveFineFactor(settingsDTO settingsDTO) {
 
-        FineFactor fineFactor = modelMapper.map(fineFactorDTO, FineFactor.class);
-        fineFactor.setId(1L);
-        fineFactorService.updateFineFactor(fineFactor);
+        Settings settings = modelMapper.map(settingsDTO, Settings.class);
+        settings.setId(1L);
+        settingsService.updateSettings(settings);
 
-        return new ModelAndView("finefactorform", "fineFactorDTO", fineFactorDTO);
+        return new ModelAndView("finefactorform", "fineFactorDTO", settingsDTO);
     }
 }

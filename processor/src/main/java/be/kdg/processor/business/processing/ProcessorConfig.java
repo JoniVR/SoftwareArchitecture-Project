@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.util.ArrayList;
 
 @Configuration
-@EnableRetry
 @EnableRabbit
 @EnableScheduling
 public class ProcessorConfig {

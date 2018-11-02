@@ -3,11 +3,11 @@ package be.kdg.processor.business.violation;
 import be.kdg.processor.business.domain.camera.Camera;
 import be.kdg.processor.business.domain.camera.ProcessedCameraMessage;
 import be.kdg.processor.business.domain.fine.Fine;
-import be.kdg.processor.business.domain.fine.FineFactor;
+import be.kdg.processor.business.domain.settings.Settings;
 import be.kdg.processor.business.domain.vehicle.Vehicle;
 import be.kdg.processor.business.domain.violation.Violation;
 import be.kdg.processor.business.domain.violation.ViolationType;
-import be.kdg.processor.business.service.FineFactorService;
+import be.kdg.processor.business.service.SettingsService;
 import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +22,7 @@ public class SpeedingViolation implements ViolationStrategy {
     private PassiveExpiringMap<String, List<ProcessedCameraMessage>> bufferedSpeedCameraMessages;
 
     @Autowired
-    private FineFactorService fineFactorService;
+    private SettingsService settingsService;
 
     @Override
     public Optional<Violation> detect(ProcessedCameraMessage processedCameraMessage) {
@@ -66,9 +66,9 @@ public class SpeedingViolation implements ViolationStrategy {
     @Override
     public Fine calculateFine(Violation violation) {
 
-        FineFactor fineFactor = fineFactorService.loadFineFactor();
+        Settings settings = settingsService.loadSettings();
 
-        double fineAmount = (violation.getSpeed() - violation.getSpeedLimit()) * fineFactor.getSpeedFactor();
+        double fineAmount = (violation.getSpeed() - violation.getSpeedLimit()) * settings.getSpeedFactor();
 
         return new Fine(fineAmount, false, null, violation);
     }

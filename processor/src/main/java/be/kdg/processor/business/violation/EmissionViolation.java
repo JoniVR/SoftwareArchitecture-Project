@@ -6,7 +6,7 @@ import be.kdg.processor.business.domain.fine.Fine;
 import be.kdg.processor.business.domain.vehicle.Vehicle;
 import be.kdg.processor.business.domain.violation.Violation;
 import be.kdg.processor.business.domain.violation.ViolationType;
-import be.kdg.processor.business.service.FineFactorService;
+import be.kdg.processor.business.service.SettingsService;
 import be.kdg.processor.business.service.ViolationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +21,7 @@ public class EmissionViolation implements ViolationStrategy {
     private ViolationService violationService;
 
     @Autowired
-    private FineFactorService fineFactorService;
+    private SettingsService settingsService;
 
     @Override
     public Optional<Violation> detect(ProcessedCameraMessage processedCameraMessage) {
@@ -40,7 +40,7 @@ public class EmissionViolation implements ViolationStrategy {
 
     public Fine calculateFine(Violation violation) {
 
-        double fineAmount = fineFactorService.loadFineFactor().getEmissionFactor();
+        double fineAmount = settingsService.loadSettings().getEmissionFactor();
 
         return new Fine(fineAmount, false, null, violation);
     }
@@ -56,7 +56,7 @@ public class EmissionViolation implements ViolationStrategy {
         Camera camera = processedCameraMessage.getCamera();
         Vehicle vehicle = processedCameraMessage.getVehicle();
 
-        int timeFrameInHours = fineFactorService.loadFineFactor().getEmissionTimeFrameInHours();
+        int timeFrameInHours = settingsService.loadSettings().getEmissionTimeFrameInHours();
 
         Optional<Violation> optionalViolation = violationService.loadLatestViolationFrom(vehicle.getPlateId());
 

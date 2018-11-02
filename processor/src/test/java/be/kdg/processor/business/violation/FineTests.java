@@ -1,7 +1,7 @@
 package be.kdg.processor.business.violation;
 
 import be.kdg.processor.business.domain.fine.Fine;
-import be.kdg.processor.business.domain.fine.FineFactor;
+import be.kdg.processor.business.domain.settings.Settings;
 import be.kdg.processor.business.domain.violation.Violation;
 import be.kdg.processor.business.domain.violation.ViolationType;
 import org.junit.After;
@@ -25,20 +25,20 @@ public class FineTests {
     @Autowired
     private SpeedingViolation speedingViolation;
 
-    private FineFactor fineFactor;
+    private Settings settings;
     private Violation violation;
 
     @Before
     public void setUp() {
 
         violation = new Violation(ViolationType.EMISSION, 100.0, 70, 3, "1-ABC-123,", LocalDateTime.now(), 1,2);
-        fineFactor = new FineFactor();
+        settings = new Settings();
     }
 
     @After
     public void tearDown() {
 
-        fineFactor = null;
+        settings = null;
         violation = null;
     }
 
@@ -50,7 +50,7 @@ public class FineTests {
         Assert.assertNotNull("Fine is null.", fine);
 
         // test amount
-        double amount = fineFactor.getEmissionFactor();
+        double amount = settings.getEmissionFactor();
         Assert.assertEquals("Fine price is not equal.",fine.getAmount(), amount,0);
     }
 
@@ -61,7 +61,7 @@ public class FineTests {
 
         Assert.assertNotNull(fine);
 
-        double amount = (violation.getSpeed() - violation.getSpeedLimit()) * fineFactor.getSpeedFactor();
+        double amount = (violation.getSpeed() - violation.getSpeedLimit()) * settings.getSpeedFactor();
         Assert.assertEquals(amount, fine.getAmount(),0);
     }
 }

@@ -51,7 +51,7 @@ public class ProcessorMessageHandler {
      *
      * @param cameraMessage The incoming CameraMessage from RabbitMQ.
      */
-    public void processMessage(CameraMessage cameraMessage) throws ObjectMappingException, IOException, CameraNotFoundException, InvalidLicensePlateException, LicensePlateNotFoundException {
+    public void processMessage(CameraMessage cameraMessage) throws ObjectMappingException, IOException, CameraNotFoundException, InvalidLicensePlateException, LicensePlateNotFoundException, DataAccessException {
 
         int camId = cameraMessage.getId();
         String licensePlate = cameraMessage.getLicenseplate();

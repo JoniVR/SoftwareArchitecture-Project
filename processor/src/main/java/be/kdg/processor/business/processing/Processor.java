@@ -13,9 +13,11 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.retry.RetryContext;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.support.RetryTemplate;
 
 import java.io.IOException;
 
@@ -35,27 +37,30 @@ public class Processor {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Retryable(value = {
-            ObjectMappingException.class,
-            IOException.class,
-            CameraNotFoundException.class,
-            InvalidLicensePlateException.class,
-            LicensePlateNotFoundException.class,
-            DataAccessException.class
-    }, backoff = @Backoff(delay = 2000))
+    @Autowired
+    private RetryTemplate retryTemplate;
+
     @RabbitListener(queues = RabbitConfig.MESSAGE_QUEUE)
-    public void receiveMessage(final String cameraMessageString) throws ObjectMappingException, IOException, CameraNotFoundException, InvalidLicensePlateException, LicensePlateNotFoundException {
+    public void receiveMessage(final String cameraMessageString) throws Exception {
 
-        CameraMessage cameraMessage = xmlMapperService.convertXmlStringToCameraMessage(cameraMessageString);
-        LOGGER.info("Received: CameraMessage: {}", cameraMessage);
+        retryTemplate.execute(context -> {
 
-        processorMessageHandler.processMessage(cameraMessage);
+            CameraMessage cameraMessage = xmlMapperService.convertXmlStringToCameraMessage(cameraMessageString);
+            LOGGER.info("Received: CameraMessage: {}", cameraMessage);
+
+            processorMessageHandler.processMessage(cameraMessage);
+            return null;
+
+        }, retryCallBack -> {
+
+            recover(retryCallBack, cameraMessageString);
+            return null;
+        });
     }
 
-    @Recover
-    public void recover(Exception exception, String cameraMessageString) {
+    private void recover(RetryContext retryContext, String cameraMessageString) {
 
-        LOGGER.error("Error: {} - CameraMessage: {} - Placing on ErrorQueue.", exception.getMessage(), cameraMessageString);
+        LOGGER.error("Error: {} - CameraMessage: {} - Placing on ErrorQueue.", retryContext.getLastThrowable().getMessage(), cameraMessageString);
         rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_ERROR_KEY, cameraMessageString);
     }
 }

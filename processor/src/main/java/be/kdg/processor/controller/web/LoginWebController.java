@@ -2,6 +2,7 @@ package be.kdg.processor.controller.web;
 
 import be.kdg.processor.business.domain.user.User;
 import be.kdg.processor.business.service.UserService;
+import be.kdg.processor.exceptions.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -54,12 +55,11 @@ public class LoginWebController {
         return modelAndView;
     }
 
-    //FIXME: optional beter afhandelen
     @RequestMapping(value = "/user/home", method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView home() throws UserException {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.loadUserByEmail(auth.getName()).get();
+        User user = userService.loadUserByEmail(auth.getName()).orElseThrow(() -> new UserException("User not found."));
         modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
         modelAndView.setViewName("user/home");

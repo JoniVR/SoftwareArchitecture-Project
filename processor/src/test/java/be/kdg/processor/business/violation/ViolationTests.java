@@ -7,7 +7,7 @@ import be.kdg.processor.business.domain.camera.Segment;
 import be.kdg.processor.business.domain.vehicle.Vehicle;
 import be.kdg.processor.business.domain.violation.Violation;
 import be.kdg.processor.business.domain.violation.ViolationType;
-import be.kdg.processor.business.service.FineFactorService;
+import be.kdg.processor.business.service.SettingsService;
 import be.kdg.processor.business.service.ViolationService;
 import org.junit.After;
 import org.junit.Assert;
@@ -36,7 +36,7 @@ public class ViolationTests {
     private ViolationService violationService;
 
     @Autowired
-    private FineFactorService fineFactorService;
+    private SettingsService settingsService;
 
     private Camera testCamera1;
     private Camera testCamera2;
@@ -102,7 +102,7 @@ public class ViolationTests {
     @Test
     public void testNoDoubleEmissionViolation() {
 
-        int fixedTimeFrame = fineFactorService.loadFineFactor().getEmissionTimeFrameInHours();
+        int fixedTimeFrame = settingsService.loadSettings().getEmissionTimeFrameInHours();
 
         violation.setCreationDate(LocalDateTime.now().minusHours(fixedTimeFrame + 1));
         violationService.addViolation(violation);

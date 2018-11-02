@@ -14,7 +14,7 @@
 
 <div class="container">
     <div class="col-12 text-center">
-        <form method="post" action="/settings/finefactor" th:object="${fineFactorDTO}">
+        <form method="post" action="/settings/finefactor" th:object="${settingsDTO}">
             <div class="row">
                 <label for="fine_factor" class="col-form-label">Emission Factor</label>
                 <input th:value="*{emissionFactor}" th:field="*{emissionFactor}" id="fine_factor" class="form-control"
