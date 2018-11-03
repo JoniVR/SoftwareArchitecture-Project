@@ -1,0 +1,12 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background-color: #f6F6F6 !important;
+}
+
+.welcome {
+    margin-top: 3rem;
+}

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/settings.css}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <meta charset="UTF-8">
     <title>Settings</title>
 <body>
 
@@ -13,43 +15,45 @@
 
 <div class="container">
     <div class="shadow p-3 mb-5 bg-white rounded jumbotron welcome">
-        <form method="post" action="/settings" th:object="${settingsDTO}">
-            <div class="row">
-                <label for="emission_factor" class="col-form-label">Emission Factor</label>
-                <input th:value="*{emissionFactor}" th:field="*{emissionFactor}" id="emission_factor"
-                       class="form-control"
-                       type="text">
-            </div>
-            <div class="row">
-                <label for="speed_factor" class="col-form-label">Speed Factor</label>
-                <input th:value="*{speedFactor}" th:field="*{speedFactor}" id="speed_factor" class="form-control"
-                       type="text">
-            </div>
-            <div class="row">
-                <label for="emission_time_frame" class="col-form-label">Emission Time frame (hours)</label>
-                <input th:value="*{emissionTimeFrameInHours}" th:field="*{emissionTimeFrameInHours}"
-                       id="emission_time_frame" class="form-control" type="text">
-            </div>
-            <div class="row">
-                <label for="speed_time_buffer" class="col-form-label">Speedting buffer time (minutes)</label>
-                <input th:value="*{speedingBufferTimeInMinutes}" th:field="*{speedingBufferTimeInMinutes}"
-                       id="speed_time_buffer" class="form-control" type="text">
-            </div>
-            <div class="row">
-                <label for="retry_max_attempts" class="col-form-label">Retry max attempts</label>
-                <input th:value="*{retryMaxAttempts}" th:field="*{retryMaxAttempts}"
-                       id="retry_max_attempts" class="form-control" type="text">
-            </div>
-            <div class="row">
-                <label for="retry_backoff_time" class="col-form-label">Retry backoff time (ms)</label>
-                <input th:value="*{retryBackOffTimeInMs}" th:field="*{retryBackOffTimeInMs}"
-                       id="retry_backoff_time" class="form-control" type="text">
-            </div>
+        <div class="container">
+            <form method="post" th:action="@{/settings}" th:object="${settingsDTO}">
+                <div class="form-group">
+                    <label for="emission_factor" class="col-form-label">Emission Factor</label>
+                    <input th:value="*{emissionFactor}" th:field="*{emissionFactor}" id="emission_factor"
+                           class="form-control"
+                           type="text">
+                </div>
+                <div class="form-group">
+                    <label for="speed_factor" class="col-form-label">Speed Factor</label>
+                    <input th:value="*{speedFactor}" th:field="*{speedFactor}" id="speed_factor" class="form-control"
+                           type="text">
+                </div>
+                <div class="form-group">
+                    <label for="emission_time_frame" class="col-form-label">Emission Time frame (hours)</label>
+                    <input th:value="*{emissionTimeFrameInHours}" th:field="*{emissionTimeFrameInHours}"
+                           id="emission_time_frame" class="form-control" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="speed_time_buffer" class="col-form-label">Speedting buffer time (minutes)</label>
+                    <input th:value="*{speedingBufferTimeInMinutes}" th:field="*{speedingBufferTimeInMinutes}"
+                           id="speed_time_buffer" class="form-control" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="retry_max_attempts" class="col-form-label">Retry max attempts</label>
+                    <input th:value="*{retryMaxAttempts}" th:field="*{retryMaxAttempts}"
+                           id="retry_max_attempts" class="form-control" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="retry_backoff_time" class="col-form-label">Retry backoff time (ms)</label>
+                    <input th:value="*{retryBackOffTimeInMs}" th:field="*{retryBackOffTimeInMs}"
+                           id="retry_backoff_time" class="form-control" type="text">
+                </div>
 
-            <div class="row mt-1">
-                <input class="btn btn-primary" type="submit" value="Update">
-            </div>
-        </form>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit" value="Update">Update</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 </body>
