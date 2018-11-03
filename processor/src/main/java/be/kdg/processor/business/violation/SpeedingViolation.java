@@ -36,18 +36,24 @@ public class SpeedingViolation implements ViolationStrategy, SettingsListener {
         Vehicle vehicle = processedCameraMessage.getVehicle();
         Camera camera = processedCameraMessage.getCamera();
 
+        // check if we have a buffered message for the plate
         if (bufferedSpeedCameraMessages.containsKey(vehicle.getPlateId())) {
 
+            // loop through buffered messages
             for (ProcessedCameraMessage previousMessage : bufferedSpeedCameraMessages.get(vehicle.getPlateId())) {
 
                 Camera previousCamera = previousMessage.getCamera();
 
+                // make sure the previous camera segment not null (would indicate emissionCam)
                 if (previousCamera.getSegment() != null
                         && previousCamera.getSegment().getConnectedCameraId() == camera.getId()) {
 
+                    // calculate speed
                     double speed = calculateSpeed(previousMessage, processedCameraMessage);
 
+                    // check if speeding violation
                     if (speed > previousCamera.getSegment().getSpeedLimit()){
+
                         return Optional.of(new Violation(
                                 ViolationType.SPEEDING,
                                 speed,
@@ -62,7 +68,7 @@ public class SpeedingViolation implements ViolationStrategy, SettingsListener {
             }
 
         } else {
-
+            // if no previous messages detected, add the current one
             bufferedSpeedCameraMessages.put(vehicle.getPlateId(), new ArrayList<>());
             bufferedSpeedCameraMessages.get(vehicle.getPlateId()).add(processedCameraMessage);
         }
