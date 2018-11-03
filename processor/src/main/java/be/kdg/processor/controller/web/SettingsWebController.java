@@ -34,12 +34,10 @@ public class SettingsWebController {
     @PostMapping
     public ModelAndView saveSettings(SettingsDTO settingsDTO) {
 
-        System.out.println(settingsDTO);
         Settings settingsIn = modelMapper.map(settingsDTO, Settings.class);
         Settings settingsOut = settingsService.updateSettings(settingsIn);
-        System.out.println(settingsOut);
         SettingsDTO settingsOutDTO = modelMapper.map(settingsOut, SettingsDTO.class);
-        System.out.println(settingsOutDTO);
+
         return new ModelAndView("settings", "settingsDTO", settingsOutDTO);
     }
 }
