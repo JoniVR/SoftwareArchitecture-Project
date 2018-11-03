@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class settingsDTO {
+public class SettingsDTO {
 
     private double emissionFactor;
     private double speedFactor;

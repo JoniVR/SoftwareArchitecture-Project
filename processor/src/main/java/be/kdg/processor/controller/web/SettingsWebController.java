@@ -1,13 +1,12 @@
 package be.kdg.processor.controller.web;
 
 import be.kdg.processor.business.domain.settings.Settings;
-import be.kdg.processor.business.domain.settings.settingsDTO;
+import be.kdg.processor.business.domain.settings.SettingsDTO;
 import be.kdg.processor.business.service.SettingsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,17 +26,20 @@ public class SettingsWebController {
     public ModelAndView showSettings() {
 
         Settings settings = settingsService.loadSettings();
-        settingsDTO settingsDTO = modelMapper.map(settings, settingsDTO.class);
+        SettingsDTO settingsDTO = modelMapper.map(settings, SettingsDTO.class);
 
         return new ModelAndView("settings", "settingsDTO", settingsDTO);
     }
 
     @PostMapping
-    public ModelAndView saveSettings(settingsDTO settingsDTO) {
+    public ModelAndView saveSettings(SettingsDTO settingsDTO) {
 
-        Settings settings = modelMapper.map(settingsDTO, Settings.class);
-        settingsService.updateSettings(settings);
-
-        return new ModelAndView("settings", "settingsDTO", settingsDTO);
+        System.out.println(settingsDTO);
+        Settings settingsIn = modelMapper.map(settingsDTO, Settings.class);
+        Settings settingsOut = settingsService.updateSettings(settingsIn);
+        System.out.println(settingsOut);
+        SettingsDTO settingsOutDTO = modelMapper.map(settingsOut, SettingsDTO.class);
+        System.out.println(settingsOutDTO);
+        return new ModelAndView("settings", "settingsDTO", settingsOutDTO);
     }
 }

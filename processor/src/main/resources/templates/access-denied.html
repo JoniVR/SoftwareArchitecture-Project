@@ -6,6 +6,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Error</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
 
     <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
@@ -20,7 +21,8 @@
 <div class="container">
     <div class="shadow p-3 mb-5 bg-white rounded jumbotron welcome">
         <h1>Access Denied. </h1>
-        <h2>You need to login with the correct permissions to view this page.</h2>
+        <hr class="my-4">
+        <h4>You need to login with the correct permissions to view this page.</h4>
         <a th:href="@{/login}" class="btn btn-default">Login</a>
     </div>
 </div>

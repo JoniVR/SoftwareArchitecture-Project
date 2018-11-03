@@ -6,6 +6,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Error</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
 
     <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
@@ -20,8 +21,9 @@
 <div class="container">
     <div class="shadow p-3 mb-5 bg-white rounded jumbotron welcome">
         <h1>Ooops. Something went wrong! </h1>
-        <h2>Don't worry, we'll take you home.</h2>
-        <a th:href="@{/index}" class="btn btn-default">Go Home</a>
+        <hr class="my-4">
+        <h4>Don't worry, we'll take you home.</h4>
+        <a th:href="@{/index}">Go Home</a>
     </div>
 </div>
 

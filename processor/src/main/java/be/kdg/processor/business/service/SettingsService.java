@@ -21,6 +21,7 @@ public class SettingsService {
 
     public Settings updateSettings(Settings settings) {
 
+        settings.setId(1L);
         return settingsRepository.save(settings);
     }
 
