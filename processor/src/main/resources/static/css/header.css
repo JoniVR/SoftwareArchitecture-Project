@@ -4,6 +4,9 @@
 
 .custom-nav {
     background-color: #2196F3 !important;
+    -webkit-box-shadow: 0px 10px 34px -14px rgba(46, 46, 46, 1);
+    -moz-box-shadow: 0px 10px 34px -14px rgba(46, 46, 46, 1);
+    box-shadow: 0px 10px 34px -14px rgba(46, 46, 46, 1);
 }
 
 .nav-link {
