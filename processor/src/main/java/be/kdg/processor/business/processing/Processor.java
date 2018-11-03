@@ -2,28 +2,20 @@ package be.kdg.processor.business.processing;
 
 import be.kdg.processor.business.domain.camera.CameraMessage;
 import be.kdg.processor.config.RabbitConfig;
-import be.kdg.processor.exceptions.ObjectMappingException;
 import be.kdg.processor.util.XMLMapperService;
-import be.kdg.sa.services.CameraNotFoundException;
-import be.kdg.sa.services.InvalidLicensePlateException;
-import be.kdg.sa.services.LicensePlateNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.retry.RetryContext;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.support.RetryTemplate;
-
-import java.io.IOException;
 
 /**
  * Responsible for processing/handling of messages from the RabbitMq messageQueue.
  */
+@EnableRetry
 public class Processor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class);

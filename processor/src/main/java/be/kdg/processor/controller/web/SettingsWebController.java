@@ -4,7 +4,6 @@ import be.kdg.processor.business.domain.settings.Settings;
 import be.kdg.processor.business.domain.settings.settingsDTO;
 import be.kdg.processor.business.service.SettingsService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +14,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/settings")
 public class SettingsWebController {
 
-    @Autowired
-    private SettingsService settingsService;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final SettingsService settingsService;
+    private final ModelMapper modelMapper;
+
+    public SettingsWebController(SettingsService settingsService, ModelMapper modelMapper) {
+        this.settingsService = settingsService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     public ModelAndView showSettings() {

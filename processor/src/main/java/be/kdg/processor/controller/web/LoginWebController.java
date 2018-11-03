@@ -2,16 +2,12 @@ package be.kdg.processor.controller.web;
 
 import be.kdg.processor.business.domain.user.User;
 import be.kdg.processor.business.service.UserService;
-import be.kdg.processor.exceptions.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -55,6 +51,15 @@ public class LoginWebController {
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("registration");
         }
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/index")
+    public ModelAndView index(){
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index");
+
         return modelAndView;
     }
 }

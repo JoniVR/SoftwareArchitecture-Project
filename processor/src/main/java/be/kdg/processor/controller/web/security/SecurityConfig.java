@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -29,24 +30,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login", "/settings/**", "/api/**" ,"/registration").permitAll()
-                .antMatchers("index/**").hasAuthority("ADMIN").anyRequest()
+        http.
+                authorizeRequests()
+                .antMatchers("/", "/login", "/registration","/api/**").permitAll()
+                .antMatchers("/index/**").hasAuthority("USER")
+                .antMatchers("/index/**","/settings/**", "/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
+                .loginPage("/login").failureUrl("/login?error=true")
+                .defaultSuccessUrl("/index",true)
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .loginPage("/login")
-                .defaultSuccessUrl("/index", true)
                 .and().logout()
-                .logoutSuccessUrl("/");
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/").and().exceptionHandling()
+                .accessDeniedPage("/access-denied"); //TODO: access denied page
     }
 
     @Override
     public void configure(WebSecurity web) {
 
         web.ignoring()
-                .antMatchers("/requests/**", "/static/**", "/css/**", "/js/**", "/images/**", "/api/**", "/h2/**", "/h2-console/**");
+                .antMatchers("/requests/**", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/api/**", "/h2/**", "/h2-console/**");
     }
 
     private DaoAuthenticationProvider authenticationProvider() {
