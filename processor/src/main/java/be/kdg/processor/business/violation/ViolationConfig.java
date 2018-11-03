@@ -1,7 +1,10 @@
 package be.kdg.processor.business.violation;
 
 import be.kdg.processor.business.domain.camera.ProcessedCameraMessage;
-import org.apache.commons.collections4.map.PassiveExpiringMap;
+import be.kdg.processor.business.domain.settings.Settings;
+import be.kdg.processor.business.service.SettingsService;
+import net.jodah.expiringmap.ExpiringMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +14,9 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class ViolationConfig {
 
+    @Autowired
+    private SettingsService settingsService;
+
     @Bean
     public EmissionViolation emissionViolation() { return new EmissionViolation(); }
 
@@ -18,5 +24,14 @@ public class ViolationConfig {
     public SpeedingViolation speedingViolation() { return new SpeedingViolation(); }
 
     @Bean
-    public PassiveExpiringMap<String, List<ProcessedCameraMessage>> speedCameraMessages() { return new PassiveExpiringMap<>(30, TimeUnit.MINUTES); }
+    public ExpiringMap<String, List<ProcessedCameraMessage>> speedCameraMessages() {
+
+        Settings settings = settingsService.loadSettings();
+
+        return ExpiringMap
+                .builder()
+                .variableExpiration()
+                .expiration(settings.getSpeedingBufferTimeInMinutes(), TimeUnit.MINUTES)
+                .build();
+    }
 }

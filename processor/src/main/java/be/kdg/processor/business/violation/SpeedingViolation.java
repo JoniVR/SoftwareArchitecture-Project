@@ -8,18 +8,24 @@ import be.kdg.processor.business.domain.vehicle.Vehicle;
 import be.kdg.processor.business.domain.violation.Violation;
 import be.kdg.processor.business.domain.violation.ViolationType;
 import be.kdg.processor.business.service.SettingsService;
-import org.apache.commons.collections4.map.PassiveExpiringMap;
+import be.kdg.processor.business.settings.SettingsListener;
+import net.jodah.expiringmap.ExpiringMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
-public class SpeedingViolation implements ViolationStrategy {
+public class SpeedingViolation implements ViolationStrategy, SettingsListener {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpeedingViolation.class);
 
     @Autowired
-    private PassiveExpiringMap<String, List<ProcessedCameraMessage>> bufferedSpeedCameraMessages;
+    private ExpiringMap<String, List<ProcessedCameraMessage>> bufferedSpeedCameraMessages;
 
     @Autowired
     private SettingsService settingsService;
@@ -71,6 +77,13 @@ public class SpeedingViolation implements ViolationStrategy {
         double fineAmount = (violation.getSpeed() - violation.getSpeedLimit()) * settings.getSpeedFactor();
 
         return new Fine(fineAmount, false, null, violation);
+    }
+
+    @Override
+    public void onSettingsChanged(Settings settings) {
+
+        bufferedSpeedCameraMessages.setExpiration(settings.getSpeedingBufferTimeInMinutes(), TimeUnit.MINUTES);
+        LOGGER.info("Updated: Buffered messages buffer settings with: {}", settings);
     }
 
     private double calculateSpeed(ProcessedCameraMessage previousMessage, ProcessedCameraMessage processedMessage){

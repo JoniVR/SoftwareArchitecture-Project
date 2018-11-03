@@ -53,10 +53,8 @@ dependencies {
 	// WEB
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.webjars:webjars-locator-core:0.35')
-	compile('org.webjars:bootstrap:4.1.3')
-	compile('org.webjars:jquery:3.0.0')
 	// OTHER
-	compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
+	compile 'net.jodah:expiringmap:0.5.8'
 	// SECURITY
     compile 'org.springframework.boot:spring-boot-starter-security'
 	testCompile("org.springframework.boot:spring-boot-starter-test")

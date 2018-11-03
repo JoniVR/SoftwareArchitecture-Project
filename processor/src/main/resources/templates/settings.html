@@ -17,6 +17,8 @@
 <div class="container">
     <div class="shadow p-3 mb-5 bg-white rounded jumbotron welcome">
         <div class="container">
+            <h2>Settings</h2>
+            <hr class="my-4">
             <form method="post" th:action="@{/settings}" th:object="${settingsDTO}">
                 <div class="form-group">
                     <label for="emission_factor" class="col-form-label">Emission Factor</label>

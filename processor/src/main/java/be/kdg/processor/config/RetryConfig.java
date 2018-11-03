@@ -2,17 +2,11 @@ package be.kdg.processor.config;
 
 import be.kdg.processor.business.domain.settings.Settings;
 import be.kdg.processor.business.service.SettingsService;
-import be.kdg.processor.business.settings.SettingsListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
-
-import java.util.ArrayList;
 
 @Configuration
 public class RetryConfig {
