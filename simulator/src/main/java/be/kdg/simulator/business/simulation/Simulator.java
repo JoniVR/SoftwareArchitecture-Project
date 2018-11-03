@@ -1,8 +1,8 @@
 package be.kdg.simulator.business.simulation;
 
+import be.kdg.simulator.business.domain.CameraMessage;
 import be.kdg.simulator.business.generator.MessageGenerator;
 import be.kdg.simulator.business.messenger.Messenger;
-import be.kdg.simulator.business.domain.CameraMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
@@ -42,7 +42,7 @@ public class Simulator implements CommandLineRunner {
 
         while ((cameraMessage.isPresent())) {
 
-            LOGGER.info("A message was generated: " + cameraMessage.get()+ "SLEEP: "+cameraMessage.get().getDelay());
+            LOGGER.info("A message was generated: " + cameraMessage.get()+ " SLEEP: "+cameraMessage.get().getDelay());
             Thread.sleep(cameraMessage.get().getDelay());
             messenger.sendMessage(cameraMessage.get());
 

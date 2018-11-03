@@ -1,7 +1,7 @@
 package be.kdg.simulator.random;
 
-import be.kdg.simulator.business.generator.MessageGenerator;
 import be.kdg.simulator.business.domain.CameraMessage;
+import be.kdg.simulator.business.generator.MessageGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
