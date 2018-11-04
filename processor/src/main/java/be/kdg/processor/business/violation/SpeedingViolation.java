@@ -54,6 +54,8 @@ public class SpeedingViolation implements ViolationStrategy, SettingsListener {
                     // check if speeding violation
                     if (speed > previousCamera.getSegment().getSpeedLimit()){
 
+                        bufferedSpeedCameraMessages.remove(vehicle.getPlateId());
+
                         return Optional.of(new Violation(
                                 ViolationType.SPEEDING,
                                 speed,

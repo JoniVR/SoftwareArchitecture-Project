@@ -1,6 +1,7 @@
 package be.kdg.simulator.business.messenger;
 
 import be.kdg.simulator.business.domain.CameraMessage;
+import be.kdg.simulator.exceptions.ObjectMappingException;
 import org.springframework.amqp.AmqpException;
 
 import java.io.IOException;
@@ -11,5 +12,5 @@ import java.io.IOException;
  */
 public interface Messenger {
 
-    void sendMessage(CameraMessage cameraMessage) throws IOException, AmqpException;
+    void sendMessage(CameraMessage cameraMessage) throws ObjectMappingException, AmqpException;
 }

@@ -16,8 +16,6 @@ import java.io.IOException;
  */
 public class XMLMapperService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(XMLMapperService.class);
-
     @Autowired
     private XmlMapper xmlMapper;
 

@@ -29,7 +29,7 @@ public class SettingsWebControllerTests {
     private WebApplicationContext context;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)

@@ -30,6 +30,7 @@
         <input type="password" th:placeholder="Password"
                id="password" name="password" class="form-control"/> <br/>
         </div>
+        <!-- Ondanks de error doet dit wel effectief iets lol -->
         <div align="center" th:if="${param.error}">
             <p class="errorClass">Email or Password invalid, please verify</p>
         </div>

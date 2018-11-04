@@ -31,7 +31,7 @@ public class SettingsServiceTests {
     private Settings settings;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         initMocks(this);
 

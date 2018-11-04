@@ -13,3 +13,9 @@
 .nav-link {
     color: red;
 }
+
+.disclaimer {
+    font-size: 12px;
+    color: gray;
+    bottom: 0 !important;
+}
