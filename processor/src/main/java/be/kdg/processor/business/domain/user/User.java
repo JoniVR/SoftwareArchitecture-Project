@@ -41,7 +41,11 @@ public class User {
     @Column(name = "roles")
     private Set<Role> roles;
 
-    public User(@Email(message = "*Please provide a valid Email") @NotEmpty(message = "*Please provide an email") String email, @Length(min = 5, message = "*Your password must have at least 5 characters") @NotEmpty(message = "*Please provide your password") String password, @NotEmpty(message = "*Please provide your name") String name, @NotEmpty(message = "*Please provide your last name") String lastName, @NotEmpty boolean active, @NotEmpty Set<Role> roles) {
+    public User(@Email(message = "*Please provide a valid Email") @NotEmpty(message = "*Please provide an email") String email,
+                @Length(min = 5, message = "*Your password must have at least 5 characters") @NotEmpty(message = "*Please provide your password") String password,
+                @NotEmpty(message = "*Please provide your name") String name,
+                @NotEmpty(message = "*Please provide your last name") String lastName,
+                @NotEmpty boolean active, @NotEmpty Set<Role> roles) {
         this.email = email;
         this.password = password;
         this.name = name;

@@ -20,32 +20,38 @@
             <h2>Settings</h2>
             <hr class="my-4">
             <form method="post" th:action="@{/settings}" th:object="${settingsDTO}">
+
                 <div class="form-group">
                     <label for="emission_factor" class="col-form-label">Emission Factor</label>
                     <input th:value="*{emissionFactor}" th:field="*{emissionFactor}" id="emission_factor"
                            class="form-control"
                            type="text">
                 </div>
+
                 <div class="form-group">
                     <label for="speed_factor" class="col-form-label">Speed Factor</label>
                     <input th:value="*{speedFactor}" th:field="*{speedFactor}" id="speed_factor" class="form-control"
                            type="text">
                 </div>
+
                 <div class="form-group">
                     <label for="emission_time_frame" class="col-form-label">Emission Time frame (hours)</label>
                     <input th:value="*{emissionTimeFrameInHours}" th:field="*{emissionTimeFrameInHours}"
                            id="emission_time_frame" class="form-control" type="text">
                 </div>
+
                 <div class="form-group">
                     <label for="speed_time_buffer" class="col-form-label">Speedting buffer time (minutes)</label>
                     <input th:value="*{speedingBufferTimeInMinutes}" th:field="*{speedingBufferTimeInMinutes}"
                            id="speed_time_buffer" class="form-control" type="text">
                 </div>
+
                 <div class="form-group">
                     <label for="retry_max_attempts" class="col-form-label">Retry max attempts</label>
                     <input th:value="*{retryMaxAttempts}" th:field="*{retryMaxAttempts}"
                            id="retry_max_attempts" class="form-control" type="text">
                 </div>
+
                 <div class="form-group">
                     <label for="retry_backoff_time" class="col-form-label">Retry backoff time (ms)</label>
                     <input th:value="*{retryBackOffTimeInMs}" th:field="*{retryBackOffTimeInMs}"
