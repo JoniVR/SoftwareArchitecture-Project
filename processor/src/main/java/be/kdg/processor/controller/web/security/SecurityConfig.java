@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 authorizeRequests()
                 .antMatchers("/", "/login", "/registration","/api/**").permitAll()
-                .antMatchers("/index/**").hasAuthority("USER")
-                .antMatchers("/settings/**", "/**").hasAuthority("ADMIN").anyRequest()
+                .antMatchers("/index/**").access("hasAuthority('USER') or hasAuthority('ADMIN')")
+                .antMatchers("/**").access("hasAuthority('ADMIN')").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/index",true)

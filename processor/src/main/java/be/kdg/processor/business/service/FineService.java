@@ -3,7 +3,6 @@ package be.kdg.processor.business.service;
 import be.kdg.processor.business.domain.fine.Fine;
 import be.kdg.processor.exceptions.FineException;
 import be.kdg.processor.persistence.FineRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,8 +14,11 @@ import java.util.Optional;
 @Transactional
 public class FineService {
 
-    @Autowired
-    private FineRepository fineRepository;
+    private final FineRepository fineRepository;
+
+    public FineService(FineRepository fineRepository) {
+        this.fineRepository = fineRepository;
+    }
 
     public Fine save(Fine fine) {
 
@@ -55,7 +57,7 @@ public class FineService {
      * @param to   The date at which we should stop filtering. Format: yyyy-MM-dd'T'HH:mm:ss
      * @return A list of filtered fines.
      */
-    public List<Fine> loadAllBetween(LocalDateTime from, LocalDateTime to) {
+    public List<Fine> loadAllFinesBetween(LocalDateTime from, LocalDateTime to) {
 
         return fineRepository.findByViolationCreationDateBetween(from, to);
     }

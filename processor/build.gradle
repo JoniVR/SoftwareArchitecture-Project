@@ -59,4 +59,5 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-security'
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("org.springframework.security:spring-security-test")
+	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
 }

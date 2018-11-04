@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,7 +24,7 @@ public class SecurityTests {
     private MockMvc mockMvc;
 
     @Test
-    public void loginWithInvalidUserThenUnauthenticatedTest() throws Exception {
+    public void testLoginWithInvalidUserThenUnauthenticated() throws Exception {
 
         SecurityMockMvcRequestBuilders.FormLoginRequestBuilder login = formLogin()
                 .user("invalid")
@@ -36,13 +35,13 @@ public class SecurityTests {
     }
 
     @Test
-    public void accessUnsecuredResourceTest() throws Exception {
+    public void testAccessUnsecuredResource() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void accessSecuredResourceUnauthenticatedThenRedirectsToLoginTest() throws Exception {
+    public void testAccessSecuredResourceUnauthenticatedThenRedirectsToLogin() throws Exception {
         mockMvc.perform(get("/index"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
@@ -50,8 +49,17 @@ public class SecurityTests {
 
     @Test
     @WithMockUser(authorities = "USER")
-    public void accessSecuredResourceAuthenticatedTest() throws Exception {
+    public void testAccessSecuredResourceAuthenticated() throws Exception {
         mockMvc.perform(get("/index"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "USER")
+    public void testAccessSecuredResourceUnAuthorizedUserThenRedirects() throws Exception {
+
+        mockMvc.perform(get("/settings"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(forwardedUrl("/access-denied"));
     }
 }

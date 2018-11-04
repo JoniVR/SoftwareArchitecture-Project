@@ -6,11 +6,14 @@ import be.kdg.processor.business.domain.camera.Segment;
 import be.kdg.processor.business.domain.vehicle.Vehicle;
 import be.kdg.processor.business.domain.violation.Violation;
 import be.kdg.processor.business.domain.violation.ViolationType;
+import be.kdg.processor.exceptions.ViolationException;
+import be.kdg.processor.persistence.ViolationRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,12 +21,16 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.mockito.MockitoAnnotations.initMocks;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ViolationServiceTests {
 
-    @Autowired
-    private ViolationService violationService;
+    @Mock
+    private ViolationRepository violationRepository;
+
+    private ViolationService violationServiceUnderTest;
 
     private Violation violation;
     private Violation violation1;
@@ -36,6 +43,10 @@ public class ViolationServiceTests {
     @Before
     public void setUp() {
 
+        initMocks(this);
+
+        violationServiceUnderTest = new ViolationService(violationRepository);
+
         camera = new Camera(1, new Location(),3, new Segment());
         vehicle = new Vehicle("1-ABC-123", "47.11.10-171.40", 1);
 
@@ -43,7 +54,6 @@ public class ViolationServiceTests {
         violation1 = new Violation(ViolationType.EMISSION, null, null, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(30), camera.getId(), 2);
         violation2 = new Violation(ViolationType.EMISSION, null, null, null, vehicle.getPlateId(), LocalDateTime.now().minusHours(1), camera.getId(), 2);
         violation3 = new Violation(ViolationType.EMISSION, null, null, null, vehicle.getPlateId(), LocalDateTime.now().plusHours(30), camera.getId(), 2);
-
     }
 
     public void tearDown() {
@@ -57,20 +67,49 @@ public class ViolationServiceTests {
         violation3 = null;
     }
 
+    @Test
+    public void testAddViolation() {
+
+        // Setup
+        Mockito.when(violationRepository.save(violation))
+                .thenReturn(violation);
+
+        // run the test
+        Violation violationResult = violationServiceUnderTest.addViolation(violation);
+
+        // Verify the results
+        Assert.assertNotNull(violationResult);
+    }
+
+    @Test
+    public void testLoadViolation() throws ViolationException {
+
+        // Setup
+        Mockito.when(violationRepository.findById(violation.getId()))
+                .thenReturn(Optional.ofNullable(violation));
+
+        // run the test
+        Violation violationResult = violationServiceUnderTest.loadViolation(violation.getId());
+
+        // verify the results
+        Assert.assertNotNull(violationResult);
+    }
+
     @Transactional
     @Test
     public void testLoadLatestViolationFrom() {
 
-        violationService.addViolation(violation);
-        violationService.addViolation(violation1);
-        violationService.addViolation(violation2);
-        violationService.addViolation(violation3);
+        // Setup
+        Mockito.when(violationRepository.findFirstByLicensePlateOrderByCreationDateDesc(vehicle.getPlateId()))
+                .thenReturn(Optional.of(violation3));
 
-        Optional<Violation> violationOptional = violationService.loadLatestViolationFrom(vehicle.getPlateId());
+        // run the test
+        Optional<Violation> optionalViolation = violationServiceUnderTest.loadLatestViolationFrom(vehicle.getPlateId());
 
-        Assert.assertTrue(violationOptional.isPresent());
+        // verify the results
+        Assert.assertTrue(optionalViolation.isPresent());
 
-        Violation violationToTest = violationOptional.get();
+        Violation violationToTest = optionalViolation.get();
 
         Assert.assertEquals(violation3, violationToTest);
     }

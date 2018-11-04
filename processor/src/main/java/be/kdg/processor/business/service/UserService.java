@@ -90,14 +90,16 @@ public class UserService implements UserDetailsService {
     @PostConstruct
     public void init() {
 
-        User demoUser = new User("joni.vr@hotmail.com", bCryptPasswordEncoder.encode("password"), "joni", "van roost", true, Set.of(new Role("ADMIN")));
+        User demoAdmin = new User("joni.vr@hotmail.com", bCryptPasswordEncoder.encode("password"), "joni", "van roost", true, Set.of(new Role("ADMIN")));
+        User demoUser = new User("user@test.com", bCryptPasswordEncoder.encode("password"),"test","doe", true, Set.of(new Role("USER")));
 
         if (!userRepository.findByEmail("joni.vr@hotmail.com").isPresent()) {
-            userRepository.save(demoUser);
+            userRepository.save(demoAdmin);
         }
 
-        roleRepository.save(new Role("ADMIN"));
-        roleRepository.save(new Role("USER"));
+        if (!userRepository.findByEmail("user@test.com").isPresent()){
+            userRepository.save(demoUser);
+        }
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {

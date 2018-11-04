@@ -35,7 +35,7 @@ public class FineController {
     public List<FineDTO> getFinesBetween(@RequestParam("from") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") LocalDateTime fromDate,
                                          @RequestParam("to") @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") LocalDateTime toDate) {
 
-        List<Fine> fines = fineService.loadAllBetween(fromDate, toDate);
+        List<Fine> fines = fineService.loadAllFinesBetween(fromDate, toDate);
 
         return fines.stream().map(entity -> modelMapper.map(entity, FineDTO.class)).collect(Collectors.toList());
     }

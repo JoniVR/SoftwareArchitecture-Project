@@ -3,20 +3,23 @@ package be.kdg.processor.business.service;
 import be.kdg.processor.business.domain.settings.Settings;
 import be.kdg.processor.business.settings.SettingsListener;
 import be.kdg.processor.persistence.SettingsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
 @Transactional
 public class SettingsService {
 
-    @Autowired
-    private SettingsRepository settingsRepository;
-    @Autowired
-    private Collection<SettingsListener> settingsListeners;
+    private final Collection<SettingsListener> settingsListeners;
+    private final SettingsRepository settingsRepository;
+
+    public SettingsService(ArrayList<SettingsListener> settingsListeners, SettingsRepository settingsRepository) {
+        this.settingsListeners = settingsListeners;
+        this.settingsRepository = settingsRepository;
+    }
 
     public Settings loadSettings() {
 
