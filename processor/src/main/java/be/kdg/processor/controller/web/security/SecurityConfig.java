@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests()
                 .antMatchers("/", "/login", "/registration","/api/**").permitAll()
                 .antMatchers("/index/**").hasAuthority("USER")
-                .antMatchers("/index/**","/settings/**", "/**").hasAuthority("ADMIN").anyRequest()
+                .antMatchers("/settings/**", "/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/index",true)

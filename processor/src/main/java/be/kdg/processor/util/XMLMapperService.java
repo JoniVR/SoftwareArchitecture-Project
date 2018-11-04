@@ -34,8 +34,7 @@ public class XMLMapperService {
         try {
             return xmlMapper.readValue(string, CameraMessage.class);
         } catch (IOException e) {
-            LOGGER.error("Error converting XML String to CameraMessage object. Error: ", e.getMessage());
-            throw new ObjectMappingException("Error converting XML String to CameraMessage object.");
+            throw new ObjectMappingException("Error converting XML String to CameraMessage object.", e);
         }
     }
 }

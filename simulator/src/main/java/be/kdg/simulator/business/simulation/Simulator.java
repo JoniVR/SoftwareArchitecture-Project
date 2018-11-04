@@ -3,6 +3,7 @@ package be.kdg.simulator.business.simulation;
 import be.kdg.simulator.business.domain.CameraMessage;
 import be.kdg.simulator.business.generator.MessageGenerator;
 import be.kdg.simulator.business.messenger.Messenger;
+import be.kdg.simulator.exceptions.ObjectMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
@@ -34,9 +35,9 @@ public class Simulator implements CommandLineRunner {
     private Messenger messenger;
 
     // Executed at startup
-    @Retryable(value = {AmqpException.class, IOException.class, InterruptedException.class, IllegalArgumentException.class}, backoff = @Backoff(delay = 5000))
+    @Retryable(value = { AmqpException.class, IOException.class, InterruptedException.class, ObjectMappingException.class }, backoff = @Backoff(delay = 5000))
     @Override
-    public void run(String... args) throws IOException, AmqpException, InterruptedException, IllegalArgumentException {
+    public void run(String... args) throws IOException, AmqpException, InterruptedException, ObjectMappingException {
 
         Optional<CameraMessage> cameraMessage = messageGenerator.generate();
 

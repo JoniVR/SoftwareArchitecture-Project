@@ -38,8 +38,7 @@ public class JSONMapperService {
 
         } catch (IOException e) {
 
-            LOGGER.error("Error converting JSON String to Vehicle object. Error: {}", e.getMessage());
-            throw new ObjectMappingException("Error converting JSON String to Vehicle object.");
+            throw new ObjectMappingException("Error converting JSON String to Vehicle object.", e);
         }
     }
 }

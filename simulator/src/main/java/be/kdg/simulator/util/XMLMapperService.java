@@ -1,5 +1,6 @@
 package be.kdg.simulator.util;
 
+import be.kdg.simulator.exceptions.ObjectMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -19,12 +20,16 @@ public class XMLMapperService {
      *
      * @return String formatted as XML.
      */
-    public String convertObjectToXml(Object object) throws IOException {
+    public String convertObjectToXml(Object object) throws ObjectMappingException {
 
         ObjectMapper objectMapper = new XmlMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        return objectMapper.writeValueAsString(object);
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (IOException e) {
+            throw new ObjectMappingException("Error trying to map object to xml.", e);
+        }
     }
 }
