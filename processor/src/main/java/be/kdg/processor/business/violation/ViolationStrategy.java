@@ -9,6 +9,8 @@ import java.util.Optional;
 /**
  * These are the strategy implementations that are responsible for detecting violations and calculating their respective fines.
  * The storing in the database of these Violations and Fines happens inside the ProcessorMessageHandler.
+ * To add a violation strategy, simply implement the ViolationStrategy interface methods and return their respective values.
+ * You also probably want to add a new `ViolationType` to the `ViolationType` enum.
  */
 public interface ViolationStrategy {
 

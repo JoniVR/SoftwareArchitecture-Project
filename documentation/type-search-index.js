@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"be.kdg.processor.business.violation","l":"ViolationStrategy"}]
