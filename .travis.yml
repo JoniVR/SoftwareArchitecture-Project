@@ -12,12 +12,12 @@ script:
 # test simulator
  - cd simulator
  - ./gradlew clean
- - ./gradlew build
- - ./gradlew test
+ - ./gradlew build --stacktrace
+ - ./gradlew test --stacktrace
  
 # test processor
  - cd ../processor
  - ./gradlew clean
- - ./gradlew build
- - ./gradlew test
+ - ./gradlew build --stacktrace
+ - ./gradlew test --stacktrace
  
