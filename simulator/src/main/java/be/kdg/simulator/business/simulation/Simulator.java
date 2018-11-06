@@ -3,18 +3,13 @@ package be.kdg.simulator.business.simulation;
 import be.kdg.simulator.business.domain.CameraMessage;
 import be.kdg.simulator.business.generator.MessageGenerator;
 import be.kdg.simulator.business.messenger.Messenger;
-import be.kdg.simulator.exceptions.ObjectMappingException;
+import be.kdg.simulator.exceptions.QueueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.AmqpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -35,30 +30,31 @@ public class Simulator implements CommandLineRunner {
     private Messenger messenger;
 
     // Executed at startup
-    @Retryable(value = { AmqpException.class, IOException.class, InterruptedException.class, ObjectMappingException.class }, backoff = @Backoff(delay = 5000))
     @Override
-    public void run(String... args) throws IOException, AmqpException, InterruptedException, ObjectMappingException {
+    public void run(String... args) {
 
-        Optional<CameraMessage> cameraMessage = messageGenerator.generate();
+        try {
 
-        while ((cameraMessage.isPresent())) {
+            Optional<CameraMessage> cameraMessage = messageGenerator.generate();
 
-            CameraMessage message = cameraMessage.get();
-            LOGGER.info("A message was generated: {}", message);
+            while ((cameraMessage.isPresent())) {
 
-            Thread.sleep(message.getDelay());
+                CameraMessage message = cameraMessage.get();
+                LOGGER.info("A message was generated: {}", message);
 
-            message.setTimestamp(LocalDateTime.now());
+                Thread.sleep(message.getDelay());
 
-            messenger.sendMessage(message);
+                message.setTimestamp(LocalDateTime.now());
 
-            cameraMessage = messageGenerator.generate();
+                messenger.sendMessage(message);
+                System.out.println("ITS ME");
+
+                cameraMessage = messageGenerator.generate();
+            }
+
+        } catch (IOException | QueueException | InterruptedException e) {
+
+            LOGGER.error("Error trying to send message. ErrorMessage: {}", e.getMessage());
         }
-    }
-
-    @Recover
-    private void recover(Exception e, CameraMessage message) {
-
-        LOGGER.error("Error trying to place message on queue. Error: {} - Message: {}", e.getMessage(), message);
     }
 }

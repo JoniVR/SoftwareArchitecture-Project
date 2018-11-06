@@ -3,6 +3,7 @@ package be.kdg.simulator.business.messenger;
 import be.kdg.simulator.business.domain.CameraMessage;
 import be.kdg.simulator.config.RabbitConfig;
 import be.kdg.simulator.exceptions.ObjectMappingException;
+import be.kdg.simulator.exceptions.QueueException;
 import be.kdg.simulator.util.XMLMapperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,13 @@ public class QueueMessenger implements Messenger {
     private XMLMapperService xmlMapperService;
 
     @Override
-    public void sendMessage(CameraMessage cameraMessage) throws AmqpException, ObjectMappingException {
+    public void sendMessage(CameraMessage cameraMessage) throws QueueException, ObjectMappingException {
 
-        LOGGER.info("Placing message on queue.");
-        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY, xmlMapperService.convertObjectToXml(cameraMessage));
+        try {
+            LOGGER.info("Placing message on queue.");
+            rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, RabbitConfig.ROUTING_KEY, xmlMapperService.convertObjectToXml(cameraMessage));
+        } catch (AmqpException e){
+            throw new QueueException(e.getMessage()+" - Please check if RabbitMQ is running.");
+        }
     }
 }
